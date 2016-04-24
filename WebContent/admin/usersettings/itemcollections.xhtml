@@ -1,20 +1,43 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jsp/jstl/core"
-    xmlns:p="http://primefaces.org/ui">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
 
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta charset="ISO-8859-1" />
-    <title>Companies</title>
-    <link type="text/css" rel="stylesheet"
-        href="../../styles/companies.css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta charset="ISO-8859-1" />
+	<title>Companies</title>
+	<link type="text/css" rel="stylesheet"
+		href="../../styles/companies.css" />
 </h:head>
 
 <h:body>
 
+	<h:form id="itemcollections">
+		<p:dataTable var="val"
+			value="#{itemCollectionBean.getItemCollections()}"
+			style="max-width:1250px" dynamic="true" layout="grid"
+			paginator="true" rows="10">
+
+			<p:column headerText="Name" resizable="true" toggleable="true">
+				<h:outputText value="#{val.name}"></h:outputText>
+			</p:column>
+			<p:column headerText="Description" resizable="true" toggleable="true">
+                <h:outputText value="#{val.description}"></h:outputText>
+            </p:column>
+		</p:dataTable>
+		
+		<p:panel>
+		<p:outputLabel value="Enter new name:"></p:outputLabel>
+		<h:inputText value="#{itemCollectionBean.newItemCollection.name}" />
+		  <p:outputLabel value="Enter new description:"></p:outputLabel>
+        <h:inputText value="#{itemCollectionBean.newItemCollection.description}" />
+		<h:commandButton action="#{itemCollectionBean.createItemCollection()}" value="Create new Collection" />
+		</p:panel>
+	</h:form>
 </h:body>
+</html>
