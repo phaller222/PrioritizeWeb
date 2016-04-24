@@ -1,0 +1,53 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	<meta charset="ISO-8859-1" />
+	<title>Login</title>
+	<link type="text/css" rel="stylesheet" href="../styles/companies.css" />
+</h:head>
+
+<h:body>
+<div class="login_mainscreen" style="height:100%;width:100%">
+	<div data-role="header" style="background-image:url('../images/background.jpg');">
+		<img src="../images/logo2.png" /> <span
+			style="position: relative; top: -10px; margin-left: 25%; font-size: 28pt; color: 41426D; font-family: 'Serif'">
+			</span>
+	</div>
+
+	<div data-role="content" align="center" style="margin-top: 10%;">
+		<p:panel style="margin-left:20%;margin-right:20%;border-width:1px;border-style:groove;border-color:black;max-width:50%">
+			 
+			<br />
+			<div id="introduction">Welcome to prioritize client. Have fun!</div><br/>
+				 <br/>
+				<div id="logintext">Please provide your credentials to login:</div>
+				<p/>
+	
+			<h:form>
+
+				<h:outputText value="Username:"></h:outputText>
+				<p:inputText value="#{loginBean.username}"></p:inputText>
+				<p />
+				<h:outputText value="Password:"></h:outputText>
+				<p:password value="#{loginBean.password}"></p:password>
+				<p />
+				<p:commandButton action="#{loginBean.clientLogin}" value="Login" style="width:180px;" title="login"></p:commandButton>
+
+			</h:form>
+
+		</p:panel>
+	</div>
+
+</div>
+
+
+</h:body>
+</html>

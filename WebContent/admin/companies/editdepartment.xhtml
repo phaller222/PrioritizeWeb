@@ -1,0 +1,102 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Companies</title>
+	<link type="text/css" rel="stylesheet" href="../../styles/companies.css" />
+</h:head>
+
+<h:body>
+	<ui:include src="/admin/mainmenu.xhtml" />
+	<p:panel id="sessionok" rendered="#{loginBean.getLoggedIn()}">
+	<div id="editdepartment" class="top" align="center">
+		<h1>Edit department: #{companyBean.department.name}</h1>
+	</div>
+
+	<div id="content" align="center">
+		<p:panel>
+			<h:form id="departmentform">
+				<h:inputHidden value="#{companyBean.department.id}" />
+				<h:panelGrid columns="4" layout="grid"
+					footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
+					frame="box" rules="groups" cellpadding="10">
+
+					<f:facet name="header">
+						<h:outputText value="#{companyBean.department.name}"></h:outputText>
+					</f:facet>
+					<h:outputText value="Name:" />
+					<h:panelGroup>
+						<p:inputText id="name" rendered="true"
+							value="#{companyBean.department.name}"></p:inputText>
+						<p:message for="name"></p:message>
+					</h:panelGroup>
+					
+					<h:outputText value="Description:" />
+					<h:panelGroup>
+						<p:inputTextarea rows="3" cols="50" id="description" rendered="true"
+							value="#{companyBean.department.description}"></p:inputTextarea>
+						<p:message for="description"></p:message>
+					</h:panelGroup>
+	
+					<h:outputText value="Street:" />
+					<h:panelGroup>
+						<p:inputText id="street" rendered="true"
+							value="#{companyBean.department.address.street}"></p:inputText>
+						<p:message for="street"></p:message>
+					</h:panelGroup>
+
+
+					<h:outputText value="ZIP-code:" />
+					<h:panelGroup>
+						<p:inputText id="zipcode" rendered="true"
+							value="#{companyBean.department.address.zipCode}"></p:inputText>
+						<p:message for="zipcode"></p:message>
+					</h:panelGroup>
+					<h:outputText value="City:" />
+					<h:panelGroup>
+						<p:inputText id="city" rendered="true"
+							value="#{companyBean.department.address.city}"></p:inputText>
+						<p:message for="city"></p:message>
+					</h:panelGroup>
+
+					<h:outputText value="Phone:" />
+					<h:panelGroup>
+						<p:inputText id="phone" rendered="true"
+							value="#{companyBean.department.address.phone}"></p:inputText>
+						<p:message for="phone"></p:message>
+					</h:panelGroup>
+					<h:outputText value="Fax:" />
+					<h:panelGroup>
+						<p:inputText id="fax" rendered="true"
+							value="#{companyBean.department.address.fax}"></p:inputText>
+						<p:message for="fax"></p:message>
+					</h:panelGroup>
+					<h:outputText value="Token:" />
+					<h:panelGroup>
+						<h:outputText style="font-size:10pt;background-color:#F4EEEE;color:rgba(128,128,128,0.8)" disabled="true" id="token" rendered="true"
+							value="#{companyBean.department.token}" title="Use this token to directly place resources into this department"></h:outputText>
+						<p:message for="token"></p:message>
+					</h:panelGroup>
+					
+
+					<f:facet name="footer">
+						<p:commandButton style="width:250px;margin-top:50px;"
+							icon="ui-icon-circle-check" value="Apply"
+							action="#{companyBean.saveDepartment}" ajax="false"></p:commandButton>
+					</f:facet>
+
+				</h:panelGrid>
+			</h:form>
+		</p:panel>
+	</div>
+	</p:panel>
+	
+	<ui:include src="/notloggedin.xhtml" />
+	
+</h:body>
+</html>

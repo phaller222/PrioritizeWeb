@@ -1,0 +1,59 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta charset="ISO-8859-1" />
+	<title>Companies</title>
+	<link type="text/css" rel="stylesheet"
+		href="../../styles/companies.css" />
+</h:head>
+
+<h:body>
+  <h:form>
+        <p:remoteCommand name="onload" action="#{messageBean.setMessageRead}" autoRun="true" />
+    </h:form>
+	<ui:include src="/admin/mainmenu.xhtml" />
+	<p:panel id="sessionok" rendered="#{loginBean.getLoggedIn()}" style="width:80%">
+		<div>
+			<div id="readMessage" align="center">
+				<h:form id="form">
+					<h:panelGrid columns="1" 
+						footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
+						frame="box" rules="groups" cellpadding="10">
+
+						<f:facet name="header">
+							<h:outputText value="#{messageBean.readMessageSubject}"></h:outputText>
+						</f:facet>
+
+
+					
+						<h:outputText id="subject" rendered="true"
+							value="#{messageBean.readMessageSubject}">
+						</h:outputText>
+
+						
+						<p:scrollPanel style="width:850px;height:300px">
+						<h:outputText  escape="false" value="#{messageBean.readMessageMessage}" ></h:outputText>
+						</p:scrollPanel>
+						<f:facet name="footer">
+							<p:commandButton id="closeAction" value="Back"
+								icon="ui-icon-mail-closed" action="#{messageBean.overview}" ajax="false"
+								style="width:220px"></p:commandButton>
+						</f:facet> 
+					</h:panelGrid> 
+				</h:form>
+			</div>
+		</div>
+	</p:panel>
+
+	<ui:include src="/notloggedin.xhtml" />
+
+</h:body>
+</html>

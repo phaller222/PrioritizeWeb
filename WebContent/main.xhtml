@@ -1,0 +1,63 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	<meta charset="ISO-8859-1" />
+	<title><ui:insert name="title">Companies</ui:insert></title>
+	<link type="text/css" rel="stylesheet" href="../styles/companies.css" />
+
+	<style type="text/css">
+.no-border {
+	border-style: hidden !important; /* or none */
+	background-image: url('../images/background.jpg');
+}
+no-repeat
+
+
+;
+</style>
+</h:head>
+
+<h:body>
+	<ui:insert name="header">
+		<div data-role="header">
+			<p:panelGrid columns="3"
+				columnClasses="no-border, no-border, no-border" style="width:100%;">
+				<h:column>
+					<img src="../../images/logo2.png" />
+				</h:column>
+				<h:column>
+					<div align="center">
+						<span
+							style="position: relative; top: 10px; margin-right: 20%; font-size: 28pt; color: 41426D; font-family: 'Serif'">
+						</span>
+					</div>
+				</h:column>
+				<h:column>
+					<div align="right"
+						style="padding-bottom: 5px; padding-right: 15px;">
+						<pe:analogClock mode="client" width="100" />
+					</div>
+				</h:column>
+			</p:panelGrid>
+		</div>
+	</ui:insert>
+
+	<ui:insert name="content">
+		<div id="content">Default content</div>
+	</ui:insert>
+
+	<ui:insert name="footer">
+		<div id="footer">Default footer</div>
+	</ui:insert>
+
+</h:body>
+</html>

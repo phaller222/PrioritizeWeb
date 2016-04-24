@@ -1,0 +1,123 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta charset="ISO-8859-1" />
+	<title>Resources</title>
+	<link type="text/css" rel="stylesheet"
+		href="../../styles/companies.css" />
+
+
+</h:head>
+
+<h:body>
+	<ui:include src="/admin/mainmenu.xhtml" />
+	<p:panel id="sessionok" rendered="#{loginBean.getLoggedIn()}">
+	<h1>Resource Reservations</h1>
+	<div data-role="content" class="top" align="center">
+
+		<h:panelGrid columns="6" layout="grid" footerClass=".ui-widget-footer"
+			headerClass=".ui-widget-header" cellpadding="10">
+
+
+			<div id="createresourcereservation" style="width: 80%" class="top"
+				align="center">
+				<h:form id="formcreateresourcereservation"
+					enctype="multipart/form-data">
+
+					<h:panelGrid columns="6" footerClass=".ui-widget-footer"
+						headerClass=".ui-widget-header" frame="box" rules="groups"
+						cellpadding="5">
+						<f:facet name="header">
+							<h:outputText value="Create resource reservation for #{resourceBean.resource.name}"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{resourceBean.resource.name}" />
+						<h:panelGroup>
+
+
+							<p:outputLabel for="from" value="From:" />
+							<p:calendar id="from" value="#{resourceBean.from}" locale="de"
+								 pattern="dd.MM.yyyy - HH:mm" />
+							<p:message for="from"></p:message>
+
+							<p:outputLabel for="until" value="Until:" />
+							<p:calendar id="until" value="#{resourceBean.until}" locale="de"
+								pattern="dd.MM.yyyy - HH:mm" />
+							<p:message for="until"></p:message>
+
+						</h:panelGroup>
+						<f:facet name="footer">
+							<p:commandButton id="createAction" value="Create"
+								icon="ui-icon-plus"
+								action="#{resourceBean.createResourceReservation}" ajax="false"
+								style="width:220px"></p:commandButton>
+						</f:facet>
+					</h:panelGrid>
+				</h:form>
+			</div>
+
+			<div id="listresourceresevations" align="center">
+
+				<!--  List all resource reservations  -->
+				<p:panel>
+					<h:form id="actions">
+						<p:dataTable id="reservations" widgetVar="reservationsTable" var="val" dynamic="true" paginator="true" rows="10" layout="grid" style="max-width:1250px"
+							value="#{resourceBean.resourceReservations}">
+
+							<p:column headerText="Resource" resizable="true"
+								toggleable="true">
+								<h:outputText value="#{val.resource.name}" />
+							</p:column>
+
+							<p:column headerText="Reserved by"  sortBy="#{reservedBy}"   resizable="true"
+								toggleable="true">
+								<h:outputText value="#{val.reservedBy.name}" />
+							</p:column>
+
+							<p:column headerText="Reserved from" sortBy="#{timeSpan.dateFrom}" resizable="true"
+								toggleable="true">
+								<h:outputText value="#{val.timeSpan.dateFrom}">
+									
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Reserved until"  sortBy="#{timeSpan.dateUntil}" resizable="true"
+								toggleable="true">
+								<h:outputText value="#{val.timeSpan.dateUntil}">
+									
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Actions" resizable="true">
+								<p:commandButton id="cmddelete"
+									action="#{resourceBean.removeReservation(val)}"
+									style="height:25px;width:30px" icon="ui-icon-trash" title="Delete"
+									ajax="false"></p:commandButton>
+							</p:column>
+
+						</p:dataTable>
+						<p:commandButton id="cmdrefresh"
+							action="#{resourceBean.refreshReservations}" style="width:150px"
+							icon="ui-icon-refresh" value="Refresh" ajax="false"></p:commandButton>
+							<p:poll interval="10" update="reservations" />  
+					</h:form>
+				</p:panel>
+			</div>
+
+		</h:panelGrid>
+
+
+	</div>
+	</p:panel>
+	
+	<ui:include src="/notloggedin.xhtml" />
+	
+</h:body>
+</html>

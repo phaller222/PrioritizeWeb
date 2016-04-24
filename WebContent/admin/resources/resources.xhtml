@@ -1,0 +1,366 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta charset="ISO-8859-1" />
+	<title>Resources</title>
+	<link type="text/css" rel="stylesheet"
+		href="../../styles/companies.css" />
+</h:head>
+
+<h:body>
+
+	<ui:include src="/admin/mainmenu.xhtml" />
+	<p:panel id="sessionok" rendered="#{loginBean.getLoggedIn()}">
+		<h1>Resources</h1>
+
+		<p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+			<f:facet name="default">
+				<img style="position: relative; top: 5px;"
+					src="../../images/empty.gif" width="25" />
+				<h:outputText value=" Status: StandBy." />
+			</f:facet>
+
+			<f:facet name="start">
+				<img style="position: relative; top: 5px;"
+					src="../../images/loading.gif" width="25" />
+				<h:outputText value=" Status: Refreshing resource table..." />
+			</f:facet>
+
+			<f:facet name="complete">
+				<img style="position: relative; top: 5px;"
+					src="../../images/empty.gif" width="25" />
+				<h:outputText value=" Status: Completed." />
+			</f:facet>
+		</p:ajaxStatus>
+
+		<p:panel>
+			<h:outputText style="font-size:12pt;" value="Department: " />
+			<h:outputText style="font-size:12pt;font-weight:bold"
+				value="#{resourceBean.selectedDepartment.name}" />
+		</p:panel>
+
+
+		<div data-role="content" class="top" align="center">
+			<p:tabView style="width:100%;min-height:500px;" activeIndex="0">
+				<p:tab title="Resources" style="width:100%">
+					<div id="listresources" align="center">
+						<!--  List all resources  -->
+						<p:panel>
+							<div align="left">
+								<p:panelGrid columns="2" style="max-width:1250px;height:50px;">
+									<p:column>
+										<h:form id="formdepartments">
+											<div style="font-size: 10pt; vertical-alignment: text-top">
+												<h:outputText value="Select Department:"></h:outputText>
+											</div>
+											<div style="font-size: 10pt; vertical-alignment: text-top">
+												<p:selectOneMenu onchange="submit()" style="width:300px;"
+													id="departments" rendered="true"
+													value="#{resourceBean.selectedDepartmentId}">
+													<f:selectItem itemLabel="---" itemValue="#{null}"
+														noSelectionOption="true" />
+													<f:selectItems value="#{resourceBean.departments}"
+														var="department" itemValue="#{department.id}"
+														itemLabel="#{department.company.name} - #{department.name}"
+														itemDescription="#{department.company.name} - #{department.name}" />
+												</p:selectOneMenu>
+											</div>
+
+										</h:form>
+									</p:column>
+									<p:column>
+										<h:form id="formgroups">
+
+											<div style="font-size: 10pt; vertical-alignment: text-top">
+												<h:outputText style="vertical-align:text-top"
+													value="Select Resource Group:"></h:outputText>
+											</div>
+											<div style="font-size: 10pt; vertical-alignment: text-top">
+												<p:selectOneMenu scrollHeight="50" onchange="submit()"
+													style="width:300px;" id="resourcegroups" rendered="true"
+													value="#{resourceBean.selectedResourceGroup}">
+													<!-- <f:selectItem itemLabel="-DEFAULT-" itemValue="#{null}"
+											noSelectionOption="true" /> -->
+													<f:selectItems value="#{resourceBean.resourceGroups}"
+														var="resourceGroup" itemValue="#{resourceGroup.id}"
+														itemLabel="#{resourceGroup.name}"
+														itemDescription="#{resourceGroup.name}" />
+												</p:selectOneMenu>
+												<br />
+												<p:commandButton id="deleteResourceGroupAction"
+													value="Delete" icon="ui-icon-trash"
+													action="#{resourceBean.deleteResourceGroup}" ajax="false"
+													style="width:220px"></p:commandButton>
+											</div>
+										</h:form>
+									</p:column>
+								</p:panelGrid>
+							</div>
+							<h:form id="actions">
+								<p:dataTable id="resources" var="val" layout="grid"
+									value="#{resourceBean.resources}" dynamic="true" rows="10">
+
+									<c:set var="canupdate" value="#{resourceBean.canUpdate(val)}"
+										scope="request" />
+									<c:set var="candelete" value="#{resourceBean.canDelete(val)}"
+										scope="request" />
+									<c:set var="isiotdevice" value="#{val.isMqttResource}"
+										scope="request" />
+									<c:set var="ismqtt" value="#{resourceBean.isMqttResource(val)}"
+										scope="request" />
+									<c:set var="isagent" value="#{val.agent}" scope="request" />
+									
+									
+										<p:column  rendered="#{not val.agent}" headerText="Name" resizable="true" toggleable="true">
+											<h:outputText rendered="#{not val.agent}" value="#{val.name}" style="height:80px;" />
+										</p:column>
+
+										<p:column headerText="Description" resizable="true"
+											toggleable="true" style="height:80px;" rendered="#{not val.agent}">
+											<h:outputText value="#{val.description}"
+												rendered="#{resourceBean.canRead(val) and  not val.agent}" />
+										</p:column>
+
+										<p:column headerText="Location" resizable="true"
+											toggleable="true" style="height:80px;" rendered="#{not val.agent}">
+											<h:outputText
+												value="#{val.department.company.name} - #{val.department.name} - #{val.resourceGroup.name}"
+												rendered="#{resourceBean.canRead(val) and  not val.agent}" style="height:80px;" />
+										</p:column>
+
+										<p:column headerText="Max. number of slots" resizable="true"
+											toggleable="true" style="height:80px;" rendered="#{not val.agent}">
+											<h:outputText value="#{val.maxSlots}"
+												rendered="#{resourceBean.canRead(val) and not val.agent}" />
+										</p:column>
+
+										<p:column headerText="Slots in use" resizable="true"
+											toggleable="true" style="height:80px;" rendered="#{not val.agent}">
+											<h:outputText value="#{resourceBean.getSlotsInUse(val)}"
+												rendered="#{resourceBean.canRead(val) and  not val.agent}" />
+										</p:column>
+
+
+										<p:column rendered="#{val.mqttResource and not val.agent}"
+											headerText="MQTT device online" style="height:80px;">
+											<p:outputPanel rendered="#{val.mqttOnline and not val.agent}">
+
+												<img src="../../images/greendot.png" />
+											</p:outputPanel>
+
+											<p:outputPanel rendered="#{not val.mqttOnline and not val.agent}">
+
+												<img src="../../images/graydot.png" />
+											</p:outputPanel>
+										</p:column>
+
+										<p:column headerText="MQTT device online"
+											style="background-color:#dddddd;height:80px;"
+											disabled="#{not val.mqttResource}"
+											rendered="#{not val.mqttResource and not val.agent}">
+											<h:outputText id="mqttonline" value="N/A" />
+										</p:column>
+
+
+
+										<p:column headerText="Resource interaction"
+											style="background-color:#dddddd;height:120px;width:220px;"
+											disabled="#{val.mqttResource}" rendered="#{val.mqttResource and not val.agent}">
+											<p:panel>
+												<p:commandButton
+													action="#{resourceBean.aquireResource(val)}"
+													style="height:25px" value="Aquire"
+													disabled="#{resourceBean.isResourceActiveForCurrentUser(val)}"
+													title="Aquire resource for sending commands now"></p:commandButton>
+
+												<p:commandButton
+													action="#{resourceBean.releaseResource(val)}"
+													style="height:25px" value="Release"
+													disabled="#{not resourceBean.isResourceActiveForCurrentUser(val)}"
+													title="Release resource no further send commands"></p:commandButton>
+
+
+												<br />
+												<p:panel>
+									Send command:<br />
+													<h:dataTable value="#{val.mqttCommands}" var="value">
+														<h:column>
+															<p:commandButton
+																action="#{resourceBean.sendCommand(val,value,data)}"
+																style="height:25px" value=" #{value}"
+																disabled="#{not resourceBean.isResourceActiveForCurrentUser(val)}"
+																title="#{value}"></p:commandButton>
+														</h:column>
+
+													</h:dataTable>
+												with value:<h:inputText value="#{data}" id="cmddata"
+														class="cmddata"
+														disabled="#{not resourceBean.isResourceActiveForCurrentUser(val)}"></h:inputText>
+												</p:panel>
+
+												<h:outputText
+													rendered="#{resourceBean.isResourceActiveForCurrentUser(val)}"
+													value="Your slot: #{resourceBean.getActiveSlotForCurrentUser(val)}" />
+											</p:panel>
+
+										</p:column>
+
+										<p:column headerText="Available commands"
+											style="background-color:#dddddd;height:80px;width:220px"
+											disabled="#{not val.mqttResource}"
+											rendered="#{not val.mqttResource and not val.agent}">
+											<h:outputText value="N/A" />
+										</p:column>
+
+										<p:column headerText="Edit..." resizable="true" width="60"
+											style="height:80px;"  rendered="#{not val.agent}">
+											<p:commandButton action="#{resourceBean.edit(val)}"
+												title="Edit..." disabled="#{!resourceBean.canUpdate(val)}"
+												ajax="false" style="height:25px;width:30px"
+												icon="ui-icon-pencil"></p:commandButton>
+										</p:column>
+
+										<p:column headerText="Delete" resizable="true" width="60"
+											style="height:80px;"  rendered="#{not val.agent}">
+											<p:commandButton id="cmddelete"
+												action="#{resourceBean.delete(val)}"
+												style="height:25px;width:30px"
+												disabled="#{!resourceBean.canDelete(val)}"
+												icon="ui-icon-trash" title="Delete" ajax="false"></p:commandButton>
+										</p:column>
+
+										<p:column headerText="Reserve..." resizable="true"
+											style="height:80px;"  rendered="#{not val.agent}">
+											<p:commandButton id="cmdreservations"
+												action="#{resourceBean.reservations(val)}"
+												style="height:25px;width:30px"
+												disabled="#{!resourceBean.canRead(val)}"
+												icon="ui-icon-calendar" title="Reservations..." ajax="false"></p:commandButton>
+										</p:column>
+								</p:dataTable>
+								<p:poll interval="5" update="resources" />
+							</h:form>
+						</p:panel>
+					</div>
+				</p:tab>
+				<p:tab title="Create Resources / Groups">
+					<div align="left">
+						<h:panelGrid columns="4" layout="grid"
+							footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
+							cellpadding="10" style="width:1000px">
+							<div id="createresourcegroup" class="top" align="center">
+								<h:form id="formcreateresourcegroup">
+
+									<h:panelGrid columns="4" layout="grid"
+										footerClass=".ui-widget-footer"
+										headerClass=".ui-widget-header" frame="box" rules="groups"
+										cellpadding="10" style="max-width:850px">
+										<f:facet name="header">
+											<h:outputText value="Create Location / Resource Group"></h:outputText>
+										</f:facet>
+
+										<h:outputText value="Name:" />
+										<h:panelGroup>
+											<p:inputText disabled="#{!resourceBean.canCreate()}"
+												id="name" rendered="true"
+												value="#{resourceBean.resourceGroupName}"></p:inputText>
+											<p:message for="name"></p:message>
+										</h:panelGroup>
+
+										<f:facet name="footer">
+											<p:commandButton disabled="#{!resourceBean.canCreate()}"
+												id="createResourceGroupAction" value="Create"
+												icon="ui-icon-plus"
+												action="#{resourceBean.createResourceGroup}" ajax="false"
+												style="width:220px"></p:commandButton>
+										</f:facet>
+									</h:panelGrid>
+								</h:form>
+							</div>
+
+							<div id="createresource" class="top" align="center">
+								<h:form id="formcreateresource" enctype="multipart/form-data">
+
+									<h:panelGrid columns="2" layout="grid"
+										footerClass=".ui-widget-footer"
+										headerClass=".ui-widget-header" frame="box" rules="groups"
+										cellpadding="5">
+										<f:facet name="header">
+											<h:outputText value="Create resource"></h:outputText>
+										</f:facet>
+
+										<c:set var="cancreate" value="#{resourceBean.canCreate()}"
+											scope="request" />
+
+										<h:outputText value="Name:"
+											style="font-size: 12pt;font-family: Verdana,Arial,sans-serif;" />
+										<h:panelGroup>
+											<p:inputText disabled="#{!cancreate}" id="name"
+												rendered="true" value="#{resourceBean.resource.name}"></p:inputText>
+											<p:message for="name"></p:message>
+										</h:panelGroup>
+										<h:outputText value="Description:"
+											style="font-size: 12pt;font-family: Verdana,Arial,sans-serif;" />
+										<h:panelGroup>
+											<p:inputText disabled="#{!cancreate}" id="description"
+												rendered="true" value="#{resourceBean.resource.description}"></p:inputText>
+											<p:message for="description"></p:message>
+										</h:panelGroup>
+										<h:outputText value="Slots:"
+											style="font-size: 12pt;font-family: Verdana,Arial,sans-serif;"
+											title="Maximum number of items / time / space available for this resource type" />
+										<h:panelGroup>
+											<p:inputText disabled="#{!cancreate}" id="maxslots"
+												rendered="true" value="#{resourceBean.resource.maxSlots}"
+												title="Maximum number of items / time / space available for this resource type"></p:inputText>
+											<p:message for="maxslots"></p:message>
+										</h:panelGroup>
+
+										<p:selectBooleanCheckbox id="remote"
+											value="#{resourceBean.resource.remote}"
+											disabled="{!cancreate}" />
+										<h:outputText value="Remote access?"
+											style="font-size: 12pt;font-family: Verdana,Arial,sans-serif;"></h:outputText>
+
+										<p:selectBooleanCheckbox id="stationary"
+											value="#{resourceBean.resource.stationary}"
+											disabled="#{!cancreate}" />
+										<h:outputText value="Stationary?"
+											style="font-size: 12pt;font-family: Verdana,Arial,sans-serif;"></h:outputText>
+
+										<h:outputText value="IP address:"
+											style="font-size: 12pt;font-family: Verdana,Arial,sans-serif;" />
+										<h:panelGroup>
+
+											<p:inputText disabled="#{!cancreate}" id="ip" rendered="true"
+												value="#{resourceBean.resource.ip}"></p:inputText>
+										</h:panelGroup>
+
+										<f:facet name="footer">
+											<p:commandButton disabled="#{!cancreate}" id="createAction"
+												value="Create" icon="ui-icon-plus"
+												action="#{resourceBean.createResource}" ajax="false"
+												style="width:220px"></p:commandButton>
+										</f:facet>
+									</h:panelGrid>
+								</h:form>
+							</div>
+						</h:panelGrid>
+					</div>
+				</p:tab>
+			</p:tabView>
+			 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" showIcon="true" severity="error"/>
+		</div>
+	</p:panel>
+
+	<ui:include src="/notloggedin.xhtml" />
+</h:body>
+</html>

@@ -1,0 +1,128 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta charset="ISO-8859-1" />
+	<title>Documents</title>
+	<link type="text/css" rel="stylesheet"
+		href="../../styles/companies.css" />
+</h:head>
+
+<h:body>
+	<ui:include src="/admin/mainmenu.xhtml" />
+	<p:panel id="sessionok" rendered="#{loginBean.getLoggedIn()}">
+		<div data-role="content" class="top" align="center">
+			<div id="listdocuments" align="center">
+				<h1>History of #{documentBean.document.name}</h1>
+				<!--  List all document  -->
+				<p:panel>
+					<h:form id="actions">
+						<p:dataTable var="val" layout="grid"
+							value="#{documentBean.documentInfo.recentDocuments}"
+							style="max-width:80%">
+
+							<p:column style="width:250px" headerText="Name" resizable="true"
+								toggleable="true">
+								<p:commandLink id="downloadLink" value="#{val.name}"
+									ajax="false"
+									actionListener="#{documentBean.prepDownloadHistory(val.id)}">
+									<p:fileDownload value="#{documentBean.download}"
+										contentDisposition="attachment" />
+								</p:commandLink>
+							</p:column>
+
+							<p:column style="width:100px" headerText="Last modified"
+								resizable="true">
+								<h:outputText value="#{val.lastModified}" />
+							</p:column>
+							<p:column style="width:100px" headerText="Last modified by"
+								resizable="true">
+								<h:outputText value="#{val.lastModifiedBy.name}" />
+							</p:column>
+							<p:column style="width:180px" headerText="Changes"
+								resizable="true">
+								<h:outputText value="#{val.changes}" />
+							</p:column>
+							<p:column style="width:50px" headerText="Version"
+								resizable="true">
+								<h:outputText value="#{val.version}" />
+							</p:column>
+
+							<p:column rendered="#{empty val.tag}" style="width:80px"
+								headerText="Tag" resizable="true">
+								<i><h:outputText style="color:#BBBBBB" value="" /></i>
+							</p:column>
+
+
+							<p:column rendered="#{not  empty val.tag}" style="width:80px"
+								headerText="Tag" resizable="true">
+								<i><h:outputText style="color:#BBBBBB" value="[#{val.tag}]" /></i>
+							</p:column>
+
+							<p:column rendered="#{empty val.tag}" style="width:550px;"
+								headerText="Action" resizable="true">
+								<p:panelGrid columns="2">
+									<p:column style="width:200px;">
+										<h:outputText value="Enter Tag:" style="padding:5px;" />
+									</p:column>
+									<p:column style="width:100px;">
+										<h:inputText value="#{val.tag}" style="max-width:130px;"/>
+										<p:commandButton id="setDocumentTag" value="Tag"
+											icon="ui-icon-tag"
+											action="#{documentBean.setDocumentTag(val,val.tag)}"
+											ajax="false" style="width:80px;margin-left:10px;"></p:commandButton>
+									</p:column>
+									<p:column style="width:200px;">
+										<p:commandButton id="setAsCurrent1" value="Make recent"
+											icon="ui-icon-check"
+											action="#{documentBean.setDocumentAsCurrent(val)}"
+											ajax="false" style="width:width:150px;"></p:commandButton>
+									</p:column>
+									<p:column style="width:100px;">
+										<p:commandButton id="delete" value="Delete"
+											icon="ui-icon-trash"
+											action="#{documentBean.deleteDocumentVersion(val)}"
+											ajax="false" style="width:150px;"></p:commandButton>
+									</p:column>
+							
+								</p:panelGrid>
+							</p:column>
+
+
+							<p:column rendered="#{not empty val.tag}" style="width:250px"
+								headerText="Action" resizable="true">
+								<p:commandButton id="removeDocumentTag" value="Remove Tag"
+									icon="ui-icon-circle-close"
+									action="#{documentBean.setDocumentTag(val,null)}" ajax="false"
+									style="width:180px;"></p:commandButton>
+								<p:commandButton id="setAsCurrent2" value="Make recent"
+									icon="ui-icon-check"
+									action="#{documentBean.setDocumentAsCurrent(val)}" ajax="false"
+									style="width:180px;"></p:commandButton>
+								<p:commandButton id="delete2" value="Delete"
+									icon="ui-icon-trash"
+									action="#{documentBean.deleteDocumentVersion(val)}"
+									ajax="false" style="width:150px;"></p:commandButton>
+							</p:column>
+
+
+
+
+						</p:dataTable>
+					</h:form>
+				</p:panel>
+			</div>
+		</div>
+	</p:panel>
+
+	<ui:include src="/notloggedin.xhtml" />
+
+</h:body>
+</html>

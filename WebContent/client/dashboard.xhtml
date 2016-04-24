@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:body>
+	<ui:composition template="templates/main.xhtml">
+		<ui:define name="content">
+			<h:form id="dashboard">
+				<div class="ui-dashboard" id="dashboard" style="padding: 5px;max-width:1200px;">
+				
+				   <div class="ui-dashboard-column" id="Trends">
+                        <p:panel header="Trends" toggleable="true">
+                           <p:tagCloud model="#{loginBean.model}"
+                                style="width:300px;height:115px;"></p:tagCloud>
+
+                        </p:panel>
+                    </div>
+				
+					
+
+					<div class="ui-dashboard-column" id="resources">
+						<p:panel header="Devices and Resources" toggleable="true"
+							footer="You are watching 12 devices." closable="true">
+
+							<p:panel style="background-color:white;width:250px;">
+								<h:outputText style="color:green;font-style:bold" value="Devices online:  7." />
+							</p:panel>
+							<p:panel style="background-color:white;width:250px;">
+								<h:outputText style="color:red;font-style:bold" value="Devices offline:  5." />
+							</p:panel>
+						</p:panel>
+					</div>
+
+					<div class="ui-dashboard-column" id="documents">
+						<p:panel header="documents" toggleable="true" closable="true"
+							footer="You are watching documents from 3 departments.">
+							<p:panel style="background-color:white;width:250px;">
+								<h:outputText value="12 documents have changed." />
+							</p:panel>
+							<p:panel style="background-color:white;width:250px;">
+								<h:outputText value="3 new documents" />
+							</p:panel>
+							<p:panel style="background-color:white;width:250px;">
+								<h:outputText value="2 documents have been deleted." />
+							</p:panel>
+						</p:panel>
+					</div>
+					
+					<div class="ui-dashboard-column" id="messagebox">
+                        <p:panel header="Messagebox" toggleable="true" closable="true"
+                            footer="You have no new messages">
+                                <h:form id="mailform"
+                                            rendered="#{messageBean.unreadMessages.size() gt 0}">
+                                       You have <p:commandButton
+                                                value="#{messageBean.unreadMessages.size()}"
+                                                icon="ui-icon-mail-closed" /> new messages.
+                                    </h:form>
+                                    
+                        </p:panel>
+                    </div>
+					
+					<div class="ui-dashboard-column" id="tasks">
+						<p:panel header="Tasks"
+							footer="You work on 2 projects with 23 tasks assigned."
+							toggleable="true" closable="true">
+							<p:panel style="background-color:white;width:250px;">
+								<h:outputText value="You have 3 new Tasks assigned" />
+							</p:panel>
+							
+							<p:panel style="background-color:white;width:250px;">
+								<h:outputText value="5 Tasks have been completed" />
+							</p:panel>
+						</p:panel>
+					</div>
+				</div>
+				<script id="dashboard_s" type="text/javascript">PrimeFaces.cw("Dashboard","dashboard",{id:"dashboard",behaviors:{reorder:function(ext,event) {PrimeFaces.ab({s:"dashboard",e:"reorder",p:"dashboard",u:"j_idt89:msgs"},ext);}}});</script>
+			<p:poll interval="5" update=":dashboard:mailform" />
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

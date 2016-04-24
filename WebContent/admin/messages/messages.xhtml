@@ -1,0 +1,136 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta charset="ISO-8859-1" />
+	<title>Companies</title>
+
+
+
+	<link type="text/css" rel="stylesheet"
+		href="../../styles/companies.css" />
+</h:head>
+
+<h:body>
+	<ui:include src="/admin/mainmenu.xhtml" />
+	<p:panel id="sessionok" rendered="#{loginBean.getLoggedIn()}">
+		<div data-role="content">
+			<p:tabView style="min-height:500px;">
+				<p:tab title="Inbox">
+					<div id="listMessages" align="center">
+						<h1>Inbox</h1>
+						<!--  List all messages for user  -->
+						<p:panel>
+							<h:form id="actions">
+								<p:dataTable id="messages" var="val"
+									value="#{messageBean.messages}" style="width:60%"
+									dynamic="true" paginator="true" rows="10">
+
+
+									<p:column headerText="From" resizable="true" toggleable="true">
+
+										<h:outputText value="#{val.from.name}"
+											rendered="#{val.messageRead}"></h:outputText>
+										<h:outputText
+											style="font-weight:bold;font-size:75%;color:blue"
+											value="[ New ]&#160;&#160;&#160;"
+											rendered="#{not val.messageRead}"></h:outputText>
+										<h:outputText style="font-weight:bold;"
+											value="#{val.from.name}" rendered="#{not val.messageRead}"></h:outputText>
+									</p:column>
+
+									<p:column headerText="Subject" resizable="true"
+										toggleable="true">
+										<h:outputText value="#{val.subject}"
+											rendered="#{val.messageRead}"></h:outputText>
+										<h:outputText style="font-weight:bold;" value="#{val.subject}"
+											rendered="#{not val.messageRead}"></h:outputText>
+									</p:column>
+
+
+									<p:column headerText="Received" resizable="true"
+										toggleable="true" width="220">
+										<h:outputText value="#{val.dateReceived}"
+											rendered="#{val.messageRead}"></h:outputText>
+										<h:outputText style="font-weight:bold;"
+											value="#{val.dateReceived}" rendered="#{not val.messageRead}"></h:outputText>
+									</p:column>
+
+									<p:column headerText="Read" resizable="true" width="60">
+										<p:commandButton id="cmdread"
+											action="#{messageBean.readMessage(val.id)}"
+											style="height:25px;width:30px" icon="ui-icon-folder-open"
+											value="" title="Read" ajax="false"></p:commandButton>
+									</p:column>
+
+									<p:column headerText="Delete" resizable="true" width="60">
+										<p:commandButton id="cmddelete"
+											action="#{messageBean.delete(val)}"
+											style="height:25px;width:30px" icon="ui-icon-trash" value=""
+											title="Delete" ajax="false"></p:commandButton>
+									</p:column>
+
+								</p:dataTable>
+								<p:poll interval="5" update="messages" />
+							</h:form>
+						</p:panel>
+					</div>
+				</p:tab>
+				<p:tab title="New Message">
+					<div id="createMessage" align="center">
+						<h:form id="form">
+							<h:panelGrid columns="1" layout="grid"
+								footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
+								frame="box" rules="groups" cellpadding="10"
+								style="max-width:950px">
+
+								<f:facet name="header">
+									<h:outputText value="ComposeMessage"></h:outputText>
+								</f:facet>
+
+								<h:outputText value="Recipiant: "></h:outputText>
+								<p:selectOneMenu style="width:300px;" id="users" rendered="true"
+									value="#{messageBean.to}">
+									<f:selectItems value="#{messageBean.recipiantList}" var="user"
+										itemValue="#{user.id}" itemLabel="#{user.name}"
+										itemDescription="#{user.name}" />
+
+								</p:selectOneMenu>
+
+								<h:outputText value="Subject:">
+								</h:outputText>
+								<p:inputText id="subject" rendered="true"
+									value="#{messageBean.subject}" style="width:300px;">
+								</p:inputText>
+
+
+								<p:editor id="message" rendered="true"
+									value="#{messageBean.message}" style="width:850px;">
+								</p:editor>
+
+								<f:facet name="footer">
+									<p:commandButton id="sentAction" value="Send"
+										icon="ui-icon-mail-closed" action="#{messageBean.sendMessage}"
+										ajax="false" style="width:220px"></p:commandButton>
+								</f:facet>
+							</h:panelGrid>
+						</h:form>
+					</div>
+				</p:tab>
+
+			</p:tabView>
+		</div>
+	</p:panel>
+
+
+	<ui:include src="/notloggedin.xhtml" />
+
+</h:body>
+</html>

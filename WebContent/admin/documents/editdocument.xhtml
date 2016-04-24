@@ -1,0 +1,77 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta charset="ISO-8859-1" />
+	<title>Edit document: #{documentBean.document.name}</title>
+	<link type="text/css" rel="stylesheet"
+		href="../../styles/companies.css" />
+</h:head>
+
+<h:body>
+	<ui:include src="/admin/mainmenu.xhtml" />
+	<p:panel id="sessionok" rendered="#{loginBean.getLoggedIn()}">
+		<div data-role="content" class="top" align="center">
+			<div id="editdocument" class="top" align="center">
+				<h:form id="formeditdocument" enctype="multipart/form-data">
+					<h:panelGrid columns="2" layout="grid"
+						footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
+						frame="box" rules="groups" cellpadding="10">
+						<f:facet name="header">
+							<h:outputText value="Edit #{documentBean.document.name}"></h:outputText>
+							<br />
+
+						</f:facet>
+						<h:outputText value="download: "/>
+						<p:commandLink style="color:blue" id="downloadLink"
+							value="#{documentBean.document.name}" ajax="false"
+							actionListener="#{documentBean.prepDownload(documentBean.documentInfo.id)}">
+							<p:fileDownload value="#{documentBean.download}"
+								contentDisposition="attachment" />
+						</p:commandLink>
+						<h:outputText value="Name:" />
+						<h:panelGroup>
+							<p:inputText id="name" rendered="true"
+								value="#{documentBean.document.name}"></p:inputText>
+							<p:message for="name"></p:message>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText value="File: #{documentBean.clientFilename}" />
+							<p:fileUpload
+								fileUploadListener="#{documentBean.handleFileUpload}"
+								mode="advanced" update="messages" sizeLimit="100000000"
+								allowTypes="/(\.|\/)(gif|txt|doc|odt|xls|xml|pdf|html|js|java|ppt|jpe?g|png)$/" />
+
+							<p:growl id="messages" showDetail="true" />
+						</h:panelGroup>
+
+						<h:panelGroup>
+							<h:outputText value="Changes:" />
+							<p:inputText id="changes" rendered="true"
+								value="#{documentBean.document.changes}"></p:inputText>
+							<p:message for="changes"></p:message>
+						</h:panelGroup>
+
+						<f:facet name="footer">
+							<p:commandButton id="editDocumentAction" value="Commit"
+								icon="ui-icon-pencil" action="#{documentBean.commitEdits}"
+								ajax="false" style="width:220px"></p:commandButton>
+						</f:facet>
+					</h:panelGrid>
+				</h:form>
+			</div>
+
+		</div>
+	</p:panel>
+
+	<ui:include src="/notloggedin.xhtml" />
+
+</h:body>
+</html>

@@ -1,0 +1,173 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	<meta charset="ISO-8859-1" />
+	<title>Companies</title>
+	<link type="text/css" rel="stylesheet" href="../styles/companies.css" />
+
+	<style type="text/css">
+.no-border {
+	border-style: hidden !important; /* or none */
+	background-image: url('../images/background.jpg');
+}
+no-repeat
+
+
+
+
+;
+</style>
+</h:head>
+
+<h:body>
+
+	<div data-role="header">
+
+
+		<p:panelGrid columns="3"
+			columnClasses="no-border, no-border, no-border" style="width:100%;">
+			<h:column>
+				<img src="../images/logo2.png" />
+			</h:column>
+			<h:column>
+				<div align="center">
+					<span
+						style="position: relative; top: 10px; margin-right: 20%; font-size: 28pt; color: 41426D; font-family: 'Serif'">
+						 </span>
+				</div>
+			</h:column>
+			<h:column>
+				<div align="right" style="padding-bottom: 5px; padding-right: 15px;">
+					<pe:analogClock mode="client" width="100" />
+				</div>
+			</h:column>
+		</p:panelGrid>
+
+	</div>
+
+   
+	<h:form>
+		<p:menubar id="menubar" rendered="#{loginBean.getLoggedIn()}">
+			<p:menuitem value="Home" url="index.xhtml" icon="ui-icon-home"></p:menuitem>
+			<p:submenu label="Manage..." icon="ui-icon-document">
+				<p:menuitem value="Company" url="companies/companies.xhtml"
+					style="font-size:12pt;" />
+				<p:separator />
+				<p:menuitem value="Roles" url="roles/roles.xhtml"
+					style="font-size:12pt;" icon="ui-icon-person" />
+				<p:menuitem value="Users" url="users/users.xhtml"
+					style="font-size:12pt;" icon="ui-icon-person" />
+				<p:menuitem value="Skills" url="skills/skills.xhtml"
+					style="font-size:12pt;" icon="ui-icon-wrench" />
+				<p:menuitem value="Messages" url="messages/messages.xhtml"
+					style="font-size:12pt;" icon="ui-icon-mail-closed" />
+				<p:menuitem value="Calendar" url="calendar/calendar.xhtml"
+					style="font-size:12pt;" icon="ui-icon-calendar" />
+				<p:menuitem value="Tasks" icon="ui-icon-calendar" url="#"
+					style="font-size:12pt;" />
+				<p:separator />
+
+				<p:menuitem value="Projects" url="#" style="font-size:12pt;"
+					icon="ui-icon-pencil" />
+
+				<p:separator />
+				
+				<p:menuitem value="Agents" url="agents/agents.xhtml"
+					style="font-size:12pt;" icon="ui-icon-suitcase" />
+				<p:menuitem value="Resources" url="resources/resources.xhtml"
+					style="font-size:12pt;" icon="ui-icon-lightbulb" />
+				<p:menuitem value="Documents" url="documents/documents.xhtml"
+					style="font-size:12pt;" icon="ui-icon-document" />
+
+
+
+			</p:submenu>
+
+			<p:submenu label="Settings" icon="ui-icon-gear">
+				<p:menuitem id="enablelogging" value="Enable Logging"
+					action="#{loggingBean.enableLogging}" icon="ui-icon-play"
+					style="font-size:12pt;" update="menubar"
+					rendered="#{not loggingBean.loggingEnabled}" />
+				<p:menuitem id="disablelogging" value="Disable Logging"
+					update="menubar" action="#{loggingBean.disableLogging}"
+					icon="ui-icon-pause" style="font-size:12pt;"
+					rendered="#{loggingBean.loggingEnabled}" />
+				<p:menuitem value="Misc" url="#" style="font-size:12pt;"
+					icon="ui-icon-grip-dotted-vertical" />
+			</p:submenu>
+
+			<p:submenu label="#{userBean.currentUser.name}..."
+				icon="ui-icon-person">
+				<p:menuitem value="Logout" action="#{loginBean.logout}" ajax="false"
+					icon="ui-icon-power " />
+			</p:submenu>
+
+
+
+			<!-- <f:facet name="options">
+
+				<p:inputText style="margin-right:10px"
+					value="#{searchBean.searchPhrase}" placeholder="Search" />
+				<p:commandButton value="Search" action="#{searchBean.search}"
+					oncomplete="PF('searchResults').show();" update="searchResults" />
+				<p:commandButton type="button" ajax="false"
+					action="#{loginBean.logout}" value="Logout" icon="ui-icon-extlink" />
+			</f:facet> -->
+
+
+
+
+		</p:menubar>
+
+		<!-- <p:dialog header="Search Results" widgetVar="searchResults" style="min-width:600px;" minHeight="40" focus="true">
+
+			<p:dataList id="searchResults" value="#{searchBean.searchResults}"
+				var="result"  itemType="none" paginator="true"
+				rows="10" styleClass="paginated" cellpadding="10">
+				<f:facet name="header">
+
+        </f:facet>
+      <h:panelGrid columns="2" cellpadding="2">
+     
+                <h:outputText styleClass="ui-icon ui-icon-person" title="User" style="float:left" rendered="#{result.resultType eq 'User'}" />
+                <h:outputText styleClass="ui-icon ui-icon-document" title="Document" style="float:left" rendered="#{result.resultType eq 'Document'}" />
+                <h:outputText styleClass="ui-icon ui-icon-suitcase" title="Resource" style="float:left" rendered="#{result.resultType eq 'Resource'}" />
+                <h:outputText styleClass="ui-icon ui-icon-star" title="Role" style="float:left" rendered="#{result.resultType eq 'Role'}" />
+                <h:outputText styleClass="ui-icon ui-icon-home" title="Department" style="float:left" rendered="#{result.resultType eq 'Department'}" />
+                
+                       
+				<p:commandLink   action="#{searchBean.displayResult(result)}" value="#{result.excerpt}"/>
+			
+				</h:panelGrid>
+			</p:dataList>
+		</p:dialog> -->
+	</h:form>
+
+
+
+
+	<div data-role="content" align="center" style="margin-top: 5%">
+		<img src="../images/back01title.png"   rendered="#{loginBean.getLoggedIn()}" /><br />
+		<p:panel id="nosession" rendered="#{not loginBean.getLoggedIn()}">
+			<div align="center">
+				<h1>You are not logged in.</h1>
+				<h2>Please log in:</h2>
+				<form>
+					<a href="login.xhtml">Login</a>
+				</form>
+			</div>
+		</p:panel>
+
+
+	</div>
+</h:body>
+</html>

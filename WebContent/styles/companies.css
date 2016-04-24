@@ -1,0 +1,95 @@
+.ui-widget, .ui-widget-header, .ui-widget-content, .ui-widget-header .ui-widget-header,
+	.ui-widget-content .ui-widget-content, .ui-widget input, .ui-widget select,
+	.ui-widget textarea, .ui-widget button {
+	font-size: 95% !important;
+}
+
+.errormessage {
+	color:red; 
+	background-color:#FFFFC0;
+	border-style:solid;
+	border-width:1px;
+	border-color:red;
+	padding:10px;
+	padding-left:50px;
+	display:block;
+}
+.ui-panelgrid td, .ui-panelgrid tr
+{
+    border-style: none !important;
+   
+}
+
+.ui-widget {
+    font-size: 90%;
+ }
+.ui-widget .ui-widget {
+    font-size: 100%;
+ }
+
+.ui-paginator-top {
+	background-image: url('../images/background.jpg');
+}
+
+.ui-paginator-bottom {
+	background-image: url('../images/background.jpg');
+}
+
+.ui-paginator-first {
+	font-size: 10pt;
+}
+
+.ui-paginator-last {
+	font-size: 10pt;
+}
+
+.ui-paginator-prev {
+	font-size: 10pt;
+}
+
+.ui-paginator-next {
+	font-size: 10pt;
+}
+
+.ui-paginator-pages {
+	font-size: 10pt;
+}
+
+body {
+	background-image: url('../images/background.jpg'); no-repeat;
+	background-size: 100% auto;
+}
+
+.login_mainscreen {
+	background-image: url('../images/back01.png'); background-repeat:no-repeat;
+	background-size: 80% auto;
+}
+
+.overviewtable_background {
+	background-color: #cfcfcf;
+}
+
+#introduction {
+	font-size: 14pt;
+}
+
+#logintext {
+	font-size: 12pt;
+}
+
+#sessionok {
+	font-size: 12pt;
+}
+
+.ui-panel {
+	background: #DBE5FD;
+	padding-top:5px;
+}
+
+
+.fixed-size {
+	table-layout: fixed;
+	word-wrap: break-word;
+}
+
+[data-role=footer]{ opacity: 1;bottom:0px; position:fixed;bottom:0px; !important; top: auto !important; width:auto;height:200px;} 

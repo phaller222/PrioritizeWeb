@@ -1,0 +1,590 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Edit user</title>
+	<link type="text/css" rel="stylesheet"
+		href="../../styles/companies.css" />
+
+	<f:metadata>
+		<f:event type="preRenderView" listener="#{skillBean.buildSkillTree}" />
+	</f:metadata>
+
+
+</h:head>
+
+<h:body>
+	<ui:include src="/admin/mainmenu.xhtml" />
+	<p:panel id="sessionok" rendered="#{loginBean.getLoggedIn()}">
+		<div id="edituser" class="top" align="center">
+			
+			<h1>Edit user: #{userBean.user.name}</h1>
+			<p:ajaxStatus style="display:block;margin-bottom:2em;height:25px;">
+				<f:facet name="default">
+					<img style="position: relative; top: 5px;"
+						src="../../images/empty.gif" width="25" />
+					<h:outputText value=" Status: StandBy." />
+				</f:facet>
+
+				<f:facet name="start">
+					<img style="position: relative; top: 5px;"
+						src="../../images/loading.gif" width="25" />
+					<h:outputText value=" Status: Refreshing data..." />
+				</f:facet>
+
+				<f:facet name="complete">
+					<img style="position: relative; top: 5px;"
+						src="../../images/empty.gif" width="25" />
+					<h:outputText value=" Status: Completed." />
+				</f:facet>
+			</p:ajaxStatus>
+		</div>
+
+		<div id="content" align="center" style="font-size:12pt;">
+			<p:panel>
+				<h:form id="userform">
+
+					<p:tabView
+						style="padding-top:20px;height:80%;width:80%;max-width:1450px;"
+						activeIndex="">
+
+						<p:tab title="Common">
+							<h:panelGrid columns="4" layout="grid"
+								footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
+								frame="box" rules="groups" style="width:80%;" cellpadding="10">
+
+								<f:facet name="header">
+									<h:outputText value="#{userBean.user.name}"></h:outputText>
+								</f:facet>
+
+								<h:outputText value="Name:">
+								</h:outputText>
+								<p:inputText id="name" rendered="true"
+									value="#{userBean.user.name}" style="width:300px;"></p:inputText>
+									<h:message for="name" errorClass="errorMessage"/>
+
+								<h:outputText value="Username:"></h:outputText>
+								<p:inputText id="username" rendered="true"
+									value="#{userBean.user.username}" style="width:300px;"></p:inputText>
+
+								<h:outputText value="E-Mail:">
+								</h:outputText>
+								<p:inputText id="email" rendered="true"
+									value="#{userBean.user.email}" style="width:300px;"></p:inputText>
+
+								<h:outputText value="Occupation:"></h:outputText>
+								<p:inputText id="occupation" rendered="true"
+									value="#{userBean.user.occupation}" style="width:300px;"></p:inputText>
+
+								<h:outputText value="Department: "></h:outputText>
+								<p:selectOneMenu style="width:300px;" id="selectedDepartmentsId"
+									rendered="true" value="#{userBean.selectedDepartmentId}">
+									<f:selectItems value="#{roleBean.departments}" var="department"
+										itemValue="#{department.id}"
+										itemLabel="#{department.company.name} - #{department.name}"
+										itemDescription="#{department.company.name} - #{department.name}" />
+								</p:selectOneMenu>
+
+								<h:outputText value="Password:"></h:outputText>
+								<p:password id="password" rendered="true" feedback="true"
+									value="#{userBean.user.password}" style="width:300px;"></p:password>
+			
+								<h:outputText value="API-Key:">
+								</h:outputText>
+								<h:outputText id="apikey" value="#{userBean.user.apiKey}" style="font-size:10pt;background-color:#F4EEEE;color:rgba(128,128,128,0.8)" disabled="true"></h:outputText>	
+					
+									<p:commandButton update="apikey" style="width:250px;margin-top:10px;"
+										icon="ui-icon-plus" value="Generate new"
+										action="#{userBean.generateApiKey}"></p:commandButton>	
+					
+									
+								<f:facet name="footer">
+									<p:commandButton style="width:250px;margin-top:10px;"
+										icon="ui-icon-circle-check" value="Save"
+										action="#{userBean.saveUser}" ajax="false"></p:commandButton>
+								</f:facet>
+							</h:panelGrid>
+							<br />
+						</p:tab>
+
+						<!--  List all roles of user  -->
+						<p:tab title="Roles">
+
+							<h:panelGrid columns="4" layout="grid"
+								footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
+								frame="box" rules="groups" style="width:80%" cellpadding="10">
+
+								<f:facet name="header">
+									<h:outputText
+										value="Assign a new role to #{userBean.user.username}"></h:outputText>
+								</f:facet>
+
+								<h:outputText value="Role to add:"></h:outputText>
+								<p:selectOneMenu scrollHeight="100" style="width:300px;"
+									id="selectedrolesId" rendered="true"
+									value="#{userBean.roleToAddId}">
+									<f:selectItem itemLabel="---" itemValue="#{null}"
+										noSelectionOption="true" />
+									<f:selectItems value="#{roleBean.roles}" var="role"
+										itemValue="#{role.id}" itemLabel="#{role.name}"
+										itemDescription="#{role.name}" />
+								</p:selectOneMenu>
+
+								<f:facet name="footer">
+
+									<p:commandButton value="Add role" action="#{userBean.addRole}"
+										icon="ui-icon-plus" ajax="false"></p:commandButton>
+								</f:facet>
+							</h:panelGrid>
+
+							<!--  List all roles of user  -->
+
+							<p:dataTable var="val" value="#{userBean.user.roles}"
+								style="width:80%;max-width:1250px" dynamic="true"
+								paginator="true" rows="10">
+								<p:column headerText="Role" width="200" resizable="true">
+									<p:outputLabel value="#{val.name}"></p:outputLabel>
+								</p:column>
+
+								<p:column headerText="Actions" width="200" resizable="true">
+									<p:commandButton action="#{userBean.removeRole(val)}"
+										style="height:25px;width:30px" icon="ui-icon-trash"
+										title="Remove" ajax="false">
+									</p:commandButton>
+								</p:column>
+							</p:dataTable>
+
+						</p:tab>
+						<p:tab title="Vacation entries">
+							<h:panelGrid columns="2" style="width:80%">
+								<h:column>
+									<p:schedule id="scheduleVacation"
+										value="#{calendarView.lazyEventModelVacations}"
+										widgetVar="myschedule" ignoreTimezone="false" timeZone="local"
+										locale="de" timeFormat="HH:mm" axisFormat="HH:mm"
+										slotDuration="01:00:00" scrollTime="07:00:00"
+										style="width:350px">
+										<p:ajax event="eventMove"
+											listener="#{calendarView.onEventMove}" />
+									</p:schedule>
+									<br />
+								</h:column>
+								<h:column style="width:140%">
+									<div align="left">
+										<h:panelGrid columns="4" layout="grid"
+											footerClass=".ui-widget-footer"
+											headerClass=".ui-widget-header" frame="box" rules="groups"
+											cellpadding="10" style="width:100%">
+
+											<f:facet name="header">
+												<h:outputText
+													value="Add vacation for #{userBean.user.username}"></h:outputText>
+											</f:facet>
+
+											<h:panelGroup>
+
+												<p:outputLabel for="vacationFrom" value="Vacation From:" />
+												<p:calendar id="vacationFrom"
+													value="#{userBean.vacationFrom}" locale="de"
+													pattern="dd.MM.yyyy - HH:mm" />
+												<p:message for="vacationFrom"></p:message>
+
+												<p:outputLabel for="vacationUntil" value="Vacation Until:" />
+												<p:calendar id="vacationUntil"
+													value="#{userBean.vacationUntil}" locale="de"
+													pattern="dd.MM.yyyy - HH:mm" />
+												<p:message for="vacationUntil"></p:message>
+											</h:panelGroup>
+											<f:facet name="footer">
+												<p:commandButton value="Add vacation"
+													action="#{userBean.addVacation}" update="vacationentries"
+													icon="ui-icon-plus" ajax="false"></p:commandButton>
+											</f:facet>
+										</h:panelGrid>
+									</div>
+								</h:column>
+							</h:panelGrid>
+
+							<p:dataTable id="vacationentries" var="val" layout="grid"
+								style="width:80%;max-width:1250px"
+								value="#{userBean.user.vacation}" dynamic="true"
+								paginator="true" rows="10">
+
+								<p:column headerText="Name" toggleable="true">
+									<h:outputText value="#{userBean.user.name}" />
+								</p:column>
+								<p:column headerText="Vacation From" toggleable="true">
+									<h:outputText value="#{val.dateFrom}" />
+								</p:column>
+								<p:column headerText="Vacation Until" toggleable="true">
+									<h:outputText value="#{val.dateUntil}" />
+								</p:column>
+								<p:column>
+									<h:outputLink value="../calendar/calendar.xhtml"
+										icon="ui-icon-calendar">Calendar</h:outputLink>
+								</p:column>
+								<p:column>
+									<p:commandButton action="#{userBean.removeVacation(val)}"
+										style="height:25px;width:30px" icon="ui-icon-trash"
+										title="Remove" ajax="false">
+									</p:commandButton>
+								</p:column>
+
+							</p:dataTable>
+
+
+						</p:tab>
+
+						<p:tab title="Illness entries">
+							<h:panelGrid columns="2" style="width:80%">
+								<h:column>
+									<p:schedule id="scheduleIllness"
+										value="#{calendarView.lazyEventModelIllness}"
+										widgetVar="myscheduleillness" ignoreTimezone="false"
+										timeZone="local" locale="de" timeFormat="HH:mm"
+										axisFormat="HH:mm" slotDuration="01:00:00"
+										scrollTime="07:00:00" style="width:350px">
+										<p:ajax event="eventMove"
+											listener="#{calendarView.onEventMove}" />
+									</p:schedule>
+									<br />
+								</h:column>
+								<h:column style="width:140%">
+									<div align="left">
+										<h:panelGrid columns="4" layout="grid"
+											footerClass=".ui-widget-footer"
+											headerClass=".ui-widget-header" frame="box" rules="groups"
+											cellpadding="10" style="width:100%">
+
+											<f:facet name="header">
+												<h:outputText
+													value="Add illness for #{userBean.user.username}"></h:outputText>
+											</f:facet>
+
+											<h:panelGroup>
+
+												<p:outputLabel for="illnessFrom" value="Illness From:" />
+												<p:calendar id="illnessFrom" value="#{userBean.illnessFrom}"
+													locale="de" pattern="dd.MM.yyyy - HH:mm" />
+												<p:message for="illnessFrom"></p:message>
+
+												<p:outputLabel for="illnessUntil" value="Illness Until:" />
+												<p:calendar id="illnessUntil"
+													value="#{userBean.illnessUntil}" locale="de"
+													pattern="dd.MM.yyyy - HH:mm" />
+												<p:message for="illnessUntil"></p:message>
+											</h:panelGroup>
+											<f:facet name="footer">
+												<p:commandButton value="Add illness"
+													action="#{userBean.setIllness}" icon="ui-icon-plus"
+													ajax="false"></p:commandButton>
+											</f:facet>
+
+										</h:panelGrid>
+									</div>
+								</h:column>
+							</h:panelGrid>
+							<p:dataTable id="illnessentries" var="val" layout="grid"
+								style="width:80%;max-width:1250px"
+								value="#{userBean.user.illness}" dynamic="true" paginator="true"
+								rows="10">
+
+								<p:column headerText="Name" toggleable="true">
+									<h:outputText value="#{userBean.user.name}" />
+								</p:column>
+								<p:column headerText="Illness From" toggleable="true">
+									<h:outputText value="#{val.dateFrom}" />
+								</p:column>
+								<p:column headerText="Illness Until" toggleable="true">
+									<h:outputText value="#{val.dateUntil}" />
+								</p:column>
+								<p:column headerText="Show calendar">
+									<h:outputLink value="../calendar/calendar.xhtml"
+										icon="ui-icon-calendar">Calendar</h:outputLink>
+								</p:column>
+								<p:column headerText="Action">
+									<p:commandButton action="#{userBean.removeIllness(val)}"
+										style="height:25px;width:30px" icon="ui-icon-trash"
+										title="Remove" ajax="false">
+									</p:commandButton>
+								</p:column>
+							</p:dataTable>
+
+
+						</p:tab>
+
+						<p:tab title="Skills">
+
+							<p:dataTable id="skillentries" var="val"
+								value="#{userBean.skillRecords}" dynamic="true" paginator="true"
+								rows="10" style="width:80%">
+
+
+								<p:column headerText="Skill Category" resizable="true"
+									toggleable="true">
+									<h:outputText value="#{val.skill.category.name}"></h:outputText>
+								</p:column>
+								<p:column headerText="Skill" resizable="true" toggleable="true">
+									<h:outputText value="#{val.skill.name}"></h:outputText>
+								</p:column>
+								<p:column headerText="Enthusiasm level" resizable="true"
+									toggleable="true">
+									<h:outputText value="#{val.enthusiasm}"
+										style="padding:20px;border-style:dashed;border-color:rgba(128,128,128,0.8);border-width:1px;font-size:24pt;font-weight:bold;"
+										rendered="#{val.enthusiasm gt 3 and val.enthusiasm lt 8}" />
+									<h:outputText value="#{val.enthusiasm}"
+										style="color:rgba(169,33,33,0.8);padding:20px;border-color:rgba(128,128,128,0.8);border-style:dashed;border-width:1px;font-size:24pt;font-weight:bold;"
+										rendered="#{val.enthusiasm lt 4}" />
+									<h:outputText value="#{val.enthusiasm}"
+										style="color:rgba(13,179,13,0.8);padding:20px;border-color:rgba(128,128,128,0.8);border-style:dashed;border-width:1px;font-size:24pt;font-weight:bold;"
+										rendered="#{val.enthusiasm gt 7}" />
+								</p:column>
+								<p:column colspan="6" headerText="Properties" resizable="true"
+									toggleable="true">
+									<p:accordionPanel activeIndex="-1">
+										<p:tab title="Properties">
+											<p:dataTable var="props" value="#{val.skillProperties}"
+												dynamic="true" paginator="true" rows="10">
+
+												<p:column headerText="Name" resizable="true"
+													toggleable="true">
+													<h:outputText value="#{props.property.name}"></h:outputText>
+												</p:column>
+												<p:column headerText="Description " resizable="true"
+													toggleable="true">
+													<h:outputText value="#{props.property.description}"></h:outputText>
+												</p:column>
+
+												<p:column headerText="" resizable="true" toggleable="true">
+													<p:outputPanel rendered="#{props.property.numericProperty}">
+														<!-- <p:rating value="#{props.propertyValueNumeric}"
+															readonly="true" stars="#{props.property.maxValue}"
+															rendered="#{props.propertyValueNumeric lt 11}"></p:rating> -->
+														<h:outputText value="#{props.propertyValueNumeric}"
+															 />
+													</p:outputPanel>
+
+													<p:outputPanel
+														rendered="#{!props.property.numericProperty}">
+														<h:outputText value="#{props.propertyValueString}"></h:outputText>
+													</p:outputPanel>
+												</p:column>
+											</p:dataTable>
+										</p:tab>
+									</p:accordionPanel>
+								</p:column>
+								<p:column>
+									<p:commandButton value="" icon="ui-icon-trash"
+										title="Remove skill from user" style="height:25px;"
+										action="#{userBean.removeSkillFromUser(val)}"
+										update="skillentries" />
+								</p:column>
+							</p:dataTable>
+
+						</p:tab>
+						<p:tab title="Assign new skill">
+							<div align="left" style="width: 80%; height: 600px;">
+								<p:tree id="skilltree"
+									orientation="#{skillBean.currentTreeOrientation}"
+									selectionMode="single"
+									selection="#{skillBean.selectedSkillItem}"
+									value="#{skillBean.root}" var="skillItem" scrollable="true"
+									scrollHeight="400" style="width:100%;text-align:left">
+
+									 <p:ajax event="select" listener="#{skillBean.setSelectedSkill(skillItem)}" />
+
+									<p:treeNode type="rootnode">
+										<h:outputText value="Skills" />
+									</p:treeNode>
+									<p:treeNode type="category" expandedIcon="ui-icon-folder-open"
+										collapsedIcon="ui-icon-folder-collapsed">
+
+										<div id="nodevalueCategory" align="center"
+											class="treenodes_category">
+											<h:outputText id="nodevalueCategory"
+												class="treenode_skillcategory_name" value="#{skillItem}" />
+											<p:tooltip trackMouse="true" for="nodevalueCategory"
+												value="#{skillItem.description}" showEffect="fade"
+												hideEffect="fade" />
+											<br />
+										</div>
+									</p:treeNode>
+
+									<p:treeNode type="skill" icon="ui-icon-lightbulb">
+										<div align="center" class="treenodes_skill">
+
+											<h:outputText id="nodevalueSkills" value="#{skillItem}"
+												class="treenode_skill_name" />
+											<p:tooltip trackMouse="true" for="nodevalueSkills"
+												value="#{skillItem.description}" />
+											<br />
+										</div>
+									</p:treeNode>
+									<p:treeNode id="idProperties" type="skillproperty"
+										icon="ui-icon-bullet">
+										<h:outputText id="nodevalueProperty" value="#{skillItem}" />
+										<p:tooltip trackMouse="true" for="nodevalueProperty"
+											value="#{skillItem.description}" />
+									</p:treeNode>
+								</p:tree>
+								
+									<p:dialog widgetVar="skillPropertyDialog"
+										header="Skill properties" showEffect="clip" hideEffect="clip">
+
+										<p:dataTable id="skillproperties" var="val"
+											value="#{skillBean.selectedSkill.skillProperties}"
+											dynamic="true" paginator="false" rows="10"
+											style="width:500px;">
+											<p:column headerText="Name" resizable="true"
+												toggleable="true">
+												<h:outputText value="#{val.description}"></h:outputText>
+											</p:column>
+											<p:column headerText="Value" resizable="true"
+												toggleable="true">
+												<h:outputText id="numValueOutput" value="#{val.tempValue}"
+													rendered="#{val.type eq 'NUMERIC'}" />
+												<h:inputHidden id="numValue" rows="1"
+													value="#{val.tempValue}"
+													rendered="#{val.type eq 'NUMERIC'}" />
+												<p:slider for="numValue" minValue="#{val.minValue}"
+													maxValue="#{val.maxValue}" display="numValueOutput"
+													style="width: 200px" rendered="#{val.type eq 'NUMERIC'}" />
+
+												<p:inputTextarea rows="5" value="#{val.text}"
+													rendered="#{val.type eq 'TEXT'}" />
+											</p:column>
+										</p:dataTable>
+
+										<h:panelGrid id="propertyDetailsText" columns="2"
+											style="min-width:300px;min-height:300px;">
+											<p:outputLabel for="enthusiasm" value="Enthusiasm:" />
+											<p:rating id="enthusiasm"
+												value="#{skillBean.selectedEnthusiasmLevel}" stars="10"
+												cancel="false" />
+											<p:commandButton
+												action="#{skillBean.assignSkillToUser(userBean.user.getId())}"
+												update="skillentries" ajax="false" value="OK" />
+										</h:panelGrid>
+									</p:dialog>
+								
+
+								<p:contextMenu for="skilltree" nodeType="skill">
+									<p:menuitem value="Assign skill to user"
+										oncomplete="PF('skillPropertyDialog').show();"
+										icon="ui-icon-close" update="userform"/>
+								</p:contextMenu>
+							</div>
+						</p:tab>
+					</p:tabView>
+
+
+
+				</h:form>
+			</p:panel>
+
+
+
+		</div>
+	</p:panel>
+
+	<style type="text/css">
+.treenodes_category {
+	min-width: 100px;
+	border-style: dashed;
+	border-width: 1px;
+	border-color: rgba(0, 0, 0, 0.4);
+	padding: 8px;
+	margin-left: 5px;
+	background-color: rgba(255, 255, 192, 0.5);
+}
+
+.treenodes_skill {
+	min-width: 100px;
+	border-style: dashed;
+	border-width: 1px;
+	border-color: rgba(0, 0, 0, 0.4);
+	padding: 8px;
+	margin-left: 5px;
+	background-color: rgba(255, 192, 192, 0.8);
+}
+
+.treenode_skillcategory {
+	background-color: rgba(238, 238, 238, 0.9);
+	font-size: 6pt;
+}
+
+.treenode_skillcategory_name {
+	background-color: rgba(238, 238, 238, 0.9);
+	font-size: 10pt;
+}
+
+.treenode_skill_name {
+	background-color: rgba(255, 255, 128, 0.9);
+	font-size: 10pt;
+	padding: 2px;
+	padding-left: 2px;
+	border-style: solid;
+	border-width: 1px;
+}
+
+.form_alignment {
+	vertical-alignment: top;
+}
+
+.fontsize {
+	font-size: 12pt
+}
+}
+</style>
+	<style type="text/css">
+.value {
+	width: 1000px;
+}
+
+.legend {
+	text-align: left;
+	width: 250px;
+	line-height: 120%;
+	min-height: 60px;
+	background: rgba(255, 255, 192, 0.7)
+}
+
+.resourcereservation {
+	background: rgba(152, 152, 152, 0.6);
+	color: white;
+	border-style: solid;
+	border-width: 1px;
+	border-color: black;
+	font-size: 8pt;
+	font-weight: bold;
+}
+
+.vacations {
+	background: rgba(255, 128, 128, 0.6);
+	color: white;
+	border-style: solid;
+	border-width: 1px;
+	border-color: black;
+	font-size: 8pt;
+	font-weight: bold;
+}
+
+.illness {
+	background: rgba(255, 0, 0, 0.6);
+	color: white;
+	border-style: solid;
+	border-width: 1px;
+	border-color: black;
+	font-size: 8pt;
+	font-weight: bold;
+}
+</style>
+	<ui:include src="/notloggedin.xhtml" />
+
+</h:body>
+</html>

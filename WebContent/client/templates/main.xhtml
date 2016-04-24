@@ -1,0 +1,337 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta charset="ISO-8859-1" />
+	<title><ui:insert name="title">Dashboard</ui:insert></title>
+	<link type="text/css" rel="stylesheet" href="../styles/companies.css" />
+	<style type="text/css">
+.no-border {
+	border-style: hidden !important; /* or none */
+	background-image: url('../images/background.jpg');
+}
+
+.ui-panel, div.ui-state-hover {
+	margin-top: 10px;
+	width: 350px;
+}
+
+.ui-dashboard-column {
+	width: 380px;
+}
+
+.actionboardmessage {
+	width: 80%;
+	margin-left: 200px;
+	baackground-color:#C6D8EC;
+	#background-image: url('../images/yellowback.png');
+	margin-bottom: 10px
+}
+
+.actionboardarticle {
+	width: 80%;
+	margin-left: 150px;
+	margin-bottom: 10px;
+	background-image: url('../images/yellowback.png');
+}
+</style>
+
+</h:head>
+
+<h:body>
+	<p:layout fullPage="true" rendered="#{loginBean.getLoggedIn()}"
+		widgetVar="layoutWdgt">
+		<p:layoutUnit position="north" resizable="false" minSize="119"
+			collapseSize="20" collapsible="true" maxSize="119"
+			style="min-height:119px;" scrollable="null">
+			<ui:insert name="head">
+				<p:panelGrid columns="3"
+					columnClasses="no-border, no-border, no-border" style="width:100%;">
+					<h:column>
+						<img src="../images/logo2.png" />
+
+					</h:column>
+					<h:column>
+						<div align="left">
+							<p:growl id="growl" showSummary="true" showDetail="true"
+								autoUpdate="true" />
+							<div></div>
+						</div>
+					</h:column>
+					<h:column>
+						<div align="right"
+							style="padding-bottom: 5px; padding-right: 15px;">
+							<pe:analogClock mode="client" width="100" />
+						</div>
+					</h:column>
+				</p:panelGrid>
+
+			</ui:insert>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center" resizable="true">
+			<p:layout rendered="#{loginBean.getLoggedIn()}">
+				<p:layoutUnit position="north">
+					<h:form id="headerform">
+						<p:layout style="height:40px;">
+
+							<p:layoutUnit position="center" resizable="true">
+								<p:panelGrid columns="4">
+									<h:column>
+										<p:commandButton onclick="PF('layoutWdgtMenu').toggle('west')"
+											icon="fa fa-chevron-left" />
+
+										<p:commandButton onclick="PF('layoutWdgt').toggle('south')"
+											icon="fa fa-chevron-down" />
+
+
+										<p:commandButton onclick="PF('layoutWdgt').toggle('north')"
+											icon="fa fa-chevron-up" />
+									</h:column>
+
+									<h:column>
+                            
+                                    Welcome <b style="font-size: 1.2em"><h:outputText
+												value="#{loginBean.username}" /></b>. 
+                                    <h:form 
+											rendered="#{messageBean.unreadMessages.size() gt 0}">
+                                       You have <p:commandButton
+												value="#{messageBean.unreadMessages.size()}"
+												icon="ui-icon-mail-closed" /> new messages.
+                                    </h:form>
+                                    <p:poll interval="5" update="headerform" />
+
+
+									</h:column>
+								</p:panelGrid>
+							</p:layoutUnit>
+							<p:layoutUnit position="east" size="500" minSize="500"
+								resizable="true">
+
+
+
+
+								<p:inputText style="min-width:250px;margin-right:10px"
+									value="#{searchBean.searchPhrase}"
+									placeholder="Searchphrase..." />
+								<p:commandButton value="Search" icon="ui-icon-search"
+									action="#{searchBean.search}"
+									oncomplete="PF('searchResults').show();" update="searchResults" />
+								<p:spacer height="0" width="20" />
+								<p:commandButton id="dynaButton" type="button" ajax="false"
+									value="Account" icon="ui-icon-person" />
+								<p:tieredMenu overlay="true" trigger="dynaButton" my="left top"
+									at="left bottom" style="width:200px">
+
+									<p:menuitem value="Settings" icon="ui-icon-disk" />
+									<p:menuitem value="Logout" icon="ui-icon-arrowrefresh-1-w" />
+
+
+								</p:tieredMenu>
+
+
+
+							</p:layoutUnit>
+
+						</p:layout>
+					</h:form>
+				</p:layoutUnit>
+				<p:layoutUnit position="center">
+
+					<p:dialog header="Search Results" widgetVar="searchResults"
+						style="min-width:600px;" minHeight="40">
+
+						<p:dataList id="searchResults" value="#{searchBean.searchResults}"
+							var="result" itemType="none" paginator="true" rows="10"
+							styleClass="paginated" cellpadding="10">
+							<f:facet name="header">
+
+							</f:facet>
+							<h:panelGrid columns="2" cellpadding="2">
+
+								<h:outputText styleClass="ui-icon ui-icon-person" title="User"
+									style="float:left" rendered="#{result.resultType eq 'User'}" />
+								<h:outputText styleClass="ui-icon ui-icon-document"
+									title="Document" style="float:left"
+									rendered="#{result.resultType eq 'Document'}" />
+								<h:outputText styleClass="ui-icon ui-icon-suitcase"
+									title="Resource" style="float:left"
+									rendered="#{result.resultType eq 'Resource'}" />
+								<h:outputText styleClass="ui-icon ui-icon-star" title="Role"
+									style="float:left" rendered="#{result.resultType eq 'Role'}" />
+								<h:outputText styleClass="ui-icon ui-icon-home"
+									title="Department" style="float:left"
+									rendered="#{result.resultType eq 'Department'}" />
+
+								<p:commandLink action="#{searchBean.displayResult(result)}"
+									value="#{result.excerpt}" />
+
+							</h:panelGrid>
+						</p:dataList>
+					</p:dialog>
+					<p:layout widgetVar="layoutWdgtMenu">
+						<p:layoutUnit position="west" resizable="true" minSize="200"
+							maxSize="400" collapseSize="30" collapsible="true">
+							<div
+								style="background-image: url('../images/background.jpg'); min-height: 100%">
+								<h:form>
+									<p:menu toggleable="true">
+										<p:menuitem value="Dashboard" title="Display Dashboard"
+											icon="fa fa-rocket"></p:menuitem>
+										<p:submenu label="Messages" title="Messages">
+											<p:menuitem value="Inbox" title="Display Dashboard"
+												icon="fa fa-inbox" />
+											<p:menuitem value="Sent" title="Display Dashboard"
+												icon="fa fa-send-o" />
+										</p:submenu>
+										<p:submenu label="Documents">
+											<p:menuitem value="My documents" title="My documents"
+												icon="fa fa-file-o"></p:menuitem>
+											<p:menuitem value="Upload a document" title="Upload document"
+												icon="fa fa-cloud-upload"></p:menuitem>
+										</p:submenu>
+										<p:submenu label="Devices/Agents">
+											<p:menuitem value="Devices" title="Display Dashboard"
+												icon="fa fa-bar-chart-o"></p:menuitem>
+											<p:menuitem value="Agents" title="Display Dashboard"
+												icon="fa fa-sitemap"></p:menuitem>
+										</p:submenu>
+
+										<p:submenu label="Projects" title="Projects">
+											<p:menuitem value="Projects" title="Display Projects"
+												icon="fa fa-bank"></p:menuitem>
+											<p:menuitem value="Tasks" title="Display Dashboard"
+												icon="fa fa-tasks"></p:menuitem>
+										</p:submenu>
+										<p:submenu label="Misc" title="Misc">
+											<p:menuitem value="Settings" title="Change Settings"
+												icon="fa fa-wrench"></p:menuitem>
+										</p:submenu>
+									</p:menu>
+
+								</h:form>
+							</div>
+						</p:layoutUnit>
+						<p:layoutUnit position="center" resizable="true">
+
+							<ui:insert name="content">
+
+							</ui:insert>
+
+						</p:layoutUnit>
+
+					</p:layout>
+				</p:layoutUnit>
+			</p:layout>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="south" closable="true" resizable="true"
+			collapsible="true" maxSize="430" minSize="100" size="230" collapseSize="20">
+
+			<ui:insert name="footercontent">
+				<!-- <h:form>
+					 <p:dock position="bottom" itemWidth="60" maxWidth="40">
+						<p:menuitem value="Dashboard" title="Display Dashboard"
+							icon="../images/dashboard/dash_home.png" url="#" ></p:menuitem>
+						<p:menuitem value="Messages" title="Display Messages"
+							icon="../images/dashboard/dash_mail.png"></p:menuitem>
+						<p:menuitem value="Documents" title="Display Documents"
+							icon="../images/dashboard/dash_documents.png"></p:menuitem>
+						<p:menuitem value="Devices" title="Display Devices"
+							icon="../images/dashboard/dash_devices.png"></p:menuitem>
+						<p:menuitem value="Tasks" title="Display Tasks"
+							icon="../images/dashboard/dash_tasks.png"></p:menuitem>
+							<p:menuitem value="Calendar" title="Display Calendar"
+                            icon="../images/dashboard/dash_documents.png"></p:menuitem>
+                            <p:menuitem value="My Departments" title="Show my Departments"
+                            icon="../images/dashboard/dash_documents.png"></p:menuitem>
+                            <p:menuitem value="Settings" title="Change Settings"
+                            icon="../images/dashboard/dash_settings.png"></p:menuitem>
+					</p:dock>
+				</h:form> -->
+
+				<div id="actionboard"
+					style="background-image: url('../images/background.jpg');">
+					<p:panel class="actionboardarticle"
+						header="13.10.2016 - 12:40 - (Article) from josephine (User)">
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+							Aenean blandit tortor a ipsum vehicula, in semper sapien auctor.
+							Nulla tempor eget est non consequat. Nulla sit amet lorem justo.
+							Cras non tellus eros. Sed ultricies orci ut quam interdum
+							fringilla. Nam vitae massa ac mi elementum mattis vel vitae sem.
+							Ut eros ipsum, scelerisque a erat a, eleifend luctus nibh.
+							Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+					</p:panel>
+
+					<p:panel class="actionboardmessage"
+						style="width:60%;margin-bottom:20px"
+						header="13.10.2016 - 12:38 - (Message) From admin (User)">
+							Subject: This is a test
+							</p:panel>
+					<p:panel class="actionboardmessage"
+						style="width:60%;margin-bottom:20px"
+						header="13.10.2016 - 12:34 - (Message) From viktor (User)">
+							Subject: Got the comments?
+							</p:panel>
+					<p:panel class="actionboardarticle"
+						header="13.10.2016 - 12:22 - (Article) From Einkauf (Department)">
+						<p>Vivamus ac ullamcorper magna. Aenean felis ante, elementum
+							sit amet urna at, eleifend aliquet velit. Morbi a convallis
+							magna. In nec leo vel dolor hendrerit pharetra. Cras in iaculis
+							enim. Aenean porta sapien dignissim turpis dapibus, eu dictum
+							velit elementum. Aliquam sollicitudin gravida luctus.</p>
+						<p>Ut vel nulla sit amet erat laoreet eleifend nec sed lacus.
+							Quisque placerat diam vitae justo eleifend, rutrum mollis mauris
+							fringilla. Curabitur turpis odio, euismod id lorem a, ultricies
+							suscipit ligula. Pellentesque ut erat a leo rhoncus porta ac sed
+							velit. Nunc at erat ligula. Fusce vehicula posuere interdum.
+							Curabitur tempus, tortor at sollicitudin dapibus, erat ante
+							varius nisl, id dictum erat ipsum porttitor ipsum. Interdum et
+							malesuada fames ac ante ipsum primis in faucibus. Nulla id varius
+							enim, sed rutrum orci.</p>
+						<p>Sed tincidunt urna quis metus lacinia commodo. Praesent
+							convallis eros vel quam scelerisque bibendum. Mauris eget
+							dignissim libero. Pellentesque sagittis sem quis ipsum viverra,
+							sed consequat mi consectetur. Donec facilisis dapibus ultrices.
+							Donec luctus auctor lacus, at congue nisi aliquet eu. Praesent in
+							justo at risus faucibus ultricies. Fusce et libero lectus. Donec
+							elementum pharetra sapien, at placerat purus sodales et. Vivamus
+							iaculis lacus sed placerat rhoncus. Mauris iaculis sit amet nunc
+							at placerat. Donec consequat euismod lacinia. Etiam nec quam
+							vehicula, cursus massa in, ullamcorper erat.</p>
+						<p>Praesent volutpat scelerisque vestibulum. In eu massa non
+							neque rutrum commodo. Nunc vel enim nisi. Aenean leo ipsum,
+							molestie vel justo nec, pharetra luctus dui. Nunc rhoncus turpis
+							id lorem luctus consequat. Nulla condimentum adipiscing turpis
+							consequat semper. Etiam ullamcorper velit nec hendrerit
+							malesuada. Praesent venenatis leo sit amet arcu commodo, sit amet
+							porta tellus suscipit. Quisque mi tortor, vestibulum in arcu non,
+							pretium auctor libero. In commodo luctus placerat.</p>
+					</p:panel>
+				</div>
+			</ui:insert>
+		</p:layoutUnit>
+
+	</p:layout>
+
+	<p:panel id="nosession" rendered="#{not loginBean.getLoggedIn()}"
+		style="margin:auto;margin-top:10%;">
+		<div align="center">
+			<h1>You are not logged in.</h1>
+			<h2>Please log in:</h2>
+			<form>
+				<a href="login.xhtml">Login</a>
+			</form>
+		</div>
+	</p:panel>
+
+
+</h:body>
+</html>

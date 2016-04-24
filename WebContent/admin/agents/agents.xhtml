@@ -1,0 +1,230 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta charset="ISO-8859-1" />
+	<title>Agents</title>
+	<link type="text/css" rel="stylesheet"
+		href="../../styles/companies.css" />
+</h:head>
+
+<h:body>
+
+	<ui:include src="/admin/mainmenu.xhtml" />
+	<p:panel id="sessionok" rendered="#{loginBean.getLoggedIn()}">
+		<h1>Agents</h1>
+
+		<p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+			<f:facet name="default">
+				<img style="position: relative; top: 5px;"
+					src="../../images/empty.gif" width="25" />
+				<h:outputText value=" Status: StandBy." />
+			</f:facet>
+
+			<f:facet name="start">
+				<img style="position: relative; top: 5px;"
+					src="../../images/loading.gif" width="25" />
+				<h:outputText value=" Status: Refreshing resource table..." />
+			</f:facet>
+
+			<f:facet name="complete">
+				<img style="position: relative; top: 5px;"
+					src="../../images/empty.gif" width="25" />
+				<h:outputText value=" Status: Completed." />
+			</f:facet>
+		</p:ajaxStatus>
+
+		<p:panel>
+			<h:outputText style="font-size:12pt;" value="Department: " />
+			<h:outputText style="font-size:12pt;font-weight:bold"
+				value="#{resourceBean.selectedDepartment.name}" />
+		</p:panel>
+
+
+		<div data-role="content" class="top" align="center">
+			<p:tabView style="width:100%;min-height:500px;" activeIndex="0">
+				<p:tab title="List" style="width:100%">
+					<div id="listresources" align="center">
+						<!--  List all resources  -->
+						<p:panel>
+							<div align="left">
+								<p:panelGrid columns="2" style="max-width:1250px;height:50px;">
+									<p:column>
+										<h:form id="formdepartments">
+											<div style="font-size: 10pt; vertical-alignment: text-top">
+												<h:outputText value="Select Department:"></h:outputText>
+											</div>
+											<div style="font-size: 10pt; vertical-alignment: text-top">
+												<p:selectOneMenu onchange="submit()" style="width:300px;"
+													id="departments" rendered="true"
+													value="#{resourceBean.selectedDepartmentId}">
+													<f:selectItem itemLabel="---" itemValue="#{null}"
+														noSelectionOption="true" />
+													<f:selectItems value="#{resourceBean.departments}"
+														var="department" itemValue="#{department.id}"
+														itemLabel="#{department.company.name} - #{department.name}"
+														itemDescription="#{department.company.name} - #{department.name}" />
+												</p:selectOneMenu>
+											</div>
+
+										</h:form>
+									</p:column>
+									<p:column>
+										<h:form id="formgroups">
+
+											<div style="font-size: 10pt; vertical-alignment: text-top">
+												<h:outputText style="vertical-align:text-top"
+													value="Select Resource Group:"></h:outputText>
+											</div>
+											<div style="font-size: 10pt; vertical-alignment: text-top">
+												<p:selectOneMenu scrollHeight="50" onchange="submit()"
+													style="width:300px;" id="resourcegroups" rendered="true"
+													value="#{resourceBean.selectedResourceGroup}">
+													<!-- <f:selectItem itemLabel="-DEFAULT-" itemValue="#{null}"
+											noSelectionOption="true" /> -->
+													<f:selectItems value="#{resourceBean.resourceGroups}"
+														var="resourceGroup" itemValue="#{resourceGroup.id}"
+														itemLabel="#{resourceGroup.name}"
+														itemDescription="#{resourceGroup.name}" />
+												</p:selectOneMenu>
+												<br />
+												<p:commandButton id="deleteResourceGroupAction"
+													value="Delete" icon="ui-icon-trash"
+													action="#{resourceBean.deleteResourceGroup}" ajax="false"
+													style="width:220px"></p:commandButton>
+											</div>
+										</h:form>
+									</p:column>
+								</p:panelGrid>
+							</div>
+							<h:form id="actions">
+								<p:dataTable id="resources" var="val" layout="grid"
+									value="#{resourceBean.resources}" dynamic="true" rows="10">
+
+									<c:set var="canupdate" value="#{resourceBean.canUpdate(val)}"
+										scope="request" />
+									<c:set var="candelete" value="#{resourceBean.canDelete(val)}"
+										scope="request" />
+									<c:set var="isiotdevice" value="#{val.isMqttResource}"
+										scope="request" />
+									<c:set var="ismqtt" value="#{resourceBean.isMqttResource(val)}"
+										scope="request" />
+																		
+										<p:column style="width:150px;" headerText="hostname"
+											resizable="true" toggleable="true"  rendered="#{val.agent}">
+											<h:outputText value="#{val.name}"
+												style="height:40px;width:150px;" />
+										</p:column>
+										<p:column style="width:100px;" headerText="IPv4"
+											resizable="true" toggleable="true"  rendered="#{val.agent}">
+											<h:outputText value="#{val.ip}"
+												rendered="#{resourceBean.canRead(val)}"
+												style="height:40px;width:150px;" />
+										</p:column>
+
+										<p:column headerText="Data" resizable="true" toggleable="true"
+											style="height:40px;width:250px;"  rendered="#{val.agent}">
+											<h:form id="actionsvalues">
+
+												<p:dataTable id="resourcesvalues" var="val2" layout="grid"
+													style="width:100%;max-width:1850px;height:170px"
+													value="#{val.mqttValues}">
+
+													<p:column headerText="Name" resizable="true"
+														toggleable="true" style="width:200px;height:50px;">
+														<h:outputText value="#{val2.name}"
+															style="height:80px;width:200px;max-width:200px;" />
+													</p:column>
+													<p:column headerText="Last value" resizable="true"
+														toggleable="true" style="width:200px;max-width:200px;">
+														<h:outputText id="values"
+															value="#{resourceBean.getLastMqttValueForResource(val, val2.name)}"
+															style="height:80px;" />
+													</p:column>
+												</p:dataTable>
+												<p:poll update="actionsvalues" interval="10" />
+											</h:form>
+										</p:column>
+
+										<p:column rendered="#{val.agent}"
+											headerText="Agent online"
+											style="height:40px;width:50px;">
+											<p:outputPanel rendered="#{val.mqttOnline}">
+
+												<img src="../../images/greendot.png" />
+											</p:outputPanel>
+
+											<p:outputPanel rendered="#{not val.mqttOnline}">
+
+												<img src="../../images/graydot.png" />
+											</p:outputPanel>
+										</p:column>
+
+										<p:column headerText="Agent online"
+											style="background-color:#dddddd;height:40px;width:50px;"
+											disabled="#{not val.mqttResource}"
+											rendered="#{not val.mqttResource and val.agent}">
+											<h:outputText id="mqttonline" value="N/A" />
+										</p:column>
+
+
+
+
+
+										<p:column headerText="Delete" resizable="true" width="60"
+											style="height:40px;"  rendered="#{val.agent}">
+											<p:commandButton id="cmddelete"
+												action="#{resourceBean.delete(val)}"
+												style="height:25px;width:30px"
+												disabled="#{!resourceBean.canDelete(val)}"
+												icon="ui-icon-trash" title="Delete" ajax="false"></p:commandButton>
+										</p:column>
+								
+								</p:dataTable>
+								<p:poll interval="10" update="resources" />
+							</h:form>
+						</p:panel>
+					</div>
+				</p:tab>
+				<p:tab title="Network view">
+					<div align="left">
+						<h:form id="mindmap">
+
+							<p:mindmap value="#{resourceBean.networkRoot}"
+								style="width: 80%;height: 500px;border: 1px solid black;font-size:20pt;">
+								<p:ajax event="dblselect"
+									listener="#{resourceBean.onNodeDblselect}" update="output"
+									oncomplete="PF('details').show();" />
+							</p:mindmap>
+
+							<p:dialog widgetVar="details" header="Agent sample data"
+								resizable="false" modal="true" showEffect="fade"
+								hideEffect="fade">
+								<h:inputTextarea  id="output" cols="70" rows="10" readonly="true" value="#{resourceBean.selectedNodeData}"/> 
+							</p:dialog>
+
+							<p:poll interval="15" update="mindmap" />
+						</h:form>
+					</div>
+				</p:tab>
+			</p:tabView>
+
+
+
+
+
+
+
+		</div>
+
+	</p:panel>
+	<ui:include src="/notloggedin.xhtml" />
+</h:body>
+</html>

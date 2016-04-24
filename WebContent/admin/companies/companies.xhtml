@@ -1,0 +1,149 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+	<meta charset="ISO-8859-1" />
+	<title>Companies</title>
+	<link type="text/css" rel="stylesheet"
+		href="../../styles/companies.css" />
+</h:head>
+
+<h:body>
+	<ui:include src="/admin/mainmenu.xhtml" />
+	<p:panel id="sessionok" rendered="#{loginBean.getLoggedIn()}">
+		<div data-role="content">
+			<p:tabView style="min-height:500px;">
+				<p:tab title="Companies">
+					<div id="listcompanies" align="center">
+						<h1>Companies</h1>
+						<!--  List all companies  -->
+						<p:panel>
+							<h:form id="actions">
+								<p:dataTable var="val" layout="grid" style="width:80%"
+									value="#{companyBean.companies}" dynamic="true"
+									paginator="true" rows="10">
+
+									<p:column headerText="Name" resizable="true" toggleable="true">
+										<h:outputText value="#{val.name}"
+											rendered="#{companyBean.canRead(val)}"></h:outputText>
+									</p:column>
+									<p:column headerText="Description" resizable="true"
+										toggleable="true">
+										<h:outputText value="#{val.description}"
+											rendered="#{companyBean.canRead(val)}"></h:outputText>
+									</p:column>
+									<p:column headerText="ZIP-Code" resizable="true">
+										<h:outputText value="#{val.mainAddress.zipCode}"
+											rendered="#{companyBean.canRead(val)}" />
+									</p:column>
+									<p:column headerText="City" resizable="true">
+										<h:outputText value="#{val.mainAddress.city}"
+											rendered="#{companyBean.canRead(val)}"></h:outputText>
+									</p:column>
+									<p:column headerText="Edit..." resizable="true" width="60">
+										<p:commandButton action="#{companyBean.edit(val)}" value=""
+											title="Edit..." style="height:25px;width:30px" ajax="false"
+											icon="ui-icon-pencil"
+											disabled="#{!companyBean.canUpdate(val)}"></p:commandButton>
+									</p:column>
+									<p:column headerText="Delete" resizable="true" width="60">
+										<p:commandButton id="cmddelete" style="height:25px;width:30px"
+											title="Delete" action="#{companyBean.delete(val)}"
+											icon="ui-icon-trash" value="" ajax="false"
+											disabled="#{!companyBean.canDelete(val)}"></p:commandButton>
+									</p:column>
+
+
+								</p:dataTable>
+							</h:form>
+						</p:panel>
+					</div>
+				</p:tab>
+				<p:tab title="Create a company">
+					<div id="createcompany" class="top" align="center">
+						<h:form id="form">
+
+							<h:panelGrid columns="4" layout="grid"
+								footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
+								frame="box" rules="groups" cellpadding="10"
+								style="max-width:850px">
+								<f:facet name="header">
+									<h:outputText value="Create a new Company"></h:outputText>
+								</f:facet>
+
+								<c:set var="cancreate" value="#{companyBean.canCreate()}"
+									scope="request" />
+
+								<h:outputText value="Name:" />
+								<h:panelGroup>
+									<p:inputText id="name" rendered="true"
+										value="#{companyBean.company.name}" disabled="#{!cancreate}"></p:inputText>
+									<p:message for="name"></p:message>
+								</h:panelGroup>
+								<h:outputText value="Street:" />
+								<h:panelGroup>
+									<p:inputText id="street" rendered="true"
+										value="#{companyBean.company.mainAddress.street}"
+										disabled="#{!cancreate}"></p:inputText>
+									<p:message for="street"></p:message>
+								</h:panelGroup>
+
+
+								<h:outputText value="ZIP-code:" />
+								<h:panelGroup>
+									<p:inputText id="zipcode" rendered="true"
+										value="#{companyBean.company.mainAddress.zipCode}"
+										disabled="#{!cancreate}"></p:inputText>
+									<p:message for="zipcode"></p:message>
+								</h:panelGroup>
+								<h:outputText value="City:" />
+								<h:panelGroup>
+									<p:inputText id="city" rendered="true"
+										value="#{companyBean.company.mainAddress.city}"
+										disabled="#{!cancreate}"></p:inputText>
+									<p:message for="city"></p:message>
+								</h:panelGroup>
+
+								<h:outputText value="Phone:" />
+								<h:panelGroup>
+									<p:inputText id="phone" rendered="true"
+										value="#{companyBean.company.mainAddress.phone}"
+										disabled="#{!cancreate}"></p:inputText>
+									<p:message for="phone"></p:message>
+								</h:panelGroup>
+								<h:outputText value="Fax:" />
+								<h:panelGroup>
+									<p:inputText id="fax" rendered="true"
+										value="#{companyBean.company.mainAddress.fax}"
+										disabled="#{!cancreate}"></p:inputText>
+									<p:message for="fax"></p:message>
+								</h:panelGroup>
+
+
+								<f:facet name="footer">
+									<p:commandButton id="createAction" value="Create"
+										icon="ui-icon-plus" action="#{companyBean.createCompany}"
+										ajax="false" style="width:220px" disabled="#{!cancreate}"></p:commandButton>
+								</f:facet>
+
+							</h:panelGrid>
+						</h:form>
+					</div>
+				</p:tab>
+			</p:tabView>
+			 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" showIcon="true" severity="error"/>
+		</div>
+	</p:panel>
+	<ui:include src="/notloggedin.xhtml" />
+
+</h:body>
+</html>

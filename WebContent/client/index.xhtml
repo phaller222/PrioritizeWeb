@@ -1,0 +1,24 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:body>
+
+ <p:panel id="mainframe" rendered="#{loginBean.getLoggedIn()}">
+	<ui:composition  template="templates/main.xhtml">
+		<ui:define name="head">
+
+		</ui:define>
+		<ui:define name="content">
+			
+       
+		</ui:define>
+	</ui:composition>
+	</p:panel>
+</h:body>
+
+</html>

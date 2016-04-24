@@ -1,0 +1,256 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta charset="ISO-8859-1" />
+	<title>Documents</title>
+	<link type="text/css" rel="stylesheet"
+		href="../../styles/companies.css" />
+</h:head>
+
+<h:body>
+
+	<ui:include src="/admin/mainmenu.xhtml" />
+	<p:panel id="sessionok" rendered="#{loginBean.getLoggedIn()}">
+
+	<p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+			<f:facet name="default">
+				<h:outputText value="Status: StandBy." />
+			</f:facet>
+
+			<f:facet name="start">
+				<h:outputText value="Status: Refreshing document table..." />
+			</f:facet>
+
+			<f:facet name="complete">
+				<h:outputText value="Status: Completed." />
+			</f:facet>
+		</p:ajaxStatus>
+
+		<p:panel>
+			<h:outputText style="font-size:12pt;" value="Department: " />
+			<h:outputText style="font-size:12pt;font-weight:bold"
+				value="#{documentBean.selectedDepartment.name}" />
+		</p:panel>
+
+		<div data-role="content" class="top" align="center">
+			<p:tabView>
+				<p:tab title="Documents">
+					<div id="listdocuments" align="center">
+						<h1>Documents</h1>
+						<!--  List all document  -->
+						<p:panel>
+							<div align="left">
+								<p:panelGrid columns="2" style="max-width:1250px;height:50px;">
+									<p:column>
+										<div id="select department">
+											<h:form id="formdepartments">
+												<h:panelGrid columns="2" layout="grid" cellpadding="2"
+													style="max-width:850px">
+
+
+													<div style="font-size: 10pt; vertical-alignment: text-top">
+														<h:outputText value="Department: "></h:outputText>
+													</div>
+													<div style="font-size: 10pt; vertical-alignment: text-top">
+														<p:selectOneMenu onchange="submit()" style="width:300px;"
+															id="departments" rendered="true"
+															value="#{documentBean.selectedDepartmentId}">
+															<f:selectItem itemLabel="---" itemValue="#{null}"
+																noSelectionOption="true" />
+															<f:selectItems value="#{documentBean.departments}"
+																var="department" itemValue="#{department.id}"
+																itemLabel="#{department.company.name} - #{department.name}"
+																itemDescription="#{department.company.name} - #{department.name}" />
+														</p:selectOneMenu>
+													</div>
+												</h:panelGrid>
+											</h:form>
+										</div>
+									</p:column>
+									<p:column>
+										<div id="select directory" class="top" align="center">
+											<h:form id="formdirectories">
+												<h:panelGrid columns="2" layout="grid" cellpadding="2"
+													style="max-width:850px">
+													<div style="font-size: 10pt; vertical-alignment: text-top">
+														<h:outputText value="Directory: "></h:outputText>
+													</div>
+													<div style="font-size: 10pt; vertical-alignment: text-top">
+														<p:selectOneMenu scrollHeight="100" onchange="submit()"
+															style="width:300px;" id="directories" rendered="true"
+															value="#{documentBean.selectedDocumentGroup}">
+															<!-- <f:selectItem itemLabel="-DEFAULT-" itemValue="#{null}"
+															noSelectionOption="true" /> -->
+															<f:selectItems value="#{documentBean.documentGroups}"
+																var="documentGroup" itemValue="#{documentGroup.id}"
+																itemLabel="#{documentGroup.name}"
+																itemDescription="#{documentGroup.name}" />
+														</p:selectOneMenu>
+													</div>
+													<p:commandButton id="deleteDocumentGroupAction"
+														value="Delete" icon="ui-icon-trash"
+														action="#{documentBean.deleteDocumentGroup}" ajax="false"
+														style="width:220px"></p:commandButton>
+												</h:panelGrid>
+											</h:form>
+										</div>
+									</p:column>
+								</p:panelGrid>
+							</div>
+							<h:form id="actions">
+								<p:dataTable id="documents" var="val" layout="grid"
+									value="#{documentBean.documentInfos}" dynamic="true"
+									paginator="true" rows="10">
+
+									<p:column headerText="Name" resizable="true" toggleable="true">
+										<p:commandLink id="downloadLink"
+											value="#{val.currentDocument.name}" ajax="false"
+											disabled="#{!documentBean.canRead(val)}"
+											actionListener="#{documentBean.prepDownload(val.id)}">
+											<p:fileDownload value="#{documentBean.download}"
+												contentDisposition="attachment" />
+										</p:commandLink>
+									</p:column>
+
+									<p:column style="width:120px" headerText="Last modified"
+										resizable="true">
+										<h:outputText value="#{val.currentDocument.lastModified}"
+											rendered="#{documentBean.canRead(val)}" />
+									</p:column>
+									<p:column headerText="Last modified by" resizable="true">
+										<h:outputText
+											value="#{val.currentDocument.lastModifiedBy.name}"
+											rendered="#{documentBean.canRead(val)}" />
+									</p:column>
+									<p:column headerText="Changes" resizable="true">
+										<h:outputText value="#{val.currentDocument.changes}"
+											rendered="#{documentBean.canRead(val)}" />
+									</p:column>
+									<p:column style="width:80px" headerText="Version"
+										resizable="true">
+										<h:outputText value="#{val.currentDocument.version}"
+											rendered="#{documentBean.canRead(val)}" />
+									</p:column>
+									<p:column headerText="History" resizable="true">
+										<p:commandButton id="cmdhistory"
+											disabled="#{!documentBean.canRead(val)}"
+											action="#{documentBean.history(val)}" style="width:150px"
+											icon="ui-icon-clock" value="History..." ajax="false"></p:commandButton>
+									</p:column>
+									<p:column headerText="Edit" resizable="true">
+										<p:commandButton action="#{documentBean.edit(val)}"
+											value="Edit..." disabled="#{!documentBean.canUpdate(val)}"
+											ajax="false" style="width:150px" icon="ui-icon-pencil"></p:commandButton>
+									</p:column>
+									<p:column headerText="Delete" resizable="true">
+										<p:commandButton id="cmddelete"
+											action="#{documentBean.delete(val)}" style="width:150px"
+											disabled="#{!documentBean.canDelete(val)}"
+											icon="ui-icon-trash" value="Delete" ajax="false"></p:commandButton>
+									</p:column>
+								</p:dataTable>
+								<p:poll interval="10" update="documents" />
+							</h:form>
+						</p:panel>
+					</div>
+				</p:tab>
+				<p:tab title="Create Directory / document">
+					<div align="left">
+						<h:panelGrid columns="4" layout="grid"
+							footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
+							frame="box" rules="groups" cellpadding="10" style="width:1250px">
+
+
+							<div id="createdirectory" class="top" align="center">
+								<h:form id="formcreatedirectory">
+
+									<h:panelGrid columns="4" layout="grid"
+										footerClass=".ui-widget-footer"
+										headerClass=".ui-widget-header" frame="box" rules="groups"
+										cellpadding="10" style="max-width:850px">
+										<f:facet name="header">
+											<h:outputText value="Create directory"></h:outputText>
+										</f:facet>
+
+										<h:outputText value="Name:" />
+										<h:panelGroup>
+											<p:inputText disabled="#{!documentBean.canCreate()}"
+												id="name" rendered="true"
+												value="#{documentBean.documentGroupName}"></p:inputText>
+											<p:message for="name"></p:message>
+										</h:panelGroup>
+
+										<f:facet name="footer">
+											<p:commandButton disabled="#{!documentBean.canCreate()}"
+												id="createDocumentGroupAction" value="Create"
+												icon="ui-icon-plus"
+												action="#{documentBean.createDocumentGroup}" ajax="false"
+												style="width:220px"></p:commandButton>
+										</f:facet>
+									</h:panelGrid>
+								</h:form>
+							</div>
+
+							<div id="createdocument" class="top" align="center">
+
+								<h:form id="formcreatedocument" enctype="multipart/form-data">
+
+									<h:panelGrid columns="4" layout="grid"
+										footerClass=".ui-widget-footer"
+										headerClass=".ui-widget-header" frame="box" rules="groups"
+										cellpadding="10" style="max-width:850px">
+										<f:facet name="header">
+											<h:outputText value="Create document"></h:outputText>
+										</f:facet>
+
+										<c:set var="cancreate" value="#{documentBean.canCreate()}"
+											scope="request" />
+
+										<h:outputText value="Name:" />
+										<h:panelGroup>
+											<p:inputText disabled="#{!cancreate}" id="name"
+												rendered="true" value="#{documentBean.document.name}"></p:inputText>
+											<p:message for="name"></p:message>
+										</h:panelGroup>
+										<h:panelGroup>
+											<h:outputText value="File: #{documentBean.clientFilename}" />
+											<p:fileUpload dragDropSupport="true"
+												disabled="#{!cancreate}"
+												fileUploadListener="#{documentBean.handleFileUpload}"
+												mode="advanced" ajax="false" update="messages"
+												sizeLimit="100000000"
+												allowTypes="/(\.|\/)(gif|txt|doc|odt|xls|xml|pdf|html|js|java|ppt|jpe?g|png)$/" />
+
+											
+										</h:panelGroup>
+
+										<f:facet name="footer">
+											<p:commandButton disabled="#{!cancreate}" id="createAction"
+												value="Create" icon="ui-icon-plus"
+												action="#{documentBean.createDocument}" ajax="false"
+												style="width:220px"></p:commandButton>
+										</f:facet>
+									</h:panelGrid>
+								</h:form>
+							</div>
+						</h:panelGrid>
+					</div>
+				</p:tab>
+
+			</p:tabView>
+			 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" showIcon="true" severity="error"/>
+		</div>
+	</p:panel>
+	<ui:include src="/notloggedin.xhtml" />
+
+
+</h:body>
+</html>
