@@ -110,7 +110,7 @@
 									value="#{documentBean.documentInfos}" dynamic="true"
 									paginator="true" rows="10">
 
-									<p:column headerText="Name" resizable="true" toggleable="true">
+									<p:column headerText="Name" style="width:120px" resizable="true" toggleable="true">
 										<p:commandLink id="downloadLink"
 											value="#{val.currentDocument.name}" ajax="false"
 											disabled="#{!documentBean.canRead(val)}"
@@ -125,7 +125,7 @@
 										<h:outputText value="#{val.currentDocument.lastModified}"
 											rendered="#{documentBean.canRead(val)}" />
 									</p:column>
-									<p:column headerText="Last modified by" resizable="true">
+									<p:column headerText="Last modified by" resizable="true" style="width:120px">
 										<h:outputText
 											value="#{val.currentDocument.lastModifiedBy.name}"
 											rendered="#{documentBean.canRead(val)}" />
@@ -139,23 +139,41 @@
 										<h:outputText value="#{val.currentDocument.version}"
 											rendered="#{documentBean.canRead(val)}" />
 									</p:column>
-									<p:column headerText="History" resizable="true">
+									<p:column headerText="History" resizable="true" style="width:120px">
 										<p:commandButton id="cmdhistory"
 											disabled="#{!documentBean.canRead(val)}"
 											action="#{documentBean.history(val)}" style="width:150px"
 											icon="ui-icon-clock" value="History..." ajax="false"></p:commandButton>
 									</p:column>
-									<p:column headerText="Edit" resizable="true">
+									<p:column headerText="Edit" resizable="true" style="width:120px">
 										<p:commandButton action="#{documentBean.edit(val)}"
 											value="Edit..." disabled="#{!documentBean.canUpdate(val)}"
 											ajax="false" style="width:150px" icon="ui-icon-pencil"></p:commandButton>
 									</p:column>
-									<p:column headerText="Delete" resizable="true">
+									<p:column headerText="Delete" resizable="true" style="width:120px">
 										<p:commandButton id="cmddelete"
 											action="#{documentBean.delete(val)}" style="width:150px"
 											disabled="#{!documentBean.canDelete(val)}"
 											icon="ui-icon-trash" value="Delete" ajax="false"></p:commandButton>
 									</p:column>
+									  <p:column headerText="Item Collections"
+                                        resizable="true" width="360">
+                                        <h:outputText value="Select Collection/Bookmark to add Document to: "></h:outputText>
+                                        <p:selectOneMenu style="width:280px;"
+                                            id="selectedCollectionId" rendered="true"
+                                            value="#{documentBean.selectedItemCollectionName}">
+                                            <f:selectItem itemLabel="---" itemValue="#{null}"
+                                                noSelectionOption="true" />
+                                            <f:selectItems value="#{itemCollectionBean.itemCollections}"
+                                                var="collection" itemValue="#{collection.name}"
+                                                itemLabel="#{collection.name} - #{collection.description}"
+                                                itemDescription="#{collection.name} - #{collection.description}" />
+                                            
+                                        </p:selectOneMenu>
+                                        <p:commandButton ajax="false" action="#{documentBean.addDocumentToItemCollection(val)}" value="Add">
+                                        </p:commandButton>
+
+                                    </p:column>
 								</p:dataTable>
 								<p:poll interval="10" update="documents" />
 							</h:form>

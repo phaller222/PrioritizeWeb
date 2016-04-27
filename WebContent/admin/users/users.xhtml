@@ -27,7 +27,8 @@
 						<p:panel>
 							<h:form id="actions">
 								<p:dataTable var="val" value="#{userBean.getUsers()}"
-									style="max-width:1250px" dynamic="true" layout="grid" paginator="true" rows="10">
+									style="max-width:1250px" dynamic="true" layout="grid"
+									paginator="true" rows="10">
 
 
 									<p:column headerText="Name" resizable="true" toggleable="true">
@@ -47,6 +48,24 @@
 											style="height:25px;width:30px" icon="ui-icon-trash" value=""
 											title="Delete..." ajax="false"
 											disabled="#{!userBean.canDelete(val)}"></p:commandButton>
+									</p:column>
+									<p:column headerText="Item Collections"
+										resizable="true" width="300">
+										<h:outputText value="Select Collection/Bookmark to add User to: "></h:outputText>
+										<p:selectOneMenu style="width:280px;"
+											id="selectedCollectionId" rendered="true"
+											value="#{userBean.selectedItemCollectionName}">
+											<f:selectItem itemLabel="---" itemValue="#{null}"
+												noSelectionOption="true" />
+											<f:selectItems value="#{itemCollectionBean.itemCollections}"
+												var="collection" itemValue="#{collection.name}"
+												itemLabel="#{collection.name} - #{collection.description}"
+												itemDescription="#{collection.name} - #{collection.description}" />
+											
+										</p:selectOneMenu>
+										<p:commandButton ajax="false" action="#{userBean.addUserToItemCollection(val)}" value="Add">
+										</p:commandButton>
+
 									</p:column>
 								</p:dataTable>
 							</h:form>
@@ -85,7 +104,7 @@
 								<p:inputText id="name" rendered="true"
 									value="#{userBean.user.name}" style="width:300px;"
 									disabled="#{!cancreate}"></p:inputText>
-									
+
 
 								<h:outputText value="Username:"></h:outputText>
 								<p:inputText id="username" rendered="true"
@@ -133,7 +152,8 @@
 				</p:tab>
 
 			</p:tabView>
-	<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" showIcon="true" severity="error"/>
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" showIcon="true" severity="error" />
 		</div>
 	</p:panel>
 
