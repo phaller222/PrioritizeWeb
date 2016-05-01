@@ -105,6 +105,20 @@
 								</p:panelGrid>
 							</div>
 							<h:form id="actions">
+							   <div>
+                            <h:outputText style="font-size:12pt;" value="Select Collection/Bookmark to add Resource to: "></h:outputText>
+                                        <p:selectOneMenu style="width:280px;font-size:12pt;"
+                                            id="selectedCollectionId" rendered="true"
+                                            value="#{resourceBean.selectedItemCollectionName}">
+                                            <f:selectItem itemLabel="---" itemValue="#{null}"
+                                                noSelectionOption="true" />
+                                            <f:selectItems style="font-size:12pt;" value="#{itemCollectionBean.itemCollections}"
+                                                var="collection" itemValue="#{collection.name}"
+                                                itemLabel="#{collection.name} - #{collection.description}"
+                                                itemDescription="#{collection.name} - #{collection.description}" />
+                                            
+                                        </p:selectOneMenu>
+                            </div>
 								<p:dataTable id="resources" var="val" layout="grid"
 									value="#{resourceBean.resources}" dynamic="true" rows="10">
 
@@ -186,6 +200,13 @@
 												disabled="#{!resourceBean.canDelete(val)}"
 												icon="ui-icon-trash" title="Delete" ajax="false"></p:commandButton>
 										</p:column>
+										<p:column headerText="Item Collection"
+                                        resizable="true" width="300">
+                                        
+                                        <p:commandButton ajax="false" action="#{resourceBean.addResourceToItemCollection(val)}" value="Add to selected Collection">
+                                        </p:commandButton>
+
+                                    </p:column>
 								
 								</p:dataTable>
 								<p:poll interval="10" update="resources" />

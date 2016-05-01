@@ -16,7 +16,9 @@
 </h:head>
 
 <h:body>
-
+<ui:include src="/admin/mainmenu.xhtml" />
+    <p:panel id="sessionok" rendered="#{loginBean.getLoggedIn()}">
+    <h2>Bookmarks / Item-Collections</h2>
 	<h:form id="itemcollections">
 		<p:dataTable var="val"
 			value="#{itemCollectionBean.getItemCollections()}"
@@ -29,6 +31,16 @@
 			<p:column headerText="Description" resizable="true" toggleable="true">
                 <h:outputText value="#{val.description}"></h:outputText>
             </p:column>
+            <p:column headerText="Actions"  resizable="true" toggleable="true" >
+            <p:commandButton id="editCollection"
+                                                value="Edit" icon="ui-icon-pencil"
+                                                action="#{itemCollectionBean.editItemCollection(val)}" ajax="false"
+                                                style="width:220px"></p:commandButton>
+               <p:commandButton id="deleteCollection"
+                                                value="Delete" icon="ui-icon-trash"
+                                                action="#{itemCollectionBean.deleteItemCollection(val)}" ajax="false"
+                                                style="width:220px"></p:commandButton>
+            </p:column>
 		</p:dataTable>
 		
 		<p:panel>
@@ -39,5 +51,6 @@
 		<h:commandButton action="#{itemCollectionBean.createItemCollection()}" value="Create new Collection" />
 		</p:panel>
 	</h:form>
+	</p:panel>
 </h:body>
 </html>

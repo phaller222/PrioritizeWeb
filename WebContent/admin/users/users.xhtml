@@ -26,6 +26,21 @@
 						<!--  List all users  -->
 						<p:panel>
 							<h:form id="actions">
+						                      <div>
+                            <h:outputText style="font-size:12pt;" value="Select Collection/Bookmark to add Users to: "></h:outputText>
+                                        <p:selectOneMenu style="width:280px;font-size:12pt;"
+                                            id="selectedCollectionId" rendered="true"
+                                            value="#{userBean.selectedItemCollectionName}">
+                                            <f:selectItem itemLabel="---" itemValue="#{null}"
+                                                noSelectionOption="true" />
+                                            <f:selectItems style="font-size:12pt;" value="#{itemCollectionBean.itemCollections}"
+                                                var="collection" itemValue="#{collection.name}"
+                                                itemLabel="#{collection.name} - #{collection.description}"
+                                                itemDescription="#{collection.name} - #{collection.description}" />
+                                            
+                                        </p:selectOneMenu>
+                            </div>
+							
 								<p:dataTable var="val" value="#{userBean.getUsers()}"
 									style="max-width:1250px" dynamic="true" layout="grid"
 									paginator="true" rows="10">
@@ -49,25 +64,15 @@
 											title="Delete..." ajax="false"
 											disabled="#{!userBean.canDelete(val)}"></p:commandButton>
 									</p:column>
-									<p:column headerText="Item Collections"
+									<p:column headerText="Item Collection"
 										resizable="true" width="300">
-										<h:outputText value="Select Collection/Bookmark to add User to: "></h:outputText>
-										<p:selectOneMenu style="width:280px;"
-											id="selectedCollectionId" rendered="true"
-											value="#{userBean.selectedItemCollectionName}">
-											<f:selectItem itemLabel="---" itemValue="#{null}"
-												noSelectionOption="true" />
-											<f:selectItems value="#{itemCollectionBean.itemCollections}"
-												var="collection" itemValue="#{collection.name}"
-												itemLabel="#{collection.name} - #{collection.description}"
-												itemDescription="#{collection.name} - #{collection.description}" />
-											
-										</p:selectOneMenu>
-										<p:commandButton ajax="false" action="#{userBean.addUserToItemCollection(val)}" value="Add">
+										
+										<p:commandButton ajax="false" action="#{userBean.addUserToItemCollection(val)}" value="Add to selected ItemCollection">
 										</p:commandButton>
 
 									</p:column>
 								</p:dataTable>
+					
 							</h:form>
 						</p:panel>
 					</div>
