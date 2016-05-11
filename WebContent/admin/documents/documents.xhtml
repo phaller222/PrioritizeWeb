@@ -20,7 +20,7 @@
 	<ui:include src="/admin/mainmenu.xhtml" />
 	<p:panel id="sessionok" rendered="#{loginBean.getLoggedIn()}">
 
-	<p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+		<p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
 			<f:facet name="default">
 				<h:outputText value="Status: StandBy." />
 			</f:facet>
@@ -102,31 +102,34 @@
 												</h:panelGrid>
 											</h:form>
 										</div>
-										     
-                            
+
+
 									</p:column>
 								</p:panelGrid>
 							</div>
 							<h:form id="actions">
-							<div>
-                            <h:outputText style="font-size:12pt;" value="Select Collection/Bookmark to add Documents to: "></h:outputText>
-                                        <p:selectOneMenu style="width:280px;font-size:12pt;"
-                                            id="selectedCollectionId" rendered="true"
-                                            value="#{documentBean.selectedItemCollectionName}">
-                                            <f:selectItem itemLabel="---" itemValue="#{null}"
-                                                noSelectionOption="true" />
-                                            <f:selectItems style="font-size:12pt;" value="#{itemCollectionBean.itemCollections}"
-                                                var="collection" itemValue="#{collection.name}"
-                                                itemLabel="#{collection.name} - #{collection.description}"
-                                                itemDescription="#{collection.name} - #{collection.description}" />
-                                            
-                                        </p:selectOneMenu>
-                            </div>
+								<div>
+									<h:outputText style="font-size:12pt;"
+										value="Select Collection/Bookmark to add Documents to: "></h:outputText>
+									<p:selectOneMenu style="width:280px;font-size:12pt;"
+										id="selectedCollectionId" rendered="true"
+										value="#{documentBean.selectedItemCollectionName}">
+										<f:selectItem itemLabel="---" itemValue="#{null}"
+											noSelectionOption="true" />
+										<f:selectItems style="font-size:12pt;"
+											value="#{itemCollectionBean.itemCollections}"
+											var="collection" itemValue="#{collection.name}"
+											itemLabel="#{collection.name} - #{collection.description}"
+											itemDescription="#{collection.name} - #{collection.description}" />
+
+									</p:selectOneMenu>
+								</div>
 								<p:dataTable id="documents" var="val" layout="grid"
 									value="#{documentBean.documentInfos}" dynamic="true"
 									paginator="true" rows="10">
 
-									<p:column headerText="Name" style="width:120px" resizable="true" toggleable="true">
+									<p:column headerText="Name" style="width:120px"
+										resizable="true" toggleable="true">
 										<p:commandLink id="downloadLink"
 											value="#{val.currentDocument.name}" ajax="false"
 											disabled="#{!documentBean.canRead(val)}"
@@ -141,7 +144,8 @@
 										<h:outputText value="#{val.currentDocument.lastModified}"
 											rendered="#{documentBean.canRead(val)}" />
 									</p:column>
-									<p:column headerText="Last modified by" resizable="true" style="width:120px">
+									<p:column headerText="Last modified by" resizable="true"
+										style="width:120px">
 										<h:outputText
 											value="#{val.currentDocument.lastModifiedBy.name}"
 											rendered="#{documentBean.canRead(val)}" />
@@ -155,30 +159,34 @@
 										<h:outputText value="#{val.currentDocument.version}"
 											rendered="#{documentBean.canRead(val)}" />
 									</p:column>
-									<p:column headerText="History" resizable="true" style="width:120px">
+									<p:column headerText="History" resizable="true"
+										style="width:120px">
 										<p:commandButton id="cmdhistory"
 											disabled="#{!documentBean.canRead(val)}"
 											action="#{documentBean.history(val)}" style="width:150px"
 											icon="ui-icon-clock" value="History..." ajax="false"></p:commandButton>
 									</p:column>
-									<p:column headerText="Edit" resizable="true" style="width:120px">
+									<p:column headerText="Edit" resizable="true"
+										style="width:120px">
 										<p:commandButton action="#{documentBean.edit(val)}"
 											value="Edit..." disabled="#{!documentBean.canUpdate(val)}"
 											ajax="false" style="width:150px" icon="ui-icon-pencil"></p:commandButton>
 									</p:column>
-									<p:column headerText="Delete" resizable="true" style="width:120px">
+									<p:column headerText="Delete" resizable="true"
+										style="width:120px">
 										<p:commandButton id="cmddelete"
 											action="#{documentBean.delete(val)}" style="width:150px"
 											disabled="#{!documentBean.canDelete(val)}"
 											icon="ui-icon-trash" value="Delete" ajax="false"></p:commandButton>
 									</p:column>
-									  <p:column headerText="Item Collection"
-                                        resizable="true" width="360">
-                                        
-                                        <p:commandButton ajax="false" action="#{documentBean.addDocumentToItemCollection(val)}" value="Add Document to selected Collection">
-                                        </p:commandButton>
+									<p:column headerText="Item Collection" resizable="true"
+										width="360">
 
-                                    </p:column>
+										<p:commandButton ajax="false"
+											action="#{documentBean.addDocumentToItemCollection(val)}"
+											value="Add Document to selected Collection">
+										</p:commandButton>
+									</p:column>
 								</p:dataTable>
 								<p:poll interval="10" update="documents" />
 							</h:form>
@@ -245,14 +253,13 @@
 										</h:panelGroup>
 										<h:panelGroup>
 											<h:outputText value="File: #{documentBean.clientFilename}" />
-											<p:fileUpload dragDropSupport="true"
-												disabled="#{!cancreate}"
+											<p:fileUpload dragDropSupport="true" disabled="#{!cancreate}"
 												fileUploadListener="#{documentBean.handleFileUpload}"
 												mode="advanced" ajax="false" update="messages"
 												sizeLimit="100000000"
 												allowTypes="/(\.|\/)(gif|txt|doc|odt|xls|xml|pdf|html|js|java|ppt|jpe?g|png)$/" />
 
-											
+
 										</h:panelGroup>
 
 										<f:facet name="footer">
@@ -269,7 +276,8 @@
 				</p:tab>
 
 			</p:tabView>
-			 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" showIcon="true" severity="error"/>
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" showIcon="true" severity="error" />
 		</div>
 	</p:panel>
 	<ui:include src="/notloggedin.xhtml" />
