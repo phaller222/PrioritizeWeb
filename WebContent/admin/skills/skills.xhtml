@@ -59,6 +59,9 @@
 								value="#{skillBean.root}" var="skillItem" scrollable="true"
 								scrollHeight="250" style="width:100%;text-align:left">
 
+                                 <p:ajax event="expand" listener="#{skillBean.nodeExpand}" />
+                                 <p:ajax event="collapse" listener="#{skillBean.nodeCollapse}" />
+
 								<p:treeNode type="rootnode">
 									<h:outputText value="Skills" />
 								</p:treeNode>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:body>
+	<ui:composition template="../templates/main.xhtml">
+		<ui:define name="content">
+			<p:outputPanel id="sessionok" style="margin-left:10%;width:80%;background-image: url('../../images/background.png');"
+				rendered="#{loginBean.getLoggedIn()}" >
+				<h:form>
+					<p:remoteCommand name="onload"
+						action="#{messageBean.setMessageRead}" autoRun="true" />
+				</h:form>
+				
+				
+					<div >
+						<div class="div" id="readMessage" align="center" >
+							<h:form id="form">
+								<h:panelGrid columns="1" footerClass=".ui-widget-footer"
+									headerClass=".ui-widget-header" frame="box" rules="groups"
+									cellpadding="10">
+
+									<f:facet name="header">
+										<h:outputText value="#{messageBean.readMessageSubject}"></h:outputText>
+									</f:facet>
+
+
+
+									<h:outputText id="subject" rendered="true"
+										value="#{messageBean.readMessageSubject}">
+									</h:outputText>
+
+
+									<p:scrollPanel style="width:850px;height:300px">
+										<h:outputText escape="false"
+											value="#{messageBean.readMessageMessage}"></h:outputText>
+									</p:scrollPanel>
+									<f:facet name="footer">
+										<p:commandButton id="closeAction" value="Back"
+											icon="ui-icon-mail-closed" action="#{messageBean.inbox}"
+											ajax="false" style="width:220px"></p:commandButton>
+									</f:facet>
+								</h:panelGrid>
+							</h:form>
+						</div>
+					</div>
+				
+			</p:outputPanel>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

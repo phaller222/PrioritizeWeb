@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:body>
+	<ui:composition template="../templates/main.xhtml">
+		<ui:define name="content">
+			<h:form id="dashboard">
+				<p:panelGrid>
+					<p:row>
+						<p:column>
+							<p:panel header="Trends" toggleable="true" >
+								<p:tagCloud model="#{loginBean.model}"
+									style="width:300px;height:115px;"></p:tagCloud>
+
+							</p:panel>
+
+						</p:column>
+						<p:column>
+							<p:panel header="Devices and Resources" toggleable="true"
+								footer="You are watching 12 devices." closable="true">
+
+								<p:panel style="background-color:white;width:250px;">
+									<h:outputText style="color:green;font-style:bold"
+										value="Devices online:  7." />
+								</p:panel>
+								<p:panel style="background-color:white;width:250px;">
+									<h:outputText style="color:red;font-style:bold"
+										value="Devices offline:  5." />
+								</p:panel>
+							</p:panel>
+						</p:column>
+
+						<p:column>
+							<p:panel header="documents" toggleable="true" closable="true"
+								footer="You are watching documents from 3 departments.">
+								<p:panel style="background-color:white;width:250px;">
+									<h:outputText value="12 documents have changed." />
+								</p:panel>
+								<p:panel style="background-color:white;width:250px;">
+									<h:outputText value="3 new documents" />
+								</p:panel>
+								<p:panel style="background-color:white;width:250px;">
+									<h:outputText value="2 documents have been deleted." />
+								</p:panel>
+							</p:panel>
+						</p:column>
+						</p:row>
+						<p:row>
+						<p:column>
+							<p:panel header="Messagebox" toggleable="true" closable="true"
+								footer="You have no new messages">
+								<h:form id="mailform"
+									rendered="#{messageBean.unreadMessages.size() gt 0}">
+                                       You have <p:commandButton
+										value="#{messageBean.unreadMessages.size()}"
+										icon="ui-icon-mail-closed" /> new messages.
+                                    </h:form>
+							</p:panel>
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

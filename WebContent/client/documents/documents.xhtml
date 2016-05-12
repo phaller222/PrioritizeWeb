@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:body>
+	<ui:composition template="../templates/main.xhtml">
+		<ui:define name="content">
+			<p:outputPanel id="sessionok" style="margin-left:10%;width:80%"
+				rendered="#{loginBean.getLoggedIn()}">
+
+				<h1>My Documents</h1>
+				<h:form id="documentTree">
+					<p:treeTable value="#{documentBean.documentTree}" var="document">
+						<f:facet name="header">
+            Document Viewer
+        </f:facet>
+						<p:column headerText="Name" style="width:120px" resizable="true"
+							toggleable="true" >
+							<p:commandLink id="downloadLink"
+								value="#{document.documentInfo.currentDocument.name}"
+								ajax="false"
+								disabled="#{!documentBean.canRead(document.documentInfo)}"
+								rendered="#{document.leaf}"
+								actionListener="#{documentBean.prepDownload(document.documentInfo.id)}">
+								<p:fileDownload value="#{documentBean.download}"
+									contentDisposition="attachment" />
+							</p:commandLink>
+							 <h:outputText value="#{document.name}" rendered="#{not document.leaf}"/>
+						</p:column>
+						
+					
+						
+
+						<p:column style="width:120px" headerText="Last modified"
+							resizable="true">
+							<h:outputText value="#{document.documentInfo.currentDocument.lastModified}"
+								rendered="#{documentBean.canRead(document.documentInfo)}" />
+						</p:column>
+						<p:column headerText="Last modified by" resizable="true"
+							style="width:120px">
+							<h:outputText
+								value="#{document.documentInfo.currentDocument.lastModifiedBy.name}"
+								rendered="#{documentBean.canRead(document.documentInfo)}" />
+						</p:column>
+						<p:column headerText="Changes" resizable="true">
+							<h:outputText
+								value="#{document.documentInfo.currentDocument.changes}"
+								rendered="#{documentBean.canRead(document.documentInfo)}" />
+						</p:column>
+						<p:column style="width:80px" headerText="Version" resizable="true">
+							<h:outputText
+								value="#{document.documentInfo.currentDocument.version}"
+								rendered="#{documentBean.canRead(document.documentInfo)}" />
+						</p:column>
+						<p:column headerText="History" resizable="true"
+							style="width:100px">
+							<p:commandButton id="cmdhistory"
+								disabled="#{!documentBean.canRead(document.documentInfo)}"
+								action="#{documentBean.history(document.documentInfo)}"
+								style="width:110px" icon="ui-icon-clock" value="History..."
+								ajax="false" rendered="#{document.leaf}"></p:commandButton>
+						</p:column>
+						<p:column headerText="Edit" resizable="true" style="width:100px">
+							<p:commandButton
+								action="#{documentBean.edit(document.documentInfo)}"
+								value="Edit..."
+								disabled="#{!documentBean.canUpdate(document.documentInfo)}"
+								rendered="#{document.leaf}"
+								ajax="false" style="width:110px" icon="ui-icon-pencil"></p:commandButton>
+						</p:column>
+						<p:column headerText="Delete" resizable="true" style="width:100px">
+							<p:commandButton id="cmddelete"
+								action="#{documentBean.delete(document.documentInfo)}"
+								style="width:110px"
+								disabled="#{!documentBean.canDelete(document.documentInfo)}"
+								rendered="#{document.leaf}"
+								icon="ui-icon-trash" value="Delete" ajax="false"></p:commandButton>
+						</p:column>
+
+					</p:treeTable>
+				</h:form>
+			</p:outputPanel>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

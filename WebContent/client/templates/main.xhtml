@@ -11,11 +11,15 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta charset="ISO-8859-1" />
 	<title><ui:insert name="title">Dashboard</ui:insert></title>
-	<link type="text/css" rel="stylesheet" href="../styles/companies.css" />
+	<link type="text/css" rel="stylesheet" href="../../styles/companies.css" />
 	<style type="text/css">
+	
+
+	
+	
 .no-border {
 	border-style: hidden !important; /* or none */
-	background-image: url('../images/background.jpg');
+	background-image: url('../../images/background.jpg');
 }
 
 .ui-panel, div.ui-state-hover {
@@ -31,7 +35,7 @@
 	width: 80%;
 	margin-left: 200px;
 	baackground-color:#C6D8EC;
-	#background-image: url('../images/yellowback.png');
+	#background-image: url('../../images/yellowback.png');
 	margin-bottom: 10px
 }
 
@@ -39,8 +43,11 @@
 	width: 80%;
 	margin-left: 150px;
 	margin-bottom: 10px;
-	background-image: url('../images/yellowback.png');
+	background-image: url('../../images/yellowback.png');
 }
+
+
+
 </style>
 
 </h:head>
@@ -48,14 +55,14 @@
 <h:body>
 	<p:layout fullPage="true" rendered="#{loginBean.getLoggedIn()}"
 		widgetVar="layoutWdgt">
-		<p:layoutUnit position="north" resizable="false" minSize="119"
-			collapseSize="20" collapsible="true" maxSize="119"
-			style="min-height:119px;" scrollable="null">
+		<p:layoutUnit position="north" resizable="false" minSize="112"
+			collapseSize="20" collapsible="true" maxSize="112"
+			style="min-height:112px;border:0" scrollable="null">
 			<ui:insert name="head">
 				<p:panelGrid columns="3"
 					columnClasses="no-border, no-border, no-border" style="width:100%;">
 					<h:column>
-						<img src="../images/logo2.png" />
+						<img src="../../images/logo2.png" />
 
 					</h:column>
 					<h:column>
@@ -78,13 +85,12 @@
 
 		<p:layoutUnit position="center" resizable="true">
 			<p:layout rendered="#{loginBean.getLoggedIn()}">
-				<p:layoutUnit position="north">
+				<p:layoutUnit position="north" style="border:0">
 					<h:form id="headerform">
 						<p:layout style="height:40px;">
 
-							<p:layoutUnit position="center" resizable="true">
-								<p:panelGrid columns="4">
-									<h:column>
+							<p:layoutUnit position="center" resizable="true"  style="border:0">
+								
 										<p:commandButton onclick="PF('layoutWdgtMenu').toggle('west')"
 											icon="fa fa-chevron-left" />
 
@@ -94,9 +100,9 @@
 
 										<p:commandButton onclick="PF('layoutWdgt').toggle('north')"
 											icon="fa fa-chevron-up" />
-									</h:column>
+									
 
-									<h:column>
+						
                             
                                     Welcome <b style="font-size: 1.2em"><h:outputText
 												value="#{loginBean.username}" /></b>. 
@@ -104,16 +110,15 @@
 											rendered="#{messageBean.unreadMessages.size() gt 0}">
                                        You have <p:commandButton
 												value="#{messageBean.unreadMessages.size()}"
-												icon="ui-icon-mail-closed" /> new messages.
+												icon="ui-icon-mail-closed" action="#{messageBean.gotoInbox}"/> new messages.
                                     </h:form>
                                     <p:poll interval="5" update="headerform" />
 
 
-									</h:column>
-								</p:panelGrid>
+						
 							</p:layoutUnit>
 							<p:layoutUnit position="east" size="500" minSize="500"
-								resizable="true">
+								resizable="true" style="border:0">
 
 
 
@@ -143,7 +148,7 @@
 						</p:layout>
 					</h:form>
 				</p:layoutUnit>
-				<p:layoutUnit position="center">
+				<p:layoutUnit position="center" style="border:0">
 
 					<p:dialog header="Search Results" widgetVar="searchResults"
 						style="min-width:600px;" minHeight="40">
@@ -177,55 +182,56 @@
 						</p:dataList>
 					</p:dialog>
 					<p:layout widgetVar="layoutWdgtMenu">
-						<p:layoutUnit position="west" resizable="true" minSize="200"
-							maxSize="400" collapseSize="30" collapsible="true">
-							<div
-								style="background-image: url('../images/background.jpg'); min-height: 100%">
-								<h:form>
-									<p:menu toggleable="true">
-										<p:menuitem value="Dashboard" title="Display Dashboard"
-											icon="fa fa-rocket"></p:menuitem>
-										<p:submenu label="Messages" title="Messages">
-											<p:menuitem value="Inbox" title="Display Dashboard"
-												icon="fa fa-inbox" />
-											<p:menuitem value="Sent" title="Display Dashboard"
-												icon="fa fa-send-o" />
-										</p:submenu>
-										<p:submenu label="Documents">
-											<p:menuitem value="My documents" title="My documents"
-												icon="fa fa-file-o"></p:menuitem>
-											<p:menuitem value="Upload a document" title="Upload document"
-												icon="fa fa-cloud-upload"></p:menuitem>
-										</p:submenu>
-										<p:submenu label="Devices/Agents">
-											<p:menuitem value="Devices" title="Display Dashboard"
-												icon="fa fa-bar-chart-o"></p:menuitem>
-											<p:menuitem value="Agents" title="Display Dashboard"
-												icon="fa fa-sitemap"></p:menuitem>
-										</p:submenu>
-
-										<p:submenu label="Projects" title="Projects">
-											<p:menuitem value="Projects" title="Display Projects"
-												icon="fa fa-bank"></p:menuitem>
-											<p:menuitem value="Tasks" title="Display Dashboard"
-												icon="fa fa-tasks"></p:menuitem>
-										</p:submenu>
-										<p:submenu label="Misc" title="Misc">
-											<p:menuitem value="Settings" title="Change Settings"
-												icon="fa fa-wrench"></p:menuitem>
-										</p:submenu>
-									</p:menu>
-
-								</h:form>
-							</div>
-						</p:layoutUnit>
-						<p:layoutUnit position="center" resizable="true">
+						
+						<p:layoutUnit position="center" resizable="true" >
 
 							<ui:insert name="content">
 
 							</ui:insert>
 
 						</p:layoutUnit>
+						<p:layoutUnit position="west" resizable="true" minSize="200"
+                            maxSize="400" collapseSize="30" collapsible="true" style="border:0;" >
+                            <div
+                                style="background-image: url('../images/background.jpg'); min-height: 100%">
+                                <h:form>
+                                    <p:slideMenu toggleable="false">
+                                        <p:menuitem value="Dashboard" title="Display Dashboard"
+                                            icon="fa fa-rocket" url="../dashboard/dashboard.xhtml"></p:menuitem>
+                                        <p:submenu label="Messages" title="Messages">
+                                            <p:menuitem value="Inbox" title="Display Dashboard"
+                                                icon="fa fa-inbox" url="../messages/inbox.xhtml"/>
+                                            <p:menuitem value="Sent" title="Display Dashboard"
+                                                icon="fa fa-send-o" url="../messages/sent.xhtml"/>
+                                        </p:submenu>
+                                        <p:submenu label="Documents">
+                                            <p:menuitem value="My documents" title="My documents"
+                                                icon="fa fa-file-o" url="../documents/documents.xhtml"></p:menuitem>
+                                            <p:menuitem value="Upload a document" title="Upload document"
+                                                icon="fa fa-cloud-upload"></p:menuitem>
+                                        </p:submenu>
+                                        <p:submenu label="Devices/Agents">
+                                            <p:menuitem value="Devices" title="Display Dashboard"
+                                                icon="fa fa-bar-chart-o"></p:menuitem>
+                                            <p:menuitem value="Agents" title="Display Dashboard"
+                                                icon="fa fa-sitemap"></p:menuitem>
+                                        </p:submenu>
+
+                                        <p:submenu label="Projects" title="Projects">
+                                            <p:menuitem value="Projects" title="Display Projects"
+                                                icon="fa fa-bank"></p:menuitem>
+                                            <p:menuitem value="Tasks" title="Display Dashboard"
+                                                icon="fa fa-tasks"></p:menuitem>
+                                        </p:submenu>
+                                        <p:submenu label="Misc" title="Misc">
+                                            <p:menuitem value="Settings" title="Change Settings"
+                                                icon="fa fa-wrench"></p:menuitem>
+                                        </p:submenu>
+                                    </p:slideMenu>
+
+                                </h:form>
+                            </div>
+                        </p:layoutUnit>
 
 					</p:layout>
 				</p:layoutUnit>
@@ -233,7 +239,7 @@
 		</p:layoutUnit>
 
 		<p:layoutUnit position="south" closable="true" resizable="true"
-			collapsible="true" maxSize="430" minSize="100" size="230" collapseSize="20">
+			collapsible="true" maxSize="400" minSize="100" size="200" collapseSize="20">
 
 			<ui:insert name="footercontent">
 				<!-- <h:form>
@@ -258,7 +264,7 @@
 				</h:form> -->
 
 				<div id="actionboard"
-					style="background-image: url('../images/background.jpg');">
+					style="background-image: url('../../images/background.jpg');">
 					<p:panel class="actionboardarticle"
 						header="13.10.2016 - 12:40 - (Article) from josephine (User)">
 						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -327,7 +333,7 @@
 			<h1>You are not logged in.</h1>
 			<h2>Please log in:</h2>
 			<form>
-				<a href="login.xhtml">Login</a>
+				<a href="../login.xhtml">Login</a>
 			</form>
 		</div>
 	</p:panel>

@@ -264,11 +264,6 @@
                                         
                                         <p:commandButton ajax="false" action="#{resourceBean.addResourceToItemCollection(val)}" value="Add to selected Collection">
                                         </p:commandButton>
-                                        <p:commandButton
-                                                                action="#{resourceBean.addTestListener(val)}"
-                                                                style="height:25px" value=" #{value}"
-                                                                title="Listener"></p:commandButton>
-
                                     </p:column>
 								</p:dataTable>
 								<p:poll interval="5" update="resources" />
