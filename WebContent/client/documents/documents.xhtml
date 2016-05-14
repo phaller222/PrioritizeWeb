@@ -9,16 +9,117 @@
 <h:body>
 	<ui:composition template="../templates/main.xhtml">
 		<ui:define name="content">
-			<p:outputPanel id="sessionok" style="margin-left:10%;width:80%"
-				rendered="#{loginBean.getLoggedIn()}">
+
+			<p:outputPanel id="sessionok" rendered="#{loginBean.getLoggedIn()}">
 
 				<h1>My Documents</h1>
 				<h:form id="documentTree">
-					<p:treeTable value="#{documentBean.documentTree}" var="document">
+					<p:tree value="#{documentBean.documentTree}" var="document"
+						style="width:1100px;min-height:400px;">
 						<f:facet name="header">
             Document Viewer
-        </f:facet>
-						<p:column headerText="Name" style="width:120px" resizable="true"
+                    </f:facet>
+
+						<p:treeNode>
+							<f:metadata>
+								<f:event type="preRenderView"
+									listener="#{documentBean.updateDocumentTree()}" />
+							</f:metadata>
+							
+  
+
+								<p:dataGrid value="document.documentInfo" var="info"
+									rendered="#{document.leaf}" style="width:1000px;border:0;padding:0">
+									<p:column headerText="History" resizable="true"
+                                        style="width:30px" width="30">
+                                        <p:commandButton id="cmdhistory"
+                                            disabled="#{!documentBean.canRead(document.documentInfo)}"
+                                            action="#{documentBean.history(document.documentInfo)}"
+                                            style="width:30px" icon="ui-icon-clock" 
+                                            title="History..."
+                                            ajax="false" rendered="#{document.leaf}"></p:commandButton>
+                                    </p:column>
+                                       <p:spacer width="5"></p:spacer>
+                                    <p:column headerText="Edit" resizable="true"
+                                        style="width:30px">
+                                        <p:commandButton
+                                            action="#{documentBean.edit(document.documentInfo)}"
+                                            disabled="#{!documentBean.canUpdate(document.documentInfo)}"
+                                            rendered="#{document.leaf}" ajax="false" style="width:30px"
+                                            title="Edit..."
+                                            icon="ui-icon-pencil"></p:commandButton>
+                                    </p:column>
+                                       <p:spacer width="5"></p:spacer>
+                                    <p:column headerText="Delete" resizable="true"
+                                        style="width:30px">
+                                        <p:commandButton id="cmddelete"
+                                            action="#{documentBean.delete(document.documentInfo)}"
+                                            style="width:30px"
+                                            title="Delete"
+                                            disabled="#{!documentBean.canDelete(document.documentInfo)}"
+                                            rendered="#{document.leaf}" icon="ui-icon-trash"
+                                            ajax="false"></p:commandButton>
+                                    </p:column>
+									<div  style="width:150px;margin-top:0px;height:20px;">
+										<h:outputText value="#{document.name}"
+											rendered="#{not document.leaf}" style="min-width:200px;"/>
+										<p:commandLink id="downloadLink"
+											value="#{document.documentInfo.currentDocument.name}"
+											ajax="false"
+											disabled="#{!documentBean.canRead(document.documentInfo)}"
+											rendered="#{document.leaf}"
+											actionListener="#{documentBean.prepDownload(document.documentInfo.id)}" style="font-size:5em;width:150px;">
+											<p:fileDownload value="#{documentBean.download}"
+												contentDisposition="attachment" />
+										</p:commandLink>
+										
+										<p:spacer width="20"></p:spacer>
+										  <p:column style="width:80px" headerText="Version"
+                                        resizable="true">
+                                        <h:outputText
+                                            value="Version: #{document.documentInfo.currentDocument.version}"
+                                            rendered="#{documentBean.canRead(document.documentInfo)}" />
+                                    </p:column>
+                                    <p:spacer width="20"></p:spacer>
+                                    <p:column style="width:80px;">
+                                        <h:outputText
+                                            value="#{document.documentInfo.currentDocument.lastModified}"
+                                            rendered="#{documentBean.canRead(document.documentInfo)}" />
+                                    </p:column>
+                                    <p:spacer width="20"></p:spacer>
+                                    <p:column headerText="Last modified by" resizable="true"
+                                        style="width:100px">
+                                        <h:outputText
+                                            value="#{document.documentInfo.currentDocument.lastModifiedBy.name}"
+                                            rendered="#{documentBean.canRead(document.documentInfo)}" />
+                                    </p:column>
+                                    <p:spacer width="20"></p:spacer>
+                                    <p:column headerText="Changes" resizable="true"
+                                        style="width:100px;">
+                                        <h:outputText
+                                            value="#{document.documentInfo.currentDocument.changes}"
+                                            rendered="#{documentBean.canRead(document.documentInfo)}" />
+                                    </p:column>
+                                    <p:spacer width="20"></p:spacer>
+										
+									</div>
+								                               
+                                    
+                     
+									
+								
+								
+								</p:dataGrid>
+
+
+								
+
+				
+							<h:outputText value="#{document.name}"
+                                    rendered="#{not document.leaf}" />
+						</p:treeNode>
+
+						<!-- <p:column headerText="Name" style="width:120px" resizable="true"
 							toggleable="true" >
 							<p:commandLink id="downloadLink"
 								value="#{document.documentInfo.currentDocument.name}"
@@ -80,8 +181,12 @@
 								rendered="#{document.leaf}"
 								icon="ui-icon-trash" value="Delete" ajax="false"></p:commandButton>
 						</p:column>
+ -->
+						<p:ajax event="expand" listener="#{documentBean.nodeExpand}" />
+						<p:ajax event="collapse" listener="#{documentBean.nodeCollapse}" />
 
-					</p:treeTable>
+					</p:tree>
+					<!--  <p:poll interval="20" listener="#{documentBean.updateDocumentTree()}"   autoStart="true"/> -->
 				</h:form>
 			</p:outputPanel>
 
