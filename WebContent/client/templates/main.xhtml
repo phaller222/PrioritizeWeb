@@ -22,6 +22,13 @@
 	background-image: url('../../images/background.jpg');
 }
 
+.border {
+    margin-left:50px; !important;
+    border-style: solid !important; /* or none */
+    background-image: url('../../images/background.jpg');
+}
+
+
 .ui-panel, div.ui-state-hover {
 	margin-top: 10px;
 	width: 350px;
@@ -44,6 +51,26 @@
 	margin-left: 150px;
 	margin-bottom: 10px;
 	background-image: url('../../images/yellowback.png');
+}
+
+.yellowtouch {
+    width: 80%;
+    margin-left: 150px;
+    margin-bottom: 10px;
+    background-color: #ffffe3
+}
+
+.graytouch {
+    width: 80%;
+    margin-left: 150px;
+    margin-bottom: 10px;
+    background-color: #F4F2F2
+}
+
+
+
+.hide-column-names table thead tr {
+    display: none;
 }
 
 
@@ -195,39 +222,45 @@
                             <div
                                 style="background-image: url('../images/background.jpg'); min-height: 100%">
                                 <h:form>
-                                    <p:slideMenu toggleable="false">
+                                    <p:menu toggleable="true">
                                         <p:menuitem value="Dashboard" title="Display Dashboard"
                                             icon="fa fa-rocket" url="../dashboard/dashboard.xhtml"></p:menuitem>
-                                        <p:submenu label="Messages" title="Messages">
-                                            <p:menuitem value="Inbox" title="Display Dashboard"
+                                        <p:submenu label="Messages" title="Messages" icon="fa fa-envelope-o">
+                                        <p:menuitem value="New" title="New message..."
+                                                icon="fa fa-flash" url="../messages/new.xhtml"/>
+                                            <p:menuitem value="Inbox" title="Show received messages"
                                                 icon="fa fa-inbox" url="../messages/inbox.xhtml"/>
-                                            <p:menuitem value="Sent" title="Display Dashboard"
+                                            <p:menuitem value="Outbox" title="Show sent messages"
                                                 icon="fa fa-send-o" url="../messages/sent.xhtml"/>
                                         </p:submenu>
-                                        <p:submenu label="Documents">
-                                            <p:menuitem value="My documents" title="My documents"
+                                        <p:submenu label="Documents"  icon="fa fa-files-o">
+                                            <p:menuitem value="Documents" title="My documents"
                                                 icon="fa fa-file-o" url="../documents/documents.xhtml"></p:menuitem>
                                             <p:menuitem value="Upload a document" title="Upload document"
                                                 icon="fa fa-cloud-upload"></p:menuitem>
                                         </p:submenu>
-                                        <p:submenu label="Devices/Agents">
-                                            <p:menuitem value="Devices" title="Display Dashboard"
+                                        <p:submenu label="Devices/Agents" icon="fa fa-sliders">
+                                            <p:menuitem value="Devices" title="Show Devices" url="../resources/resources.xhtml"
                                                 icon="fa fa-bar-chart-o"></p:menuitem>
                                             <p:menuitem value="Agents" title="Display Dashboard"
                                                 icon="fa fa-sitemap"></p:menuitem>
                                         </p:submenu>
 
-                                        <p:submenu label="Projects" title="Projects">
+                                        <p:submenu label="Projects" title="Projects" icon="fa fa-pie-chart">
                                             <p:menuitem value="Projects" title="Display Projects"
                                                 icon="fa fa-bank"></p:menuitem>
                                             <p:menuitem value="Tasks" title="Display Dashboard"
                                                 icon="fa fa-tasks"></p:menuitem>
                                         </p:submenu>
-                                        <p:submenu label="Misc" title="Misc">
-                                            <p:menuitem value="Settings" title="Change Settings"
-                                                icon="fa fa-wrench"></p:menuitem>
+                                        <p:submenu label="Settings" title="Settings" icon="fa fa-wrench">
+                                            <p:menuitem value="Profile" title="Change Profile information"
+                                                icon="fa fa-user"></p:menuitem>
+                                            <p:menuitem value="Dashboard" title="Change Dashboard settings"
+                                                icon="fa fa-line-chart"></p:menuitem>
+                                                 <p:menuitem value="Notifications" title="Notification settings"
+                                                icon="fa fa-comment-o"></p:menuitem>
                                         </p:submenu>
-                                    </p:slideMenu>
+                                    </p:menu>
 
                                 </h:form>
                             </div>

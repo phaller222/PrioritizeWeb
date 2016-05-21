@@ -1,0 +1,45 @@
+.no-border {
+    border-style: hidden !important; /* or none */
+    background-image: url('../../images/background.jpg');
+}
+
+.border {
+    margin-left:50px; !important;
+    border-style: solid !important; /* or none */
+    background-image: url('../../images/background.jpg');
+}
+
+
+
+
+.ui-dashboard-column {
+    width: 380px;
+}
+
+.actionboardmessage {
+    width: 80%;
+    margin-left: 200px;
+    baackground-color:#C6D8EC;
+    #background-image: url('../../images/yellowback.png');
+    margin-bottom: 10px
+}
+
+.actionboardarticle {
+    width: 80%;
+    margin-left: 150px;
+    margin-bottom: 10px;
+    background-image: url('../../images/yellowback.png');
+}
+
+.yellowtouch {
+    width: 80%;
+    margin-left: 150px;
+    margin-bottom: 10px;
+    background-color: #ffffe3
+}
+
+
+
+.hide-column-names table thead tr {
+    display: none;
+}

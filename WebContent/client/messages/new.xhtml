@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:body>
+	<ui:composition template="../templates/main.xhtml">
+		<ui:define name="content">
+			<p:outputPanel  id="sessionok" style="width:1100px"
+				rendered="#{loginBean.getLoggedIn()}">
+
+
+				<h1>New Message</h1>
+			
+					<h:form id="form">
+						<h:panelGrid styleClass="border" columns="1" layout="grid"
+							footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
+							frame="box" rules="groups" cellpadding="10"
+							style="width:1100px">
+
+							<f:facet name="header">
+								<h:outputText value="ComposeMessage"></h:outputText>
+							</f:facet>
+
+							<h:outputText value="Recipiant: "></h:outputText>
+							<p:autoComplete value="#{messageBean.to}" completeMethod="#{messageBean.completeRecipiantList}"/>
+							
+				
+							<!-- <p:selectOneMenu style="width:300px;" id="users" rendered="true"
+								value="#{messageBean.to}">
+								<f:selectItems value="#{messageBean.recipiantList}" var="user"
+									itemValue="#{user.id}" itemLabel="#{user.name}"
+									itemDescription="#{user.name}" />
+
+							</p:selectOneMenu> -->
+
+							<h:outputText value="Subject:">
+							</h:outputText>
+							<p:inputText id="subject" rendered="true"
+								value="#{messageBean.subject}" style="width:300px;">
+							</p:inputText>
+
+
+							<p:editor id="message" rendered="true"
+								value="#{messageBean.message}" style="width:850px;">
+							</p:editor>
+
+							<f:facet name="footer">
+								<p:commandButton id="sentAction" value="Send"
+									icon="ui-icon-mail-closed" action="#{messageBean.sendMessage}"
+									ajax="false" style="width:220px"></p:commandButton>
+							</f:facet>
+						</h:panelGrid>
+					</h:form>
+			
+			</p:outputPanel>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

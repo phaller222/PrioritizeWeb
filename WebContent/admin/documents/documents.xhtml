@@ -13,6 +13,8 @@
 	<title>Documents</title>
 	<link type="text/css" rel="stylesheet"
 		href="../../styles/companies.css" />
+	<link type="text/css" rel="stylesheet"
+	   href="../../styles/clientstyles.css"/> 
 </h:head>
 
 <h:body>
@@ -42,63 +44,65 @@
 						<!--  List all document  -->
 						
 							
-							<h:form id="actions">
-								<!-- <div>
-									<h:outputText style="font-size:12pt;"
-										value="Select Collection/Bookmark to add Documents to: "></h:outputText>
-									<p:selectOneMenu style="width:280px;font-size:12pt;"
-										id="selectedCollectionId" rendered="true"
-										value="#{documentBean.selectedItemCollectionName}">
-										<f:selectItem itemLabel="***" itemValue="#{null}"
-											noSelectionOption="true" />
-										<f:selectItems style="font-size:12pt;"
-											value="#{itemCollectionBean.itemCollections}"
-											var="collection" itemValue="#{collection.name}"
-											itemLabel="#{collection.name} - #{collection.description}"
-											itemDescription="#{collection.name} - #{collection.description}" />
-
-									</p:selectOneMenu>
-								</div>
-							 -->
-								<p:tree value="#{documentBean.documentTree}" var="document"
+							<h1>My Documents</h1>
+                <h:form id="documentTree">
+                    <p:tree  styleClass="border" value="#{documentBean.documentTree}" var="document"
                         style="width:1100px;min-height:400px;">
                         <f:facet name="header">
             Document Viewer
                     </f:facet>
 
-                        <p:treeNode>
+                        <p:treeNode styleClass="no-border">
                             <f:metadata>
                                 <f:event type="preRenderView"
                                     listener="#{documentBean.updateDocumentTree()}" />
                             </f:metadata>
-                            <p:outputPanel>
+                            
   
+  
+                                
 
-                                <p:dataGrid value="document.documentInfo" var="info"
-                                    rendered="#{document.leaf}" style="width:1000px;border:0">
-                                    <div  style="width:350px" width="350">
+                                <p:dataTable styleClass="hide-column-names" value="document.documentInfo" var="info"
+                                    rendered="#{document.leaf}" style="width:1000px;padding:0">
+                                    <p:column styleClass="yellowtouch">
                                         <h:outputText value="#{document.name}"
                                             rendered="#{not document.leaf}" style="min-width:200px;"/>
-                                        <p:commandLink id="downloadLink"
+                                        <p:commandLink  id="downloadLink"
                                             value="#{document.documentInfo.currentDocument.name}"
                                             ajax="false"
                                             disabled="#{!documentBean.canRead(document.documentInfo)}"
                                             rendered="#{document.leaf}"
-                                            actionListener="#{documentBean.prepDownload(document.documentInfo.id)}" style="width:250px;">
+                                            actionListener="#{documentBean.prepDownload(document.documentInfo.id)}" style="font-size:5em;width:120px;">
                                             <p:fileDownload value="#{documentBean.download}"
                                                 contentDisposition="attachment" />
                                         </p:commandLink>
-                                        
-                                        <p:spacer width="20"></p:spacer>
-                                          <p:column style="width:80px;" headerText="Version"
+                                        </p:column>
+                                          <p:column style="width:80px" headerText="Version"
                                         resizable="true">
                                         <h:outputText
                                             value="Version: #{document.documentInfo.currentDocument.version}"
                                             rendered="#{documentBean.canRead(document.documentInfo)}" />
                                     </p:column>
-                                        
-                                    </div>
-                                                               
+                                    <p:spacer width="20"></p:spacer>
+                                    <p:column style="width:80px;">
+                                        <h:outputText
+                                            value="#{document.documentInfo.currentDocument.lastModified}"
+                                            rendered="#{documentBean.canRead(document.documentInfo)}" />
+                                    </p:column>
+                                    <p:spacer width="20"></p:spacer>
+                                    <p:column headerText="Last modified by" resizable="true"
+                                        style="width:100px">
+                                        <h:outputText
+                                            value="#{document.documentInfo.currentDocument.lastModifiedBy.name}"
+                                            rendered="#{documentBean.canRead(document.documentInfo)}" />
+                                    </p:column>
+                                    <p:spacer width="20"></p:spacer>
+                                    <p:column headerText="Changes" resizable="true"
+                                        style="width:180px;">
+                                        <h:outputText
+                                            value="#{document.documentInfo.currentDocument.changes}"
+                                            rendered="#{documentBean.canRead(document.documentInfo)}" />
+                                    </p:column>
                                     <p:column headerText="History" resizable="true"
                                         style="width:30px" width="30">
                                         <p:commandButton id="cmdhistory"
@@ -129,110 +133,36 @@
                                             rendered="#{document.leaf}" icon="ui-icon-trash"
                                             ajax="false"></p:commandButton>
                                     </p:column>
+                                    
+                                        
                                         <p:spacer width="20"></p:spacer>
-                                    <p:column style="width:80px;">
-                                        <h:outputText
-                                            value="#{document.documentInfo.currentDocument.lastModified}"
-                                            rendered="#{documentBean.canRead(document.documentInfo)}" />
-                                    </p:column>
+                                        
                                     <p:spacer width="20"></p:spacer>
-                                    <p:column headerText="Last modified by" resizable="true"
-                                        style="width:100px">
-                                        <h:outputText
-                                            value="#{document.documentInfo.currentDocument.lastModifiedBy.name}"
-                                            rendered="#{documentBean.canRead(document.documentInfo)}" />
-                                    </p:column>
-                                    <p:spacer width="20"></p:spacer>
-                                    <p:column headerText="Changes" resizable="true"
-                                        style="width:100px;">
-                                        <h:outputText
-                                            value="#{document.documentInfo.currentDocument.changes}"
-                                            rendered="#{documentBean.canRead(document.documentInfo)}" />
-                                    </p:column>
-                                    <p:spacer width="20"></p:spacer>
+                                        
+                                    
+                                                               
+                                    
+                     
+                                    
                                 
                                 
-                                </p:dataGrid>
+                                </p:dataTable>
 
 
                                 
 
-                            </p:outputPanel>
+                
                             <h:outputText value="#{document.name}"
                                     rendered="#{not document.leaf}" />
                         </p:treeNode>
 
-                        <!-- <p:column headerText="Name" style="width:120px" resizable="true"
-                            toggleable="true" >
-                            <p:commandLink id="downloadLink"
-                                value="#{document.documentInfo.currentDocument.name}"
-                                ajax="false"
-                                disabled="#{!documentBean.canRead(document.documentInfo)}"
-                                rendered="#{document.leaf}"
-                                actionListener="#{documentBean.prepDownload(document.documentInfo.id)}">
-                                <p:fileDownload value="#{documentBean.download}"
-                                    contentDisposition="attachment" />
-                            </p:commandLink>
-                             <h:outputText value="#{document.name}" rendered="#{not document.leaf}"/>
-                        </p:column>
-                        
-                    
-                        
-
-                        <p:column style="width:120px" headerText="Last modified"
-                            resizable="true">
-                            <h:outputText value="#{document.documentInfo.currentDocument.lastModified}"
-                                rendered="#{documentBean.canRead(document.documentInfo)}" />
-                        </p:column>
-                        <p:column headerText="Last modified by" resizable="true"
-                            style="width:120px">
-                            <h:outputText
-                                value="#{document.documentInfo.currentDocument.lastModifiedBy.name}"
-                                rendered="#{documentBean.canRead(document.documentInfo)}" />
-                        </p:column>
-                        <p:column headerText="Changes" resizable="true">
-                            <h:outputText
-                                value="#{document.documentInfo.currentDocument.changes}"
-                                rendered="#{documentBean.canRead(document.documentInfo)}" />
-                        </p:column>
-                        <p:column style="width:80px" headerText="Version" resizable="true">
-                            <h:outputText
-                                value="#{document.documentInfo.currentDocument.version}"
-                                rendered="#{documentBean.canRead(document.documentInfo)}" />
-                        </p:column>
-                        <p:column headerText="History" resizable="true"
-                            style="width:100px">
-                            <p:commandButton id="cmdhistory"
-                                disabled="#{!documentBean.canRead(document.documentInfo)}"
-                                action="#{documentBean.history(document.documentInfo)}"
-                                style="width:110px" icon="ui-icon-clock" value="History..."
-                                ajax="false" rendered="#{document.leaf}"></p:commandButton>
-                        </p:column>
-                        <p:column headerText="Edit" resizable="true" style="width:100px">
-                            <p:commandButton
-                                action="#{documentBean.edit(document.documentInfo)}"
-                                value="Edit..."
-                                disabled="#{!documentBean.canUpdate(document.documentInfo)}"
-                                rendered="#{document.leaf}"
-                                ajax="false" style="width:110px" icon="ui-icon-pencil"></p:commandButton>
-                        </p:column>
-                        <p:column headerText="Delete" resizable="true" style="width:100px">
-                            <p:commandButton id="cmddelete"
-                                action="#{documentBean.delete(document.documentInfo)}"
-                                style="width:110px"
-                                disabled="#{!documentBean.canDelete(document.documentInfo)}"
-                                rendered="#{document.leaf}"
-                                icon="ui-icon-trash" value="Delete" ajax="false"></p:commandButton>
-                        </p:column>
- -->
+                   
                         <p:ajax event="expand" listener="#{documentBean.nodeExpand}" />
                         <p:ajax event="collapse" listener="#{documentBean.nodeCollapse}" />
 
                     </p:tree>
-                    
                     <!--  <p:poll interval="20" listener="#{documentBean.updateDocumentTree()}"   autoStart="true"/> -->
-								
-							</h:form>
+                </h:form>
 					
 				
 				</p:tab>

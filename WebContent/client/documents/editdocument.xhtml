@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:body>
+	<ui:composition template="../templates/main.xhtml">
+		<ui:define name="content">
+
+			<p:outputPanel id="sessionok" rendered="#{loginBean.getLoggedIn()}">
+
+				
+					<div id="editdocument" class="top" align="left">
+					<h1>Edit #{documentBean.document.name}</h1>
+						<h:form id="formeditdocument" enctype="multipart/form-data">
+							<h:panelGrid columns="2" 
+								footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
+								 rules="groups" cellpadding="10" style="width:800px;margin-left:50px;">
+								<f:facet name="header">
+									<h:outputText value="#{documentBean.document.name}"></h:outputText>
+									<br />
+
+								</f:facet>
+								<h:outputText value="download: " />
+								<p:commandLink style="color:blue;float:left" id="downloadLink"
+									value="#{documentBean.document.name}" ajax="false"
+									actionListener="#{documentBean.prepDownload(documentBean.documentInfo.id)}">
+									<p:fileDownload value="#{documentBean.download}"
+										contentDisposition="attachment" />
+								</p:commandLink>
+								<h:outputText value="Name:" />
+								<h:panelGroup>
+									<p:inputText id="name" rendered="true"
+										value="#{documentBean.document.name}"></p:inputText>
+									<p:message for="name"></p:message>
+								</h:panelGroup>
+								<h:panelGroup >
+									<h:outputText value="File: #{documentBean.clientFilename}" />
+									<p:fileUpload
+										fileUploadListener="#{documentBean.handleFileUpload}"
+										mode="advanced" update="messages" sizeLimit="100000000"
+										allowTypes="/(\.|\/)(gif|txt|doc|odt|xls|xml|pdf|html|js|java|ppt|jpe?g|png)$/" />
+
+									<p:growl id="messages" showDetail="true" />
+								</h:panelGroup>
+
+								<h:panelGroup>
+									<h:outputText value="Changes:" />
+									<p:inputText id="changes" rendered="true"
+										value="#{documentBean.document.changes}" ></p:inputText>
+									<p:message for="changes"></p:message>
+								</h:panelGroup>
+
+								<f:facet name="footer">
+									<p:commandButton id="editDocumentAction" value="Commit"
+										icon="ui-icon-pencil" action="#{documentBean.commitEdits}"
+										ajax="false" style="width:220px"></p:commandButton>
+								</f:facet>
+							</h:panelGrid>
+						</h:form>
+					</div>
+
+			
+			</p:outputPanel>
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

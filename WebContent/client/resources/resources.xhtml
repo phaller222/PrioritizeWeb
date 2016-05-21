@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:body>
+	<ui:composition template="../templates/main.xhtml">
+		<ui:define name="content">
+
+			<p:outputPanel id="sessionok" rendered="#{loginBean.getLoggedIn()}">
+
+				<h1>Devices</h1>
+				<h:form id="resourceTree">
+					<p:tree id="documenttree" styleClass="border"
+						value="#{resourceBean.resourceTree}" var="val"
+						style="width:1100px;min-height:400px;">
+						<f:facet name="header">
+           Device Viewer
+                    </f:facet>
+						<p:treeNode styleClass="no-border">
+							<f:metadata>
+								<f:event type="preRenderView"
+									listener="#{resourceBean.updateResourceTree()}" />
+							</f:metadata>
+
+							<c:set var="canupdate" value="#{resourceBean.canUpdate(val)}"
+								scope="request" />
+							<c:set var="candelete" value="#{resourceBean.canDelete(val)}"
+								scope="request" />
+							<c:set var="isiotdevice" value="#{val.isMqttResource}"
+								scope="request" />
+							<c:set var="ismqtt" value="#{resourceBean.isMqttResource(val)}"
+								scope="request" />
+							<c:set var="isagent" value="#{val.agent}" scope="request" />
+
+							<p:dataTable styleClass="hide-column-names" value="val.resource"
+								var="info" rendered="#{val.leaf}" style="width:1000px;padding:0">
+								<p:column
+									rendered="#{val.resource.mqttResource and not val.resource.agent}"
+									headerText="Status" styleClass="yellowtouch" style="width:30px">
+									<p:outputPanel
+										rendered="#{val.resource.mqttOnline and not val.resource.agent}">
+										<img src="../../images/greendot.png" height="10px"
+											title="Device is online." />
+									</p:outputPanel>
+
+									<p:outputPanel
+										rendered="#{not val.resource.mqttOnline and not val.resource.agent}">
+										<img src="../../images/graydot.png" title="Device is offline."
+											height="10px" />
+									</p:outputPanel>
+								</p:column>
+
+								<p:column style="width:30px;" headerText="Status"
+									styleClass="graytouch"
+									disabled="#{not val.resource.mqttResource}"
+									rendered="#{not val.resource.mqttResource and not val.resource.agent}">
+									<h:outputText id="mqttonline" value="N/A"
+										title="Status not available or non IoT device." />
+								</p:column>
+								<p:column styleClass="yellowtouch">
+									<h:outputText value="#{val.name}" rendered="#{not val.leaf}"
+										style="min-width:200px;" />
+									<h:outputText id="downloadLink" value="#{val.resource.name}"
+										ajax="false" disabled="#{!documentBean.canRead(val.resource)}"
+										rendered="#{val.leaf and not val.resource.agent}"
+										title="Name of the Device/Resource"
+										style="font-size:1.1em;font-style:bold;width:120px;" />
+
+								</p:column>
+								<p:column headerText="Description" resizable="true"
+									style="width:150px" toggleable="true" styleClass="yellowtouch"
+									rendered="#{not val.resource.agent}">
+									<h:outputText value="#{val.resource.description}"
+										title="#{val.resource.description}"
+										rendered="#{resourceBean.canRead(val.resource) and  not val.resource.agent}" />
+								</p:column>
+								<p:column headerText="Slots" resizable="true" toggleable="true"
+									styleClass="yellowtouch" style="width:50px"
+									rendered="#{not val.resource.agent}">
+									<h:outputText value="#{val.resource.maxSlots}"
+										title="Maximum Number of Slots"
+										rendered="#{resourceBean.canRead(val.resource) and not val.resource.agent}" />
+								</p:column>
+
+								<p:column headerText="In Use" resizable="true" toggleable="true"
+									styleClass="yellowtouch" style="width:50px"
+									rendered="#{not val.resource.agent}">
+									<h:outputText
+										value="#{resourceBean.getSlotsInUse(val.resource)}"
+										title="Slots currently in use by Users"
+										rendered="#{resourceBean.canRead(val.resource) and  not val.resource.agent}" />
+								</p:column>
+
+
+
+
+								<p:column headerText="Edit..." resizable="true" width="60"
+									style="width:30px;" styleClass="yellowtouch"
+									rendered="#{not val.resource.agent}">
+									<p:commandButton action="#{resourceBean.edit(val.resource)}"
+										title="Edit..."
+										disabled="#{!resourceBean.canUpdate(val.resource)}"
+										ajax="false" style="height:25px;width:30px"
+										icon="ui-icon-pencil"></p:commandButton>
+								</p:column>
+
+								<p:column headerText="Delete" resizable="true"
+									style="width:30px;" width="60" styleClass="yellowtouch"
+									rendered="#{not val.resource.agent}">
+									<p:commandButton id="cmddelete"
+										action="#{resourceBean.delete(val.resource)}"
+										style="height:25px;width:30px"
+										disabled="#{!resourceBean.canDelete(val.resource)}"
+										icon="ui-icon-trash" title="Delete" ajax="false"></p:commandButton>
+								</p:column>
+
+								<p:column headerText="Reserve..." resizable="true"
+									styleClass="yellowtouch" rendered="#{not val.resource.agent}"
+									style="width:80px;">
+									<p:commandButton id="cmdreservations"
+										action="#{resourceBean.reservations(val.resource)}"
+										style="height:25px;width:30px"
+										disabled="#{!resourceBean.canRead(val.resource)}"
+										icon="ui-icon-calendar"
+										title="Create a resurce reservation for this device..."
+										ajax="false"></p:commandButton>
+								</p:column>
+
+
+
+
+
+							</p:dataTable>
+							<h:outputText value="#{val.name}" rendered="#{not val.leaf}" />
+						</p:treeNode>
+
+						<p:ajax event="expand" listener="#{resourceBean.nodeExpand}" />
+						<p:ajax event="collapse" listener="#{resourceBean.nodeCollapse}" />
+					</p:tree>
+					<!--  <p:poll interval="20" listener="#{documentBean.updateDocumentTree()}"   autoStart="true"/> -->
+				</h:form>
+			</p:outputPanel>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

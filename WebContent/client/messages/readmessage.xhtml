@@ -9,7 +9,7 @@
 <h:body>
 	<ui:composition template="../templates/main.xhtml">
 		<ui:define name="content">
-			<p:outputPanel id="sessionok" style="margin-left:10%;width:80%;background-image: url('../../images/background.png');"
+			<p:outputPanel styleClass="no-border" id="sessionok" style="width:1100px;background-image: url('../../images/background.png');"
 				rendered="#{loginBean.getLoggedIn()}" >
 				<h:form>
 					<p:remoteCommand name="onload"
@@ -20,9 +20,9 @@
 					<div >
 						<div class="div" id="readMessage" align="center" >
 							<h:form id="form">
-								<h:panelGrid columns="1" footerClass=".ui-widget-footer"
+								<h:panelGrid styleClass="border" columns="1" footerClass=".ui-widget-footer"
 									headerClass=".ui-widget-header" frame="box" rules="groups"
-									cellpadding="10">
+									cellpadding="10" style="margin-left:50px;width:1100px;">
 
 									<f:facet name="header">
 										<h:outputText value="#{messageBean.readMessageSubject}"></h:outputText>

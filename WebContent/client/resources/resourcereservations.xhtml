@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:body>
+	<ui:composition template="../templates/main.xhtml">
+		<ui:define name="content">
+
+			<p:outputPanel id="sessionok" rendered="#{loginBean.getLoggedIn()}">
+				<h1>Create new reservations for #{resourceBean.resource.name}</h1>
+				<div data-role="content" class="top" align="left">
+
+					<h:panelGrid columns="6" layout="grid"
+						footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
+						style="width:800px;margin-left:50px;" cellpadding="10">
+
+						<h:panelGrid>
+							<p:row>
+								<div id="createresourcereservation" class="top" align="left">
+									<h:form id="formcreateresourcereservation"
+										enctype="multipart/form-data">
+
+										<h:panelGrid columns="6" footerClass=".ui-widget-footer"
+											headerClass=".ui-widget-header" rules="groups"
+											cellpadding="10" style="width:850px;">
+											<f:facet name="header">
+												<h:outputText
+													value="Create resource reservation for #{resourceBean.resource.name}"></h:outputText>
+											</f:facet>
+											<h:outputText value="#{resourceBean.resource.name}" />
+											<h:panelGroup>
+
+
+												<p:outputLabel for="from" value="From: " />
+												<p:calendar id="from" value="#{resourceBean.from}"
+													locale="de" pattern="dd.MM.yyyy - HH:mm" />
+												<p:message for="from"></p:message>
+
+												<p:outputLabel for="until" value="Until: " />
+												<p:calendar id="until" value="#{resourceBean.until}"
+													locale="de" pattern="dd.MM.yyyy - HH:mm" />
+												<p:message for="until"></p:message>
+
+											</h:panelGroup>
+											<f:facet name="footer">
+												<p:commandButton id="back" value="Back"
+													icon="ui-icon-circle-triangle-w"
+													action="#{resourceBean.createNewResource()}" ajax="false"
+													style="width:220px"></p:commandButton>
+												<p:spacer width="50"></p:spacer>
+												<p:commandButton id="createAction"
+													value="Create Reservation" icon="ui-icon-plus"
+													action="#{resourceBean.createResourceReservation}"
+													ajax="false" style="width:220px"></p:commandButton>
+
+
+											</f:facet>
+										</h:panelGrid>
+									</h:form>
+								</div>
+							</p:row>
+							<p:row>
+								<div id="listresourceresevations"
+									style="display: float; overflow: left" align="left">
+									<!--  List all resource reservations  -->
+									<h2>Active Reservations for this department/group:</h2>
+									<p:panel style="width:850px;">
+										<h:form id="actions">
+											<p:dataTable id="reservations" widgetVar="reservationsTable"
+												var="val" dynamic="true" paginator="true" rows="10"
+												layout="grid" style="width:800px"
+												value="#{resourceBean.resourceReservations}">
+
+												<p:column headerText="Resource" resizable="true"
+													toggleable="true">
+													<h:outputText value="#{val.resource.name}" />
+												</p:column>
+
+												<p:column headerText="Reserved by" sortBy="#{reservedBy}"
+													resizable="true" toggleable="true">
+													<h:outputText value="#{val.reservedBy.name}" />
+												</p:column>
+
+												<p:column headerText="Reserved from"
+													sortBy="#{timeSpan.dateFrom}" resizable="true"
+													toggleable="true">
+													<h:outputText value="#{val.timeSpan.dateFrom}">
+														<f:convertDateTime pattern="dd.MM.yyyy HH:MM" />
+													</h:outputText>
+												</p:column>
+
+												<p:column headerText="Reserved until"
+													sortBy="#{timeSpan.dateUntil}" resizable="true"
+													toggleable="true">
+													<h:outputText value="#{val.timeSpan.dateUntil}">
+														<f:convertDateTime pattern="dd.MM.yyyy HH:MM" />
+													</h:outputText>
+												</p:column>
+
+												<p:column headerText="Actions" resizable="true">
+													<p:commandButton id="cmddelete"
+														action="#{resourceBean.removeReservation(val)}"
+														style="height:25px;width:30px" icon="ui-icon-trash"
+														title="Delete" ajax="false"></p:commandButton>
+												</p:column>
+
+											</p:dataTable>
+											<p:commandButton id="cmdrefresh"
+												action="#{resourceBean.refreshReservations}"
+												style="width:150px" icon="ui-icon-refresh" value="Refresh"
+												ajax="false"></p:commandButton>
+											<p:poll interval="10" update="reservations" />
+										</h:form>
+
+									</p:panel>
+
+								</div>
+							</p:row>
+						</h:panelGrid>
+
+					</h:panelGrid>
+
+
+				</div>
+			</p:outputPanel>
+		</ui:define>
+	</ui:composition>
+
+	<ui:include src="/notloggedin.xhtml" />
+
+</h:body>
+</html>
