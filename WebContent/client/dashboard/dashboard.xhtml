@@ -9,11 +9,15 @@
 <h:body>
 	<ui:composition template="../templates/main.xhtml">
 		<ui:define name="content">
+			<f:metadata>
+				<f:event type="preRenderView"
+					listener="#{basicTimelineController.updateTimeline()}" />
+			</f:metadata>
 			<h:form id="dashboard">
 				<p:panelGrid>
 					<p:row>
 						<p:column>
-							<p:panel header="Trends" toggleable="true" >
+							<p:panel header="Trends" toggleable="true">
 								<p:tagCloud model="#{loginBean.model}"
 									style="width:300px;height:115px;"></p:tagCloud>
 
@@ -49,8 +53,8 @@
 								</p:panel>
 							</p:panel>
 						</p:column>
-						</p:row>
-						<p:row>
+					</p:row>
+					<p:row>
 						<p:column>
 							<p:panel header="Messagebox" toggleable="true" closable="true"
 								footer="You have no new messages">
@@ -61,6 +65,7 @@
 										icon="ui-icon-mail-closed" /> new messages.
                                     </h:form>
 							</p:panel>
+
 						</p:column>
 					</p:row>
 				</p:panelGrid>

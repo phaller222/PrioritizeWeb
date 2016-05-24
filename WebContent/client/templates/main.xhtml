@@ -11,23 +11,19 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta charset="ISO-8859-1" />
 	<title><ui:insert name="title">Dashboard</ui:insert></title>
-	<link type="text/css" rel="stylesheet" href="../../styles/companies.css" />
+	<link type="text/css" rel="stylesheet"
+		href="../../styles/companies.css" />
 	<style type="text/css">
-	
-
-	
-	
 .no-border {
 	border-style: hidden !important; /* or none */
 	background-image: url('../../images/background.jpg');
 }
 
 .border {
-    margin-left:50px; !important;
-    border-style: solid !important; /* or none */
-    background-image: url('../../images/background.jpg');
+	margin-left: 50px; ! important;
+	border-style: solid !important; /* or none */
+	background-image: url('../../images/background.jpg');
 }
-
 
 .ui-panel, div.ui-state-hover {
 	margin-top: 10px;
@@ -41,8 +37,8 @@
 .actionboardmessage {
 	width: 80%;
 	margin-left: 200px;
-	baackground-color:#C6D8EC;
-	#background-image: url('../../images/yellowback.png');
+	baackground-color: #C6D8EC; #
+	background-image: url('../../images/yellowback.png');
 	margin-bottom: 10px
 }
 
@@ -54,27 +50,27 @@
 }
 
 .yellowtouch {
-    width: 80%;
-    margin-left: 150px;
-    margin-bottom: 10px;
-    background-color: #ffffe3
+	width: 80%;
+	margin-left: 150px;
+	margin-bottom: 10px;
+	background-color: #ffffe3
 }
 
 .graytouch {
-    width: 80%;
-    margin-left: 150px;
-    margin-bottom: 10px;
-    background-color: #F4F2F2
+	width: 80%;
+	margin-left: 150px;
+	margin-bottom: 10px;
+	background-color: #F4F2F2
 }
 
-
+.transparentbutton {
+	background: rgba(255, 255, 255, 0.0);
+	border: none
+}
 
 .hide-column-names table thead tr {
-    display: none;
+	display: none;
 }
-
-
-
 </style>
 
 </h:head>
@@ -82,9 +78,9 @@
 <h:body>
 	<p:layout fullPage="true" rendered="#{loginBean.getLoggedIn()}"
 		widgetVar="layoutWdgt">
-		<p:layoutUnit position="north" resizable="false" minSize="112"
-			collapseSize="20" collapsible="true" maxSize="112"
-			style="min-height:112px;border:0" scrollable="null">
+		<p:layoutUnit position="north" resizable="false" minSize="160"
+			collapseSize="20" collapsible="true" maxSize="160"
+			style="min-height:160px;border:0" scrollable="null">
 			<ui:insert name="head">
 				<p:panelGrid columns="3"
 					columnClasses="no-border, no-border, no-border" style="width:100%;">
@@ -96,13 +92,58 @@
 						<div align="left">
 							<p:growl id="growl" showSummary="true" showDetail="true"
 								autoUpdate="true" />
-							<div></div>
+							<div>
+								<h:form id="timelineform">
+									<pe:timeline id="timeline"
+										value="#{basicTimelineController.model}" height="145px"
+										width="1300px"
+										selectable="#{basicTimelineController.selectable}"
+										zoomable="#{basicTimelineController.zoomable}"
+										moveable="#{basicTimelineController.moveable}"
+										stackEvents="#{basicTimelineController.stackEvents}"
+										axisOnTop="true"
+										eventStyle="#{basicTimelineController.eventStyle}"
+										showCurrentTime="#{basicTimelineController.showCurrentTime}"
+										showNavigation="false">
+										<p:ajax event="select"
+											listener="#{basicTimelineController.onSelect}" />
+									</pe:timeline>
+									<!-- <p:poll interval="10"
+										listener="#{basicTimelineController.updateTimeline()}"
+										 autoStart="true" /> -->
+								</h:form>
+								<h:outputStylesheet id="timelineCSS">  
+                                    table .formColumn {  
+                                        padding: 0 5px 0 5px;  
+                                        text-align: right;  
+                                        white-space: nowrap;  
+                                    }      
+                                       div.timeline-event-content {
+                                        color:black;
+                                        }
+                                    div.vacation {
+                                        background:rgba(0,255,0,0.3) !important;  /* green */  
+                                        border-color: #136e13 !important;       
+                                        color:white;
+                                    }   
+                                    div.illness {
+                                        background:rgba(255,0,0,0.3) !important;  /* red */  
+                                        border-color: #136e13 !important;       
+                                        color:white;
+                                    }   
+                                     div.resourcereservation {
+                                        background:rgba(180,180,180,0.3) !important;  /* red */  
+                                        border-color: #136e13 !important;       
+                                        color:white;
+                                       }   
+                                </h:outputStylesheet>
+							</div>
 						</div>
 					</h:column>
 					<h:column>
 						<div align="right"
-							style="padding-bottom: 5px; padding-right: 15px;">
-							<pe:analogClock mode="client" width="100" />
+							style="min-height: 70px; padding-bottom: 5px; padding-right: 15px;">
+							<pe:analogClock mode="client" width="120" />
 						</div>
 					</h:column>
 				</p:panelGrid>
@@ -116,33 +157,33 @@
 					<h:form id="headerform">
 						<p:layout style="height:40px;">
 
-							<p:layoutUnit position="center" resizable="true"  style="border:0">
-								
-										<p:commandButton onclick="PF('layoutWdgtMenu').toggle('west')"
-											icon="fa fa-chevron-left" />
+							<p:layoutUnit position="center" resizable="true" style="border:0">
 
-										<p:commandButton onclick="PF('layoutWdgt').toggle('south')"
-											icon="fa fa-chevron-down" />
+								<p:commandButton onclick="PF('layoutWdgtMenu').toggle('west')"
+									icon="fa fa-chevron-left" />
+
+								<p:commandButton onclick="PF('layoutWdgt').toggle('south')"
+									icon="fa fa-chevron-down" />
 
 
-										<p:commandButton onclick="PF('layoutWdgt').toggle('north')"
-											icon="fa fa-chevron-up" />
+								<p:commandButton onclick="PF('layoutWdgt').toggle('north')"
+									icon="fa fa-chevron-up" />
 									
 
 						
                             
                                     Welcome <b style="font-size: 1.2em"><h:outputText
-												value="#{loginBean.username}" /></b>. 
-                                    <h:form 
-											rendered="#{messageBean.unreadMessages.size() gt 0}">
+										value="#{loginBean.username}" /></b>. 
+                                    <h:form
+									rendered="#{messageBean.unreadMessages.size() gt 0}">
                                        You have <p:commandButton
-												value="#{messageBean.unreadMessages.size()}"
-												icon="ui-icon-mail-closed" action="#{messageBean.gotoInbox}"/> new messages.
+										value="#{messageBean.unreadMessages.size()}"
+										icon="ui-icon-mail-closed" action="#{messageBean.gotoInbox}" /> new messages.
                                     </h:form>
-                                    <p:poll interval="30" update="headerform" />
+								<p:poll interval="30" update="headerform" />
 
 
-						
+
 							</p:layoutUnit>
 							<p:layoutUnit position="east" size="500" minSize="500"
 								resizable="true" style="border:0">
@@ -209,8 +250,8 @@
 						</p:dataList>
 					</p:dialog>
 					<p:layout widgetVar="layoutWdgtMenu">
-						
-						<p:layoutUnit position="center" resizable="true" >
+
+						<p:layoutUnit position="center" resizable="true">
 
 							<ui:insert name="content">
 
@@ -218,53 +259,59 @@
 
 						</p:layoutUnit>
 						<p:layoutUnit position="west" resizable="true" minSize="200"
-                            maxSize="400" collapseSize="30" collapsible="true" style="border:0;" >
-                            <div
-                                style="background-image: url('../images/background.jpg'); min-height: 100%">
-                                <h:form>
-                                    <p:menu toggleable="true">
-                                        <p:menuitem value="Dashboard" title="Display Dashboard"
-                                            icon="fa fa-rocket" url="../dashboard/dashboard.xhtml"></p:menuitem>
-                                        <p:submenu label="Messages" title="Messages" icon="fa fa-envelope-o">
-                                        <p:menuitem value="New" title="New message..."
-                                                icon="fa fa-flash" url="../messages/new.xhtml"/>
-                                            <p:menuitem value="Inbox" title="Show received messages"
-                                                icon="fa fa-inbox" url="../messages/inbox.xhtml"/>
-                                            <p:menuitem value="Outbox" title="Show sent messages"
-                                                icon="fa fa-send-o" url="../messages/sent.xhtml"/>
-                                        </p:submenu>
-                                        <p:submenu label="Documents"  icon="fa fa-files-o">
-                                            <p:menuitem value="Documents" title="My documents"
-                                                icon="fa fa-file-o" url="../documents/documents.xhtml"></p:menuitem>
-                                            <p:menuitem value="Upload a document" title="Upload document"
-                                                icon="fa fa-cloud-upload"></p:menuitem>
-                                        </p:submenu>
-                                        <p:submenu label="Devices/Agents" icon="fa fa-sliders">
-                                            <p:menuitem value="Devices" title="Show Devices" url="../resources/resources.xhtml"
-                                                icon="fa fa-bar-chart-o"></p:menuitem>
-                                            <p:menuitem value="Agents" title="Display Dashboard"
-                                                icon="fa fa-sitemap"></p:menuitem>
-                                        </p:submenu>
+							maxSize="400" collapseSize="30" collapsible="true"
+							style="border:0;">
+							<div
+								style="background-image: url('../images/background.jpg'); min-height: 100%">
+								<h:form>
+									<p:menu toggleable="true">
+										<p:menuitem value="Dashboard" title="Display Dashboard"
+											icon="fa fa-rocket" url="../dashboard/dashboard.xhtml"
+											update="timeline"></p:menuitem>
+										<p:submenu label="Messages" title="Messages"
+											icon="fa fa-envelope-o">
+											<p:menuitem value="New" title="New message..."
+												icon="fa fa-flash" url="../messages/new.xhtml" />
+											<p:menuitem value="Inbox" title="Show received messages"
+												icon="fa fa-inbox" url="../messages/inbox.xhtml" />
+											<p:menuitem value="Outbox" title="Show sent messages"
+												icon="fa fa-send-o" url="../messages/sent.xhtml" />
+										</p:submenu>
+										<p:submenu label="Documents" icon="fa fa-files-o">
+											<p:menuitem value="Documents" title="My documents"
+												icon="fa fa-file-o" update="timeline"
+												url="../documents/documents.xhtml"></p:menuitem>
 
-                                        <p:submenu label="Projects" title="Projects" icon="fa fa-pie-chart">
-                                            <p:menuitem value="Projects" title="Display Projects"
-                                                icon="fa fa-bank"></p:menuitem>
-                                            <p:menuitem value="Tasks" title="Display Dashboard"
-                                                icon="fa fa-tasks"></p:menuitem>
-                                        </p:submenu>
-                                        <p:submenu label="Settings" title="Settings" icon="fa fa-wrench">
-                                            <p:menuitem value="Profile" title="Change Profile information"
-                                                icon="fa fa-user"></p:menuitem>
-                                            <p:menuitem value="Dashboard" title="Change Dashboard settings"
-                                                icon="fa fa-line-chart"></p:menuitem>
-                                                 <p:menuitem value="Notifications" title="Notification settings"
-                                                icon="fa fa-comment-o"></p:menuitem>
-                                        </p:submenu>
-                                    </p:menu>
+										</p:submenu>
+										<p:submenu label="Devices/Agents" icon="fa fa-sliders">
+											<p:menuitem value="Devices" title="Show Devices"
+												update="timeline" url="../resources/resources.xhtml"
+												icon="fa fa-bar-chart-o"></p:menuitem>
+											<p:menuitem value="Agents" title="Display Dashboard"
+												icon="fa fa-sitemap"></p:menuitem>
+										</p:submenu>
 
-                                </h:form>
-                            </div>
-                        </p:layoutUnit>
+										<p:submenu label="Projects" title="Projects"
+											icon="fa fa-pie-chart">
+											<p:menuitem value="Projects" title="Display Projects"
+												icon="fa fa-bank"></p:menuitem>
+											<p:menuitem value="Tasks" title="Display Dashboard"
+												icon="fa fa-tasks"></p:menuitem>
+										</p:submenu>
+										<p:submenu label="Settings" title="Settings"
+											icon="fa fa-wrench">
+											<p:menuitem value="Profile"
+												title="Change Profile information" icon="fa fa-user"></p:menuitem>
+											<p:menuitem value="Dashboard"
+												title="Change Dashboard settings" icon="fa fa-line-chart"></p:menuitem>
+											<p:menuitem value="Notifications"
+												title="Notification settings" icon="fa fa-comment-o"></p:menuitem>
+										</p:submenu>
+									</p:menu>
+
+								</h:form>
+							</div>
+						</p:layoutUnit>
 
 					</p:layout>
 				</p:layoutUnit>
@@ -272,7 +319,8 @@
 		</p:layoutUnit>
 
 		<p:layoutUnit position="south" closable="true" resizable="true"
-			collapsible="true" maxSize="400" minSize="100" size="200" collapseSize="20">
+			collapsible="true" maxSize="400" minSize="100" size="200"
+			collapseSize="20">
 
 			<ui:insert name="footercontent">
 				<!-- <h:form>
