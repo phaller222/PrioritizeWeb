@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:body>
+	<ui:composition template="../templates/main.xhtml">
+		<ui:define name="content">
+			<f:metadata>
+				<f:event type="preRenderView"
+					listener="#{basicTimelineController.displayAgentsTimeline()}" />
+			</f:metadata>
+			<p:outputPanel id="sessionok" rendered="#{loginBean.getLoggedIn()}">
+
+               <div style="font-size:20pt;margin-left:25px;margin-top:10px;margin-bottom:10px;" align="left">
+				<img src="../../images/agentbig.png" title="Agents" />
+				Agents</div>
+				<h:form>
+					<p:commandButton value="Refresh"
+						action="#{resourceBean.goBackToAgents()}" />
+				</h:form>
+				<p:tabView>
+
+					<p:tab title="List">
+						<h:form id="resourceTree">
+							<p:tree id="resourcetree" styleClass="border"
+								value="#{resourceBean.agentTree}" var="val"
+								style="width:90%;min-height:400px;">
+								<f:facet name="header">
+           Agent Viewer
+                    </f:facet>
+								<p:treeNode styleClass="no-border">
+									<f:metadata>
+										<f:event type="preRenderView"
+											listener="#{resourceBean.updateAgentTree()}" />
+									</f:metadata>
+
+									<c:set var="canupdate" value="#{resourceBean.canUpdate(val)}"
+										scope="request" />
+									<c:set var="candelete" value="#{resourceBean.canDelete(val)}"
+										scope="request" />
+									<c:set var="isiotdevice" value="#{val.isMqttResource}"
+										scope="request" />
+									<c:set var="ismqtt" value="#{resourceBean.isMqttResource(val)}"
+										scope="request" />
+									<c:set var="isagent" value="#{val.agent}" scope="request" />
+									<p:outputPanel rendered="#{val.leaf and val.resource.agent}">
+										<p:dataTable styleClass="hide-column-names"
+											value="#{val.resource}" style="width:1000px;padding:0">
+											<p:column>
+												<img src="../../images/agent2.png" height="15px"
+													title="This is an Agent." />
+												<p:spacer width="10"></p:spacer>
+												<h:outputText id="agentname" value="[AGENT] - #{val.name}"
+													style="color:gray" />
+												<p:tooltip id="toolTipName" for="agentname"
+													value="This is the name of the agent" trackMouse="true" />
+												<p:spacer width="10"></p:spacer>
+												<h:outputText id="agentip" value="IP: #{val.resource.ip}"
+													title="Please view the Agent data in the Agent view!"
+													style="color:gray" />
+												<p:tooltip id="toolTipIp" for="agentip"
+													value="This is the IP address the agent is located at"
+													trackMouse="true" />
+											</p:column>
+										</p:dataTable>
+									</p:outputPanel>
+									<p:outputPanel
+										rendered="#{val.leaf and not val.resource.agent}"></p:outputPanel>
+									<p:outputPanel>
+										<h:outputText value="#{val.name}" rendered="#{not val.leaf}" />
+
+									</p:outputPanel>
+
+
+
+
+								</p:treeNode>
+
+								<p:ajax event="expand" listener="#{resourceBean.nodeExpand}" />
+								<p:ajax event="collapse" listener="#{resourceBean.nodeCollapse}" />
+
+
+
+							</p:tree>
+
+							<p:dialog widgetVar="newDeviceDialog" header="Create new device"
+								showEffect="clip" hideEffect="clip" closeOnEscape="true">
+								<h:panelGrid id="DeviceDetails" columns="2">
+									<p:outputLabel for="name" value="Name:" />
+									<p:inputText id="name" value="#{resourceBean.resource.name}" />
+									<p:outputLabel for="description" value="Description:" />
+									<p:inputTextarea rows="6" id="description"
+										value="#{resourceBean.resource.description}"
+										style="min-width:300px;width:100%" />
+									<p:commandButton update="from" id="createAction" value="Create"
+										icon="ui-icon-plus" action="#{resourceBean.createResource}"
+										ajax="false" style="width:220px"></p:commandButton>
+								</h:panelGrid>
+							</p:dialog>
+
+							<p:dialog widgetVar="InfoDialog"
+								header="Information on manually created devices"
+								showEffect="clip" hideEffect="clip" width="400px"
+								styleClass="yellowtouch" closeOnEscape="true">
+								<h:panelGroup style="max-width:300px;">
+									<h:outputText style="max-width:400px;"
+										value="When creating a device manually, it has no state (online/offline) and \n
+                                         cannot be controlled (commands) remotely.\n
+                                         If you need such a device please crete an IoT capable device by\n
+                                         Using the REST or MQTT interface to this server." />
+								</h:panelGroup>
+							</p:dialog>
+
+							<p:contextMenu for="resourcetree">
+								<p:menuitem value="Info" update="resourcetree"
+									oncomplete="PF('InfoDialog').show();" icon="ui-icon-plus" />
+							</p:contextMenu>
+
+
+							<!--  <p:poll interval="20" listener="#{resourceBean.updateResourceTree()}" update="resourceTree"  autoStart="true"/> -->
+
+
+
+
+						</h:form>
+					</p:tab>
+					<p:tab title="Network">
+
+						<div align="left">
+							<h:form id="mindmap">
+
+								<p:mindmap value="#{resourceBean.networkRoot}"
+									styleClass="ui-widget-content"
+									style="width: 90%;height: 380px;border: 1px solid black;font-size:20pt;">
+
+								</p:mindmap>
+
+								<p:dialog widgetVar="details" header="Agent sample data"
+									resizable="false" modal="true" showEffect="fade"
+									hideEffect="fade">
+									<h:inputTextarea id="output" cols="70" rows="10"
+										readonly="true" value="#{resourceBean.selectedNodeData}" />
+								</p:dialog>
+
+								<p:poll interval="15" update="mindmap,timeline" />
+							</h:form>
+						</div>
+					</p:tab>
+
+				</p:tabView>
+			</p:outputPanel>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

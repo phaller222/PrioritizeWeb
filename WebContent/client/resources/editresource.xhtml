@@ -16,6 +16,7 @@
 					<p:tab title="Edit device data">
 						<div id="editresource" class="top" align="left">
 							<h:form id="resourceprops" enctype="multipart/form-data">
+							<p:log />
 							<div id="editpanel" style="max-width:500px;width:500px;display:block;">
 								<h:panelGrid columns="6" 
 									style="width:500px;margin-left:50px;"
@@ -84,12 +85,13 @@
 
 
 									<f:facet name="footer">
-										<p:commandButton id="editResourceAction" value="Commit"
-											icon="ui-icon-pencil" action="#{resourceBean.commitEdits}"
-											ajax="false" style="width:220px"></p:commandButton>
-											<p:spacer width="50"></p:spacer>
+										
 											<p:commandButton id="back" value="Back"
-                                            icon="ui-icon-circle-triangle-w" action="#{resourceBean.createNewResource()}"
+                                            icon="ui-icon-circle-triangle-w" action="#{resourceBean.goBack()}"
+                                             style="width:220px"></p:commandButton>
+                                                <p:spacer width="50"></p:spacer>
+                                            <p:commandButton id="editResourceAction" value="Commit"
+                                            icon="ui-icon-pencil" action="#{resourceBean.commitEdits}"
                                             ajax="false" style="width:220px"></p:commandButton>
 											
 									</f:facet>

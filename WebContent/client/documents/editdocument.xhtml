@@ -55,6 +55,10 @@
 								</h:panelGroup>
 
 								<f:facet name="footer">
+								<p:commandButton id="back" value="Back"
+                                                    icon="ui-icon-circle-triangle-w"
+                                                    action="#{documentBean.goBack()}" ajax="false"
+                                                    style="width:220px"></p:commandButton>
 									<p:commandButton id="editDocumentAction" value="Commit"
 										icon="ui-icon-pencil" action="#{documentBean.commitEdits}"
 										ajax="false" style="width:220px"></p:commandButton>

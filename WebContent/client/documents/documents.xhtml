@@ -10,167 +10,195 @@
 <h:body>
 	<ui:composition template="../templates/main.xhtml">
 		<ui:define name="content">
-			   <f:metadata>
-          <f:event type="preRenderView" listener="#{basicTimelineController.displayDocumentsTimeline()}"/>
-      </f:metadata>
+			<f:metadata>
+				<f:event type="preRenderView"
+					listener="#{basicTimelineController.displayDocumentsTimeline()}" />
+				<f:event type="preRenderView"
+					listener="#{documentBean.updateDocumentTree()}" />
+			</f:metadata>
 			<p:outputPanel id="sessionok" rendered="#{loginBean.getLoggedIn()}">
 
-				<h1>Documents</h1>
-				<h:form id="documentTree">
-					<p:tree id="documenttree" styleClass="border"
-						value="#{documentBean.documentTree}" var="document"
-						style="width:1100px;min-height:400px;">
-						<f:facet name="header">
+				<div
+					style="font-size: 20pt; margin-left: 25px; margin-top: 10px; margin-bottom: 10px;"
+					align="left">
+					<img src="../../images/documentsbig.png" title="Documents" />Documents
+				</div>
+				<p:tabView>
+					<p:tab title="Documents">
+
+						<h:form id="documentTree">
+							<p:tree id="documenttree" styleClass="border"
+								value="#{documentBean.documentTree}" var="document"
+								style="width:90%;min-height:400px;">
+								<f:facet name="header">
             Document Viewer
                     </f:facet>
 
-						<p:treeNode styleClass="no-border">
-							<f:metadata>
-								<f:event type="preRenderView"
-									listener="#{documentBean.updateDocumentTree()}" />
-							</f:metadata>
-							<p:dataTable styleClass="hide-column-names"
-								value="document.documentInfo" var="info"
-								rendered="#{document.leaf}" style="width:1000px;padding:0">
-								<p:column styleClass="yellowtouch">
-									<h:outputText value="#{document.name}"
-										rendered="#{not document.leaf}" style="min-width:200px;" />
-									<p:commandLink id="downloadLink"
-										value="#{document.documentInfo.currentDocument.name}"
-										ajax="false"
-										disabled="#{!documentBean.canRead(document.documentInfo)}"
-										rendered="#{document.leaf}"
-										actionListener="#{documentBean.prepDownload(document.documentInfo.id)}"
-										style="font-size:5em;width:120px;">
-										<p:fileDownload value="#{documentBean.download}"
-											contentDisposition="attachment" />
-									</p:commandLink>
-								</p:column>
-								<p:column styleClass="yellowtouch" style="width:80px"
-									headerText="Version" resizable="true">
-									<h:outputText
-										value="Version: #{document.documentInfo.currentDocument.version}"
-										rendered="#{documentBean.canRead(document.documentInfo)}"
-										title="Current version of this document" />
-								</p:column>
-								<p:spacer width="20"></p:spacer>
-								<p:column styleClass="yellowtouch" style="width:100px;">
-									<h:outputText
-										value="#{document.documentInfo.currentDocument.lastModified}"
-										rendered="#{documentBean.canRead(document.documentInfo)}"
-										title="Date when this document has been modified">
-										<f:convertDateTime pattern="dd-MM-yyyy HH:MM" />
-									</h:outputText>
-								</p:column>
-								<p:spacer width="20"></p:spacer>
-								<p:column styleClass="yellowtouch" headerText="Last modified by"
-									resizable="true" style="width:100px">
-									<h:outputText
-										value="#{document.documentInfo.currentDocument.lastModifiedBy.name}"
-										rendered="#{documentBean.canRead(document.documentInfo)}"
-										title="User who modified the document" />
-								</p:column>
-								<p:spacer width="20"></p:spacer>
-								<p:column styleClass="yellowtouch" headerText="Changes"
-									resizable="true" style="width:180px;">
-									<h:outputText
-										value="#{document.documentInfo.currentDocument.changes}"
-										rendered="#{documentBean.canRead(document.documentInfo)}"
-										title="#{document.documentInfo.currentDocument.changes}" />
-								</p:column>
-								<p:column styleClass="yellowtouch" headerText="History"
-									resizable="true" style="width:30px" width="30">
-									<p:commandButton id="cmdhistory"
-										disabled="#{!documentBean.canRead(document.documentInfo)}"
-										action="#{documentBean.history(document.documentInfo)}"
-										style="border:none;background:rgba(220,160,140,0.0);position:relative;top:2px;height:10px;"
-										icon="ui-icon-clock" title="History..." ajax="false"
-										rendered="#{document.leaf}"></p:commandButton>
-								</p:column>
-								<p:spacer width="5"></p:spacer>
-								<p:column styleClass="yellowtouch" headerText="Edit"
-									resizable="true" style="width:30px">
-									<p:commandButton
-										action="#{documentBean.edit(document.documentInfo)}"
-										disabled="#{!documentBean.canUpdate(document.documentInfo)}"
-										rendered="#{document.leaf}" ajax="false"
-										style="border:none;background:rgba(220,160,140,0.0);position:relative;top:2px;height:10px;"
-										title="Edit..." icon="ui-icon-pencil"></p:commandButton>
-								</p:column>
-								<p:spacer width="5"></p:spacer>
-								<p:column styleClass="yellowtouch" headerText="Delete"
-									resizable="true" style="width:30px">
-									<p:commandButton id="cmddelete"
-										action="#{documentBean.delete(document.documentInfo)}"
-										style="border:none;background:rgba(220,160,140,0.0);position:relative;top:2px;height:10px;"
-										title="Delete"
-										disabled="#{!documentBean.canDelete(document.documentInfo)}"
-										rendered="#{document.leaf}" icon="ui-icon-trash" ajax="false"></p:commandButton>
-								</p:column>
-								<p:spacer width="20"></p:spacer>
-							</p:dataTable>
-							<p:outputPanel>
-								<h:outputText value="#{document.name}"
-									rendered="#{not document.leaf}" />
-								<p:commandButton title="Upload a new document..."
-									rendered="#{document.documentGroupNode}"
-									icon="fa fa-cloud-upload"
-									style="border:none;background:rgba(220,160,140,0.0);position:relative;top:0px;height:100%;"
-									action="#{documentBean.updateDocumentGroupId(document.documentGroupId)}"
-									oncomplete="PF('newDocumentDialog').show();"></p:commandButton>
-							</p:outputPanel>
-
-						</p:treeNode>
-						<p:ajax event="expand" listener="#{documentBean.nodeExpand}" />
-						<p:ajax event="collapse" listener="#{documentBean.nodeCollapse}" />
-
-					</p:tree>
-
-					<p:dialog widgetVar="newDocumentDialog"
-						header="Upload a new document" showEffect="clip" hideEffect="clip"
-						closeOnEscape="true">
-						<h:panelGrid id="DocumentDetails" columns="2">
-							<p:outputLabel for="name" value="Name:" />
-							<p:inputText id="name" value="#{documentBean.document.name}" />
-
-							<h:panelGroup>
-								<h:outputText value="File: #{documentBean.clientFilename}" />
-								<p:fileUpload dragDropSupport="true"
-									fileUploadListener="#{documentBean.handleFileUpload}"
-									mode="advanced" ajax="false" update="messages"
-									sizeLimit="100000000"
-									allowTypes="/(\.|\/)(gif|txt|doc|odt|xls|xml|pdf|html|js|java|ppt|jpe?g|png)$/" />
+								<p:treeNode styleClass="no-border">
 
 
-							</h:panelGroup>
 
-							<p:commandButton update="from" id="createAction" value="Create"
-								icon="ui-icon-plus" action="#{documentBean.createDocument}"
-								ajax="false" style="width:220px"></p:commandButton>
-						</h:panelGrid>
-					</p:dialog>
+									<p:dataTable styleClass="hide-column-names"
+										value="document.documentInfo" var="info"
+										rendered="#{document.leaf}" style="width:1000px;padding:0">
+										<p:column styleClass="yellowtouch">
+											<h:outputText value="#{document.name}"
+												rendered="#{not document.leaf}" style="min-width:200px;" />
+											<p:commandLink id="downloadLink"
+												value="#{document.documentInfo.currentDocument.name}"
+												ajax="false"
+												disabled="#{!documentBean.canRead(document.documentInfo)}"
+												rendered="#{document.leaf}"
+												actionListener="#{documentBean.prepDownload(document.documentInfo.id)}"
+												style="font-size:5em;width:120px;">
+												<p:fileDownload value="#{documentBean.download}"
+													contentDisposition="attachment" />
+											</p:commandLink>
+											<p:tooltip id="toolTipDownload" for="downloadLink"
+												value="Click here to download the document."
+												trackMouse="true" />
+										</p:column>
+										<p:column styleClass="yellowtouch" style="width:80px"
+											headerText="Version" resizable="true">
+											<h:outputText id="versiontext"
+												value="Version: #{document.documentInfo.currentDocument.version}"
+												rendered="#{documentBean.canRead(document.documentInfo)}" />
+											<p:tooltip id="toolTipVersion" for="versiontext"
+												value="This is the latest version of the document"
+												trackMouse="true" />
+										</p:column>
+										<p:spacer width="20"></p:spacer>
+										<p:column styleClass="yellowtouch" style="width:100px;">
+											<h:outputText id="lastModifiedText"
+												value="#{document.documentInfo.currentDocument.lastModified}"
+												rendered="#{documentBean.canRead(document.documentInfo)}">
 
-					<p:dialog widgetVar="InfoDialog"
-						header="Information on document uploads" showEffect="clip"
-						hideEffect="clip" width="400px" styleClass="yellowtouch"
-						closeOnEscape="true">
-						<h:panelGroup style="max-width:400px;">
-							<h:outputText style="max-width:400px;"
-								value="When uploading a file the system automatically tries to detrmine\n
+											</h:outputText>
+											<p:tooltip id="toolTipLastModified" for="lastModifiedText"
+												value="This is the latest date when this document has been modified"
+												trackMouse="true" />
+										</p:column>
+										<p:spacer width="20"></p:spacer>
+										<p:column styleClass="yellowtouch"
+											headerText="Last modified by" resizable="true"
+											style="width:100px">
+											<h:outputText
+												value="#{document.documentInfo.currentDocument.lastModifiedBy.name}"
+												rendered="#{documentBean.canRead(document.documentInfo)}"
+												id="lastModifiedByText" />
+											<p:tooltip id="toolTipLastModifiedBy"
+												for="lastModifiedByText"
+												value="The user who has made the latest changes to this document"
+												trackMouse="true" />
+										</p:column>
+										<p:spacer width="20"></p:spacer>
+										<p:column styleClass="yellowtouch" headerText="Changes"
+											resizable="true" style="width:180px;">
+											<h:outputText
+												value="#{document.documentInfo.currentDocument.changes}"
+												rendered="#{documentBean.canRead(document.documentInfo)}"
+												id="changesText" />
+											<p:tooltip id="toolTipChanges" for="changesText"
+												value="#{documentBean.document.changes}" trackMouse="true" />
+										</p:column>
+										<p:column styleClass="yellowtouch" headerText="History"
+											resizable="true" style="width:30px" width="30">
+											<p:commandButton id="cmdhistory"
+												disabled="#{!documentBean.canRead(document.documentInfo)}"
+												action="#{documentBean.history(document.documentInfo)}"
+												style="border:none;background:rgba(220,160,140,0.0);position:relative;top:2px;height:10px;"
+												icon="ui-icon-clock" title="History..." ajax="false"
+												rendered="#{document.leaf}"></p:commandButton>
+										</p:column>
+										<p:spacer width="5"></p:spacer>
+										<p:column styleClass="yellowtouch" headerText="Edit"
+											resizable="true" style="width:30px">
+											<p:commandButton
+												action="#{documentBean.edit(document.documentInfo)}"
+												disabled="#{!documentBean.canUpdate(document.documentInfo)}"
+												rendered="#{document.leaf}" ajax="false"
+												style="border:none;background:rgba(220,160,140,0.0);position:relative;top:2px;height:10px;"
+												title="Edit..." icon="ui-icon-pencil"></p:commandButton>
+										</p:column>
+										<p:spacer width="5"></p:spacer>
+										<p:column styleClass="yellowtouch" headerText="Delete"
+											resizable="true" style="width:30px">
+											<p:commandButton id="cmddelete"
+												action="#{documentBean.delete(document.documentInfo)}"
+												style="border:none;background:rgba(220,160,140,0.0);position:relative;top:2px;height:10px;"
+												title="Delete"
+												disabled="#{!documentBean.canDelete(document.documentInfo)}"
+												rendered="#{document.leaf}" icon="ui-icon-trash"
+												ajax="false"></p:commandButton>
+										</p:column>
+										<p:spacer width="20"></p:spacer>
+									</p:dataTable>
+									<p:outputPanel>
+										<h:outputText value="#{document.name}"
+											rendered="#{not document.leaf}" />
+										<p:commandButton id="uploadnew"
+											rendered="#{document.documentGroupNode}"
+											icon="fa fa-cloud-upload"
+											style="border:none;background:rgba(220,160,140,0.0);position:relative;top:0px;height:100%;"
+											action="#{documentBean.updateDocumentGroupId(document.documentGroupId)}"
+											oncomplete="PF('newDocumentDialog').show();"></p:commandButton>
+										<p:tooltip id="toolTipUpload" for="uploadnew"
+											value="Upload a new document..." trackMouse="true" />
+									</p:outputPanel>
+
+								</p:treeNode>
+								<p:ajax event="expand" listener="#{documentBean.nodeExpand}" />
+								<p:ajax event="collapse" listener="#{documentBean.nodeCollapse}" />
+
+							</p:tree>
+
+							<p:dialog widgetVar="newDocumentDialog"
+								header="Upload a new document" showEffect="clip"
+								hideEffect="clip" closeOnEscape="true">
+								<h:panelGrid id="DocumentDetails" columns="2">
+									<p:outputLabel for="name" value="Name:" />
+									<p:inputText id="name" value="#{documentBean.document.name}" />
+
+									<h:panelGroup>
+										<h:outputText value="File: #{documentBean.clientFilename}" />
+										<p:fileUpload dragDropSupport="true"
+											fileUploadListener="#{documentBean.handleFileUpload}"
+											mode="advanced" ajax="false" update="messages"
+											sizeLimit="100000000"
+											allowTypes="/(\.|\/)(gif|txt|doc|odt|xls|xml|pdf|html|js|java|ppt|jpe?g|png)$/" />
+
+
+									</h:panelGroup>
+
+									<p:commandButton update="from" id="createAction" value="Create"
+										icon="ui-icon-plus" action="#{documentBean.createDocument}"
+										ajax="false" style="width:220px"></p:commandButton>
+								</h:panelGrid>
+							</p:dialog>
+
+							<p:dialog widgetVar="InfoDialog"
+								header="Information on document uploads" showEffect="clip"
+								hideEffect="clip" width="400px" styleClass="yellowtouch"
+								closeOnEscape="true">
+								<h:panelGroup style="max-width:400px;">
+									<h:outputText style="max-width:400px;"
+										value="When uploading a file the system automatically tries to detrmine\n
 					                     the mimetype of that file. If the mimetype cannot be determined you will have\n
 					                     to download the content with your browser first before viewing the document." />
-						</h:panelGroup>
-					</p:dialog>
+								</h:panelGroup>
+							</p:dialog>
 
 
-					<p:contextMenu for="documenttree">
-						<p:menuitem value="Info" update="documenttree"
-							oncomplete="PF('InfoDialog').show();" icon="ui-icon-plus" />
+							<p:contextMenu for="documenttree">
+								<p:menuitem value="Info" update="documenttree"
+									oncomplete="PF('InfoDialog').show();" icon="ui-icon-plus" />
 
-					</p:contextMenu>
+							</p:contextMenu>
 
-					<!--  <p:poll interval="20" listener="#{documentBean.updateDocumentTree()}"   autoStart="true"/> -->
-				</h:form>
+							<!--  <p:poll interval="20" listener="#{documentBean.updateDocumentTree()}"   autoStart="true"/> -->
+						</h:form>
+					</p:tab>
+				</p:tabView>
 			</p:outputPanel>
 			<p:messages id="messages" showDetail="true" autoUpdate="true"
 				closable="true" showIcon="true" severity="error" />

@@ -16,11 +16,16 @@
 			</f:metadata>
 			<p:outputPanel id="sessionok" rendered="#{loginBean.getLoggedIn()}">
 
-				<h1>Devices</h1>
+				    <div style="font-size:20pt;margin-left:25px;margin-top:10px;margin-bottom:10px;" align="left">
+                <img src="../../images/devicebig.png" title="Devices" />
+                Devices</div>
+                <p:tabView>
+                <p:tab title="Devices">
 				<h:form id="resourceTree">
+				
 					<p:tree id="resourcetree" styleClass="border"
 						value="#{resourceBean.resourceTree}" var="val"
-						style="width:1100px;min-height:400px;">
+						style="width:90%;min-height:400px;">
 						<f:facet name="header">
            Device Viewer
                     </f:facet>
@@ -128,7 +133,7 @@
 									style="width:30px;" styleClass="yellowtouch"
 									rendered="#{not val.resource.agent}">
 									<p:commandButton
-										action="#{resourceBean.edit(val.resource, val.resourceGroupId)}"
+										action="#{resourceBean.edit(val.resource)}"
 										title="Edit..."
 										disabled="#{!resourceBean.canUpdate(val.resource)}"
 										ajax="false"
@@ -219,6 +224,8 @@
 
 
 				</h:form>
+				</p:tab>
+				</p:tabView>
 			</p:outputPanel>
 
 		</ui:define>

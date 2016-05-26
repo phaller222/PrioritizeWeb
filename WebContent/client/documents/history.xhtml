@@ -14,7 +14,8 @@
 				<div id="listdocuments" align="left">
 					<h1>History of #{documentBean.document.name}</h1>
 					<!--  List all document  -->
-					
+				    <p:tabView>
+				    <p:tab title="List">
 						<h:form id="actions">
 							<p:dataTable styleClass="no-border" var="val" layout="grid"
 								value="#{documentBean.documentInfo.recentDocuments}" style="width:1100px;margin-left:50px;">
@@ -102,8 +103,21 @@
 										action="#{documentBean.deleteDocumentVersion(val)}"
 										ajax="false" style="width:150px;"></p:commandButton>
 								</p:column>
+								
+								<f:facet name="footer">
+								<p:commandButton id="back" value="Back"
+                                                    icon="ui-icon-circle-triangle-w"
+                                                    action="#{documentBean.goBack()}" ajax="false"
+                                                    style="width:220px"></p:commandButton>
+								</f:facet>
+								
 							</p:dataTable>
 						</h:form>
+						</p:tab>
+						<p:tab title="Timeline">
+						
+						</p:tab>
+						</p:tabView>
 					
 				</div>
 				</p:outputPanel>

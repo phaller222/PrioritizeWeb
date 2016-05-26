@@ -9,67 +9,71 @@
 <h:body>
 	<ui:composition template="../templates/main.xhtml">
 		<ui:define name="content">
-			<p:outputPanel id="sessionok" style="width:1100px;" rendered="#{loginBean.getLoggedIn()}">
-				
-					
-								<h1>Outbox</h1>
-								<!--  List all messages for user  -->
-								
-									<h:form id="actions">
-										<p:dataTable id="messages" var="val"
-											value="#{messageBean.sentMessages}"
-											dynamic="true" paginator="true" rows="10" style="margin-left:50px;width:1100px">
+			<p:outputPanel id="sessionok" style="width:100%"
+				rendered="#{loginBean.getLoggedIn()}">
 
 
-											<p:column headerText="From" resizable="true"
-												toggleable="true">
+				 <div style="font-size:20pt;margin-left:25px;margin-top:10px;margin-bottom:10px;" align="left">
+                <img src="../../images/messagebig.png" title="Outbox" />
+                Messages / Outbox</div>
+				<p:tabView>
+					<p:tab title="Outbox">
+						<!--  List all messages for user  -->
 
-												<h:outputText value="#{val.from.name}"
-													rendered="#{val.messageRead}"></h:outputText>
-												<h:outputText
-													style="font-weight:bold;font-size:75%;color:blue"
-													value="[ New ]&#160;&#160;&#160;"
-													rendered="#{not val.messageRead}"></h:outputText>
-												<h:outputText style="font-weight:bold;"
-													value="#{val.from.name}" rendered="#{not val.messageRead}"></h:outputText>
-											</p:column>
-
-											<p:column headerText="Subject" resizable="true"
-												toggleable="true">
-												<h:outputText value="#{val.subject}"
-													rendered="#{val.messageRead}"></h:outputText>
-												<h:outputText style="font-weight:bold;"
-													value="#{val.subject}" rendered="#{not val.messageRead}"></h:outputText>
-											</p:column>
+						<h:form id="actions">
+							<p:dataTable id="messages" var="val"
+								value="#{messageBean.sentMessages}" dynamic="true"
+								paginator="true" rows="10" style="margin-left:50px;width:90%">
 
 
-											<p:column headerText="Received" resizable="true"
-												toggleable="true" width="220">
-												<h:outputText value="#{val.dateReceived}"
-													rendered="#{val.messageRead}"></h:outputText>
-												<h:outputText style="font-weight:bold;"
-													value="#{val.dateReceived}"
-													rendered="#{not val.messageRead}"></h:outputText>
-											</p:column>
+								<p:column headerText="From" resizable="true" toggleable="true">
 
-											<p:column headerText="Read" resizable="true" width="60">
-												<p:commandButton id="cmdread"
-													action="#{messageBean.readMessage(val.id)}"
-													style="height:25px;width:30px" icon="ui-icon-folder-open"
-													value="" title="Read" ajax="false"></p:commandButton>
-											</p:column>
+									<h:outputText value="#{val.from.name}"
+										rendered="#{val.messageRead}"></h:outputText>
+									<h:outputText style="font-weight:bold;font-size:75%;color:blue"
+										value="[ New ]&#160;&#160;&#160;"
+										rendered="#{not val.messageRead}"></h:outputText>
+									<h:outputText style="font-weight:bold;"
+										value="#{val.from.name}" rendered="#{not val.messageRead}"></h:outputText>
+								</p:column>
 
-											<p:column headerText="Delete" resizable="true" width="60">
-												<p:commandButton id="cmddelete"
-													action="#{messageBean.delete(val)}"
-													style="height:25px;width:30px" icon="ui-icon-trash"
-													value="" title="Delete" ajax="false"></p:commandButton>
-											</p:column>
+								<p:column headerText="Subject" resizable="true"
+									toggleable="true">
+									<h:outputText value="#{val.subject}"
+										rendered="#{val.messageRead}"></h:outputText>
+									<h:outputText style="font-weight:bold;" value="#{val.subject}"
+										rendered="#{not val.messageRead}"></h:outputText>
+								</p:column>
 
-										</p:dataTable>
-										<p:poll interval="5" update="messages" />
-									</h:form>
-							
+
+								<p:column headerText="Received" resizable="true"
+									toggleable="true" width="220">
+									<h:outputText value="#{val.dateReceived}"
+										rendered="#{val.messageRead}"></h:outputText>
+									<h:outputText style="font-weight:bold;"
+										value="#{val.dateReceived}" rendered="#{not val.messageRead}"></h:outputText>
+								</p:column>
+
+								<p:column headerText="Read" resizable="true" width="60">
+									<p:commandButton id="cmdread"
+										action="#{messageBean.readMessage(val.id)}"
+										style="height:25px;width:30px" icon="ui-icon-folder-open"
+										value="" title="Read" ajax="false"></p:commandButton>
+								</p:column>
+
+								<p:column headerText="Delete" resizable="true" width="60">
+									<p:commandButton id="cmddelete"
+										action="#{messageBean.delete(val)}"
+										style="height:25px;width:30px" icon="ui-icon-trash" value=""
+										title="Delete" ajax="false"></p:commandButton>
+								</p:column>
+
+							</p:dataTable>
+							<p:poll interval="5" update="messages" />
+						</h:form>
+					</p:tab>
+				</p:tabView>
+
 			</p:outputPanel>
 
 		</ui:define>

@@ -76,11 +76,13 @@
 </h:head>
 
 <h:body>
+
+
 	<p:layout fullPage="true" rendered="#{loginBean.getLoggedIn()}"
 		widgetVar="layoutWdgt">
-		<p:layoutUnit position="north" resizable="false" minSize="160"
-			collapseSize="20" collapsible="true" maxSize="160"
-			style="min-height:160px;border:0" scrollable="null">
+		<p:layoutUnit position="north" resizable="true" minSize="180"
+			collapseSize="20" collapsible="true" maxSize="380"
+			style="min-height:180px;border:0" scrollable="null">
 			<ui:insert name="head">
 				<p:panelGrid columns="3"
 					columnClasses="no-border, no-border, no-border" style="width:100%;">
@@ -90,12 +92,11 @@
 					</h:column>
 					<h:column>
 						<div align="left">
-							<p:growl id="growl" showSummary="true" showDetail="true"
-								autoUpdate="true" />
+
 							<div>
 								<h:form id="timelineform">
 									<pe:timeline id="timeline"
-										value="#{basicTimelineController.model}" height="145px"
+										value="#{basicTimelineController.model}" height="165px"
 										width="1300px"
 										selectable="#{basicTimelineController.selectable}"
 										zoomable="#{basicTimelineController.zoomable}"
@@ -143,7 +144,13 @@
 					<h:column>
 						<div align="right"
 							style="min-height: 70px; padding-bottom: 5px; padding-right: 15px;">
-							<pe:analogClock mode="client" width="120" />
+							<div align="center">
+								<pe:analogClock mode="client" width="110" />
+								<div style="margin-top: 5px;">
+									<p:clock mode="client" syncInterval="60"
+										pattern="dd.MM.yy HH:mm:ss" style="margin-top:20px;"></p:clock>
+								</div>
+							</div>
 						</div>
 					</h:column>
 				</p:panelGrid>
@@ -157,34 +164,60 @@
 					<h:form id="headerform">
 						<p:layout style="height:40px;">
 
-							<p:layoutUnit position="center" resizable="true" style="border:0">
-
-								<p:commandButton onclick="PF('layoutWdgtMenu').toggle('west')"
-									icon="fa fa-chevron-left" />
-
-								<p:commandButton onclick="PF('layoutWdgt').toggle('south')"
-									icon="fa fa-chevron-down" />
-
-
-								<p:commandButton onclick="PF('layoutWdgt').toggle('north')"
-									icon="fa fa-chevron-up" />
-									
-
-						
-                            
-                                    Welcome <b style="font-size: 1.2em"><h:outputText
-										value="#{loginBean.username}" /></b>. 
-                                    <h:form
-									rendered="#{messageBean.unreadMessages.size() gt 0}">
+							<p:layoutUnit position="west" resizable="true" style="border:0"
+								size="500">
+								<span style="whitespace: nowrap;"> <p:commandButton
+										onclick="PF('layoutWdgtMenu').toggle('west')"
+										icon="fa fa-chevron-left" /> <p:commandButton
+										onclick="PF('layoutWdgt').toggle('south')"
+										icon="fa fa-chevron-down" /> <p:commandButton
+										onclick="PF('layoutWdgt').toggle('north')"
+										icon="fa fa-chevron-up" /> Welcome <b
+									style="font-size: 1.2em"><h:outputText
+											value="#{loginBean.username}" /></b>. <h:form
+										rendered="#{messageBean.unreadMessages.size() gt 0}">
                                        You have <p:commandButton
-										value="#{messageBean.unreadMessages.size()}"
-										icon="ui-icon-mail-closed" action="#{messageBean.gotoInbox}" /> new messages.
-                                    </h:form>
-								<p:poll interval="30" update="headerform" />
+											value="#{messageBean.unreadMessages.size()}"
+											icon="ui-icon-mail-closed" action="#{messageBean.gotoInbox}" /> new messages.
+                                    </h:form> <p:poll interval="30"
+										update="headerform" />
 
-
+								</span>
 
 							</p:layoutUnit>
+							<p:layoutUnit position="center">
+								<div align="center">
+									<p:ajaxStatus style="whitespace:nowrap;">
+
+										<f:facet name="default">
+											<p:outputPanel>
+												<img src="../../images/lightbulb.png" />
+												<h:outputText
+													value="Tip of the Day: Did you know? You can assign skills to devices and search for them if you need them in your project!"></h:outputText>
+											</p:outputPanel>
+										</f:facet>
+
+										<f:facet name="start">
+											<h:outputText style="color:#D2D3FC;font-style:bold"
+												value=" '''''''''''''''''''''''''''''''''''''''''''''''''''''''''     " />
+											<img style="margin-top: 7px;"
+												src="../../images/ajax-loader.gif" />
+											<h:outputText style="color:#D2D3FC;font-style:bold"
+												value="     ''''''''''''''''''''''''''''''''''''''''''''''''''''' " />
+										</f:facet>
+
+										<f:facet name="complete">
+											<p:outputPanel>
+												<img src="../../images/lightbulb.png" />
+												<h:outputText
+													value="Tip of the Day: Did you know? You can assign skills to devices and search for them if you need them in your project!"></h:outputText>
+											</p:outputPanel>
+										</f:facet>
+
+									</p:ajaxStatus>
+								</div>
+							</p:layoutUnit>
+
 							<p:layoutUnit position="east" size="500" minSize="500"
 								resizable="true" style="border:0">
 
@@ -288,7 +321,8 @@
 												update="timeline" url="../resources/resources.xhtml"
 												icon="fa fa-bar-chart-o"></p:menuitem>
 											<p:menuitem value="Agents" title="Display Dashboard"
-												icon="fa fa-sitemap"></p:menuitem>
+												update="timeline" icon="fa fa-sitemap"
+												url="../resources/agents.xhtml"></p:menuitem>
 										</p:submenu>
 
 										<p:submenu label="Projects" title="Projects"
