@@ -13,8 +13,7 @@
 			<f:metadata>
 				<f:event type="preRenderView"
 					listener="#{basicTimelineController.displayDocumentsTimeline()}" />
-				<f:event type="preRenderView"
-					listener="#{documentBean.updateDocumentTree()}" />
+				
 			</f:metadata>
 			<p:outputPanel id="sessionok" rendered="#{loginBean.getLoggedIn()}">
 
@@ -35,12 +34,12 @@
                     </f:facet>
 
 								<p:treeNode styleClass="no-border">
-
-
-
 									<p:dataTable styleClass="hide-column-names"
 										value="document.documentInfo" var="info"
 										rendered="#{document.leaf}" style="width:1000px;padding:0">
+										<p:column styleClass="yellowtouch">
+										 <img src="../../images/#{basicTimelineController.lookupMimeIcon(document.documentInfo.currentDocument.mimeType)}.png" height="25"/>
+										</p:column>
 										<p:column styleClass="yellowtouch">
 											<h:outputText value="#{document.name}"
 												rendered="#{not document.leaf}" style="min-width:200px;" />
@@ -165,7 +164,7 @@
 											fileUploadListener="#{documentBean.handleFileUpload}"
 											mode="advanced" ajax="false" update="messages"
 											sizeLimit="100000000"
-											allowTypes="/(\.|\/)(gif|txt|doc|odt|xls|xml|pdf|html|js|java|ppt|jpe?g|png)$/" />
+											allowTypes="/(\.|\/)(gif|txt|doc|docx|odt|xls|xlsx|xml|pdf|html|js|java|ppt|pptx|jpe?g|jpg|png)$/" />
 
 
 									</h:panelGroup>

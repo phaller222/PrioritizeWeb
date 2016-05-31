@@ -96,16 +96,19 @@
 							<div>
 								<h:form id="timelineform">
 									<pe:timeline id="timeline"
-										value="#{basicTimelineController.model}" height="165px"
+										value="#{basicTimelineController.model}" height="175px"
 										width="1300px"
 										selectable="#{basicTimelineController.selectable}"
 										zoomable="#{basicTimelineController.zoomable}"
 										moveable="#{basicTimelineController.moveable}"
 										stackEvents="#{basicTimelineController.stackEvents}"
-										axisOnTop="true"
+										axisOnTop="false"
 										eventStyle="#{basicTimelineController.eventStyle}"
 										showCurrentTime="#{basicTimelineController.showCurrentTime}"
-										showNavigation="false">
+										showNavigation="false"
+										min="#{basicTimelineController.min}"
+										max="#{basicTimelineController.max}"
+										ajax="false">
 										<p:ajax event="select"
 											listener="#{basicTimelineController.onSelect}" />
 									</pe:timeline>
@@ -120,7 +123,7 @@
                                         white-space: nowrap;  
                                     }      
                                        div.timeline-event-content {
-                                        color:black;
+                                        color:black;font-size:.75em;height:35px;background-color:rgba(255,255,255,.2);
                                         }
                                     div.vacation {
                                         background:rgba(0,255,0,0.3) !important;  /* green */  
@@ -132,11 +135,17 @@
                                         border-color: #136e13 !important;       
                                         color:white;
                                     }   
-                                     div.resourcereservation {
-                                        background:rgba(180,180,180,0.3) !important;  /* red */  
+                                     div.resourcereservationonline {
+                                        background:rgba(85,295,96,0.3) !important;  /* green */  
                                         border-color: #136e13 !important;       
                                         color:white;
                                        }   
+                                       
+                                        div.resourcereservationoffline {
+                                        background:rgba(180,180,180,0.3) !important;  /* gray */  
+                                        border-color: #136e13 !important;       
+                                        color:white;
+                                       } 
                                 </h:outputStylesheet>
 							</div>
 						</div>

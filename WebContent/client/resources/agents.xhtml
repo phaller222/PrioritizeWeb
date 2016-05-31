@@ -19,10 +19,7 @@
                <div style="font-size:20pt;margin-left:25px;margin-top:10px;margin-bottom:10px;" align="left">
 				<img src="../../images/agentbig.png" title="Agents" />
 				Agents</div>
-				<h:form>
-					<p:commandButton value="Refresh"
-						action="#{resourceBean.goBackToAgents()}" />
-				</h:form>
+				
 				<p:tabView>
 
 					<p:tab title="List">
@@ -55,8 +52,9 @@
 												<img src="../../images/agent2.png" height="15px"
 													title="This is an Agent." />
 												<p:spacer width="10"></p:spacer>
-												<h:outputText id="agentname" value="[AGENT] - #{val.name}"
-													style="color:gray" />
+												<p:commandLink id="agentname" value="[AGENT] - #{val.name}" style="color:gray" action="#{resourceBean.setCurrentAgent(val.resource)}"
+                                    oncomplete="PF('showAgentDataDialog').show();"/>
+												
 												<p:tooltip id="toolTipName" for="agentname"
 													value="This is the name of the agent" trackMouse="true" />
 												<p:spacer width="10"></p:spacer>
@@ -87,6 +85,19 @@
 
 
 							</p:tree>
+
+
+                            <p:dialog header="Agent data" widgetVar="showAgentDataDialog"
+                        style="min-width:800px;" minHeight="60">
+
+                        <p:dataList id="agentData" value="#{resourceBean.currentAgent.mqttValues}"
+                            var="result" itemType="none">
+                            <f:facet name="header">
+                                <h:outputText value="current Data from agent"/>
+                            </f:facet>
+                             #{result.name} : #{result.values}
+                        </p:dataList>
+                    </p:dialog>
 
 							<p:dialog widgetVar="newDeviceDialog" header="Create new device"
 								showEffect="clip" hideEffect="clip" closeOnEscape="true">
@@ -147,7 +158,7 @@
 										readonly="true" value="#{resourceBean.selectedNodeData}" />
 								</p:dialog>
 
-								<p:poll interval="15" update="mindmap,timeline" />
+								<p:poll interval="15" update="mindmap,timelineform" />
 							</h:form>
 						</div>
 					</p:tab>
