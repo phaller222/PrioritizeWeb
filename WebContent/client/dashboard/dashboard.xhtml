@@ -4,6 +4,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:pe="http://primefaces.org/ui/extensions">
 
 <h:body>
@@ -14,9 +15,9 @@
 					listener="#{basicTimelineController.updateTimeline()}" />
 			</f:metadata>
 			<h:form id="dashboard">
-				<p:panelGrid>
+				<p:panelGrid columns="2">
 					<p:row>
-						<p:column>
+						<!-- <p:column>
 							<p:panel header="Trends" toggleable="true">
 								<p:tagCloud model="#{loginBean.model}"
 									style="width:300px;height:115px;"></p:tagCloud>
@@ -52,21 +53,66 @@
 									<h:outputText value="2 documents have been deleted." />
 								</p:panel>
 							</p:panel>
-						</p:column>
-					</p:row>
-					<p:row>
-						<p:column>
-							<p:panel header="Messagebox" toggleable="true" closable="true"
-								footer="You have no new messages">
-								<h:form id="mailform"
-									rendered="#{messageBean.unreadMessages.size() gt 0}">
-                                       You have <p:commandButton
-										value="#{messageBean.unreadMessages.size()}"
-										icon="ui-icon-mail-closed" /> new messages.
-                                    </h:form>
-							</p:panel>
+						</p:column> -->
 
-						</p:column>
+
+
+
+						<ui:repeat var="device" value="#{loginBean.watchedResources}">
+							<p:column>
+								<p:panel header="#{device.name}" toggleable="true"
+									closable="true" footer="#{device.description}"
+									style="height:250px;width:350px;">
+									<p:tabView>
+										<p:tab title="Data">
+											<h:form id="dataform">
+												<p:selectOneListbox>
+													<f:selectItems value="#{device.mqttValues}"
+														itemValue="mqttName" />
+
+												</p:selectOneListbox>
+												<ui:repeat var="namevalues" value="#{device.mqttValues}">
+													<h:outputText rendered="#{namevalues.iterator().hasNext()}"
+														style="font-size:2em"
+														value="#{namevalues.iterator().next().name} " />
+													<h:outputText rendered="#{namevalues.iterator().hasNext()}"
+														style="font-size:2em" id="updateText"
+														value=" #{resourceBean.getLastMqttValue(device,namevalues.iterator().next()).split(',')[1]}"></h:outputText>
+
+												</ui:repeat>
+												<p:poll update="dashboard" interval="5" autoStart="true" />
+											</h:form>
+
+
+										</p:tab>
+
+										<p:tab title="Graph">
+										</p:tab>
+										<p:tab title="Geo">
+											<div id="map" style="position: relative; top: 30px;">
+												<!--  WORMS: 49.63879365551553,8.36210818738935 -->
+												<h:form id="mapform">
+
+													<p:gmap id="w_gmap"
+														center="#{resourceBean.getGMapCoordinateParameters(device)}"
+														zoom="15" type="ROADMAP" style="width:100%;height:150px"
+														widgetVar="mygmap"
+														model="#{resourceBean.resourcesMapModel}">
+													</p:gmap>
+													<!-- <p:poll update="w_gmap" interval="5" oncomplete="handleComplete(xhr, status, args)" process="@this"/> -->
+												</h:form>
+
+											</div>
+										</p:tab>
+									</p:tabView>
+
+								</p:panel>
+							</p:column>
+							<p:column>
+
+							</p:column>
+						</ui:repeat>
+
 					</p:row>
 				</p:panelGrid>
 			</h:form>

@@ -51,6 +51,7 @@
 
 .yellowtouch {
 	width: 80%;
+	height: 25px;
 	margin-left: 150px;
 	margin-bottom: 10px;
 	background-color: #ffffe3
@@ -78,45 +79,42 @@
 <h:body>
 
 
-	<p:layout fullPage="true" rendered="#{loginBean.getLoggedIn()}"
+	<p:layout fullPage="true" rendered="#{loginBean.loggedIn}"
 		widgetVar="layoutWdgt">
-		<p:layoutUnit position="north" resizable="true" minSize="180"
-			collapseSize="20" collapsible="true" maxSize="380"
-			style="min-height:180px;border:0" scrollable="null">
+		<p:layoutUnit position="north" resizable="true" minSize="200"
+			collapseSize="20" collapsible="true" maxSize="200"
+			style="min-height:180px;max-height:200px;border:0" scrollable="null">
 			<ui:insert name="head">
-				<p:panelGrid columns="3"
+				<p:panelGrid columns="2"
 					columnClasses="no-border, no-border, no-border" style="width:100%;">
 					<h:column>
-						<img src="../../images/logo2.png" />
+						<img src="../../images/logo3.png" />
 
 					</h:column>
 					<h:column>
-						<div align="left">
+						<div align="left" style="width: 90%">
 
-							<div>
-								<h:form id="timelineform">
-									<pe:timeline id="timeline"
-										value="#{basicTimelineController.model}" height="175px"
-										width="1300px"
-										selectable="#{basicTimelineController.selectable}"
-										zoomable="#{basicTimelineController.zoomable}"
-										moveable="#{basicTimelineController.moveable}"
-										stackEvents="#{basicTimelineController.stackEvents}"
-										axisOnTop="false"
-										eventStyle="#{basicTimelineController.eventStyle}"
-										showCurrentTime="#{basicTimelineController.showCurrentTime}"
-										showNavigation="false"
-										min="#{basicTimelineController.min}"
-										max="#{basicTimelineController.max}"
-										ajax="false">
-										<p:ajax event="select"
-											listener="#{basicTimelineController.onSelect}" />
-									</pe:timeline>
-									<!-- <p:poll interval="10"
+
+							<h:form id="timelineform">
+								<pe:timeline id="timeline"
+									value="#{basicTimelineController.model}" height="180px"
+									width="100%" selectable="#{basicTimelineController.selectable}"
+									zoomable="#{basicTimelineController.zoomable}"
+									moveable="#{basicTimelineController.moveable}"
+									stackEvents="#{basicTimelineController.stackEvents}"
+									axisOnTop="false"
+									eventStyle="#{basicTimelineController.eventStyle}"
+									showCurrentTime="#{basicTimelineController.showCurrentTime}"
+									showNavigation="false" min="#{basicTimelineController.min}"
+									max="#{basicTimelineController.max}" ajax="false">
+									<p:ajax event="select"
+										listener="#{basicTimelineController.onSelect}" />
+								</pe:timeline>
+								<!-- <p:poll interval="10"
 										listener="#{basicTimelineController.updateTimeline()}"
 										 autoStart="true" /> -->
-								</h:form>
-								<h:outputStylesheet id="timelineCSS">  
+							</h:form>
+							<h:outputStylesheet id="timelineCSS">  
                                     table .formColumn {  
                                         padding: 0 5px 0 5px;  
                                         text-align: right;  
@@ -147,21 +145,18 @@
                                         color:white;
                                        } 
                                 </h:outputStylesheet>
-							</div>
 						</div>
+
 					</h:column>
-					<h:column>
+					<!-- <h:column>
 						<div align="right"
-							style="min-height: 70px; padding-bottom: 5px; padding-right: 15px;">
+							style="min-height: 70px; padding-bottom: 5px; padding-right: 40%">
 							<div align="center">
-								<pe:analogClock mode="client" width="110" />
-								<div style="margin-top: 5px;">
-									<p:clock mode="client" syncInterval="60"
-										pattern="dd.MM.yy HH:mm:ss" style="margin-top:20px;"></p:clock>
-								</div>
+								<pe:analogClock mode="client" width="120" />
+								
 							</div>
 						</div>
-					</h:column>
+					</h:column> -->
 				</p:panelGrid>
 
 			</ui:insert>
@@ -171,89 +166,106 @@
 			<p:layout rendered="#{loginBean.getLoggedIn()}">
 				<p:layoutUnit position="north" style="border:0">
 					<h:form id="headerform">
-						<p:layout style="height:40px;">
+						<p:layout style="height:40px;margin-left:0%;border:none"
+							styleClass="noborder" scrollable="null">
 
-							<p:layoutUnit position="west" resizable="true" style="border:0"
-								size="500">
-								<span style="whitespace: nowrap;"> <p:commandButton
-										onclick="PF('layoutWdgtMenu').toggle('west')"
-										icon="fa fa-chevron-left" /> <p:commandButton
-										onclick="PF('layoutWdgt').toggle('south')"
-										icon="fa fa-chevron-down" /> <p:commandButton
-										onclick="PF('layoutWdgt').toggle('north')"
-										icon="fa fa-chevron-up" /> Welcome <b
-									style="font-size: 1.2em"><h:outputText
-											value="#{loginBean.username}" /></b>. <h:form
-										rendered="#{messageBean.unreadMessages.size() gt 0}">
-                                       You have <p:commandButton
-											value="#{messageBean.unreadMessages.size()}"
-											icon="ui-icon-mail-closed" action="#{messageBean.gotoInbox}" /> new messages.
+
+							<p:layoutUnit position="west" style="border:0" minSize="300">
+
+								<p:ajaxStatus style="whitespace:nowrap;">
+
+									<f:facet name="default">
+										<h:form rendered="#{messageBean.unreadMessages.size() gt 0}">
+											<p:outputPanel style="padding-left:0%">
+
+												<p:column>
+													<p:commandButton
+														value="#{messageBean.unreadMessages.size()}"
+														icon="ui-icon-mail-closed"
+														action="#{messageBean.gotoInbox}" />
+												</p:column>
+
+												<p:column>
+													new messages.
+													</p:column>
+
+											</p:outputPanel>
+										</h:form>
+										<p:poll interval="30" update="headerform" />
+									</f:facet>
+
+									<f:facet name="start">
+
+										<img style="margin-top: 7px;"
+											src="../../images/ajax-loader.gif" />
+
+									</f:facet>
+
+									<f:facet name="complete">
+										<p:outputPanel>
+
+											<span
+												style="whitespace: nowrap; margin-top: 15px; margin-left: 0%">
+												<h:form rendered="#{messageBean.unreadMessages.size() gt 0}">
+													<p:commandButton
+														value="#{messageBean.unreadMessages.size()}"
+														icon="ui-icon-mail-closed"
+														action="#{messageBean.gotoInbox}" /> new messages.
                                     </h:form> <p:poll interval="30"
-										update="headerform" />
+													update="headerform" />
+											</span>
+										</p:outputPanel>
+									</f:facet>
 
-								</span>
-
+								</p:ajaxStatus>
 							</p:layoutUnit>
-							<p:layoutUnit position="center">
-								<div align="center">
-									<p:ajaxStatus style="whitespace:nowrap;">
+							<p:layoutUnit position="center" minSize="500" style="border:0">
+								<div align="center" style="width: 100%">
+									<h:panelGrid columns="3" width="250">
+										<p:column>
+											<p:selectOneMenu id="searchcontext" style="width:125px">
+												<f:selectItem itemLabel="All" itemValue="all" />
+												<f:selectItem itemLabel="Devices" itemValue="Devices" />
+												<f:selectItem itemLabel="Documents" itemValue="Documents" />
 
-										<f:facet name="default">
-											<p:outputPanel>
-												<img src="../../images/lightbulb.png" />
-												<h:outputText
-													value="Tip of the Day: Did you know? You can assign skills to devices and search for them if you need them in your project!"></h:outputText>
-											</p:outputPanel>
-										</f:facet>
-
-										<f:facet name="start">
-											<h:outputText style="color:#D2D3FC;font-style:bold"
-												value=" '''''''''''''''''''''''''''''''''''''''''''''''''''''''''     " />
-											<img style="margin-top: 7px;"
-												src="../../images/ajax-loader.gif" />
-											<h:outputText style="color:#D2D3FC;font-style:bold"
-												value="     ''''''''''''''''''''''''''''''''''''''''''''''''''''' " />
-										</f:facet>
-
-										<f:facet name="complete">
-											<p:outputPanel>
-												<img src="../../images/lightbulb.png" />
-												<h:outputText
-													value="Tip of the Day: Did you know? You can assign skills to devices and search for them if you need them in your project!"></h:outputText>
-											</p:outputPanel>
-										</f:facet>
-
-									</p:ajaxStatus>
+											</p:selectOneMenu>
+										</p:column>
+										<p:column>
+											<p:inputText value="#{searchBean.searchPhrase}"
+												placeholder="Searchphrase..." style="width:450px" />
+										</p:column>
+										<p:column>
+											<p:commandButton value="Search" icon="ui-icon-search"
+												action="#{searchBean.search}"
+												oncomplete="PF('searchResults').show();"
+												update="searchResults" />
+										</p:column>
+									</h:panelGrid>
 								</div>
+
 							</p:layoutUnit>
+							<p:layoutUnit position="east" minSize="270" style="border:0">
 
-							<p:layoutUnit position="east" size="500" minSize="500"
-								resizable="true" style="border:0">
+								<p:outputPanel>
 
-
-
-
-								<p:inputText style="min-width:250px;margin-right:10px"
-									value="#{searchBean.searchPhrase}"
-									placeholder="Searchphrase..." />
-								<p:commandButton value="Search" icon="ui-icon-search"
-									action="#{searchBean.search}"
-									oncomplete="PF('searchResults').show();" update="searchResults" />
-								<p:spacer height="0" width="20" />
-								<p:commandButton id="dynaButton" type="button" ajax="false"
-									value="Account" icon="ui-icon-person" />
-								<p:tieredMenu overlay="true" trigger="dynaButton" my="left top"
-									at="left bottom" style="width:200px">
-
-									<p:menuitem value="Settings" icon="ui-icon-disk" />
-									<p:menuitem value="Logout" icon="ui-icon-arrowrefresh-1-w" />
-
-
-								</p:tieredMenu>
-
+									<h:form
+										style="whitespace:nowrap;">
+										<h:panelGrid columns="1" width="250">
+											<p:column>
+												<h:outputText value="Welcome, #{userBean.currentUser.name}." />
+											</p:column>
+											
+										</h:panelGrid>
+									</h:form>
+									
+								</p:outputPanel>
 
 
 							</p:layoutUnit>
+
+
+
+
 
 						</p:layout>
 					</h:form>
@@ -349,6 +361,8 @@
 												title="Change Dashboard settings" icon="fa fa-line-chart"></p:menuitem>
 											<p:menuitem value="Notifications"
 												title="Notification settings" icon="fa fa-comment-o"></p:menuitem>
+											<p:menuitem value="Logout" action="#{loginBean.logout}"
+												ajax="false" icon="ui-icon-power " />
 										</p:submenu>
 									</p:menu>
 
@@ -363,7 +377,7 @@
 
 		<p:layoutUnit position="south" closable="true" resizable="true"
 			collapsible="true" maxSize="400" minSize="100" size="200"
-			collapseSize="20">
+			collapseSize="20" collapsed="true">
 
 			<ui:insert name="footercontent">
 				<!-- <h:form>
@@ -451,7 +465,7 @@
 
 	</p:layout>
 
-	<p:panel id="nosession" rendered="#{not loginBean.getLoggedIn()}"
+	<p:panel id="nosession" rendered="#{not loginBean.loggedIn}"
 		style="margin:auto;margin-top:10%;">
 		<div align="center">
 			<h1>You are not logged in.</h1>
