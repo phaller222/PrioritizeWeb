@@ -74,10 +74,10 @@
 												action="#{resourceBean.toggleWatch(val.resource)}"
 												title="Watch"
 												disabled="#{!resourceBean.canRead(val.resource)}"
-												ajax="true"
+												ajax="false"
 												rendered="#{!resourceBean.isWatched(val.resource)}"
 												style="background:rgba(255,255,255,0.0);border:none"
-												icon="fa fa-eye"></p:commandButton>
+												icon="fa fa-eye" update="resourcetable"></p:commandButton>
 											<p:tooltip for="watchbutton"
 												value="Select to put this device on your dashboard"/>
 
@@ -88,7 +88,7 @@
 													ajax="false"
 													rendered="#{resourceBean.isWatched(val.resource)}"
 													style="background:rgba(255,255,255,0.0);border:none"
-													icon="fa fa-eye-slash"></p:commandButton>
+													icon="fa fa-eye-slash" update="resourcetable"></p:commandButton>
 												<p:tooltip for="unwatchbutton"
 													value="Select to remove this device from your dashboard"/>
 										</p:column>

@@ -248,16 +248,15 @@
 
 								<p:outputPanel>
 
-									<h:form
-										style="whitespace:nowrap;">
+									<h:form style="whitespace:nowrap;">
 										<h:panelGrid columns="1" width="250">
 											<p:column>
 												<h:outputText value="Welcome, #{userBean.currentUser.name}." />
 											</p:column>
-											
+
 										</h:panelGrid>
 									</h:form>
-									
+
 								</p:outputPanel>
 
 
@@ -403,7 +402,7 @@
 
 				<div id="actionboard"
 					style="background-image: url('../../images/background.jpg');">
-					<p:panel class="actionboardarticle"
+					<!--  <p:panel class="actionboardarticle"
 						header="13.10.2016 - 12:40 - (Article) from josephine (User)">
 						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 							Aenean blandit tortor a ipsum vehicula, in semper sapien auctor.
@@ -412,6 +411,21 @@
 							fringilla. Nam vitae massa ac mi elementum mattis vel vitae sem.
 							Ut eros ipsum, scelerisque a erat a, eleifend luctus nibh.
 							Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+					</p:panel> -->
+
+
+					<p:panel class="actionboardmessage">
+						<p:dataList styleClass="hide-column-names"
+							value="#{userBean.actionBoardEntries}" var="entry"
+							style="width:1000px;padding:0">
+
+							<p:panel>
+								<h:outputText value="#{entry.title} #{entry.message}" />
+							</p:panel>
+
+
+						</p:dataList>
+
 					</p:panel>
 
 					<p:panel class="actionboardmessage"
@@ -419,12 +433,8 @@
 						header="13.10.2016 - 12:38 - (Message) From admin (User)">
 							Subject: This is a test
 							</p:panel>
-					<p:panel class="actionboardmessage"
-						style="width:60%;margin-bottom:20px"
-						header="13.10.2016 - 12:34 - (Message) From viktor (User)">
-							Subject: Got the comments?
-							</p:panel>
-					<p:panel class="actionboardarticle"
+
+					<!-- <p:panel class="actionboardarticle"
 						header="13.10.2016 - 12:22 - (Article) From Einkauf (Department)">
 						<p>Vivamus ac ullamcorper magna. Aenean felis ante, elementum
 							sit amet urna at, eleifend aliquet velit. Morbi a convallis
@@ -458,7 +468,7 @@
 							malesuada. Praesent venenatis leo sit amet arcu commodo, sit amet
 							porta tellus suscipit. Quisque mi tortor, vestibulum in arcu non,
 							pretium auctor libero. In commodo luctus placerat.</p>
-					</p:panel>
+					</p:panel> -->
 				</div>
 			</ui:insert>
 		</p:layoutUnit>

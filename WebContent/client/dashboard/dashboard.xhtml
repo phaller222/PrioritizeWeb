@@ -14,18 +14,10 @@
 				<f:event type="preRenderView"
 					listener="#{basicTimelineController.updateTimeline()}" />
 			</f:metadata>
-			<h:form id="dashboard">
-				<p:panelGrid columns="2">
-					<p:row>
-						<!-- <p:column>
-							<p:panel header="Trends" toggleable="true">
-								<p:tagCloud model="#{loginBean.model}"
-									style="width:300px;height:115px;"></p:tagCloud>
+			
+				<h:panelGrid>
 
-							</p:panel>
-
-						</p:column>
-						<p:column>
+					<!-- 		<p:column>
 							<p:panel header="Devices and Resources" toggleable="true"
 								footer="You are watching 12 devices." closable="true">
 
@@ -57,31 +49,34 @@
 
 
 
-
+					<h:form id="dataform">
 						<ui:repeat var="device" value="#{loginBean.watchedResources}">
-							<p:column>
-								<p:panel header="#{device.name}" toggleable="true"
-									closable="true" footer="#{device.description}"
-									style="height:250px;width:350px;">
-									<p:tabView>
+
+							<p:panel header="#{device.name}" toggleable="true"
+								closable="true" footer="#{device.description}"
+								style="height:250px;width:350px;">
+								<p:column>
+									<p:tabView activeIndex="#{loginBean.dashboardTabsActiveIndex}">
+										<p:ajax event="tabChange"
+											listener="#{loginBean.onDashboardTabChange(index)}" />
 										<p:tab title="Data">
-											<h:form id="dataform">
-												<p:selectOneListbox>
-													<f:selectItems value="#{device.mqttValues}"
-														itemValue="mqttName" />
 
-												</p:selectOneListbox>
-												<ui:repeat var="namevalues" value="#{device.mqttValues}">
-													<h:outputText rendered="#{namevalues.iterator().hasNext()}"
-														style="font-size:2em"
-														value="#{namevalues.iterator().next().name} " />
-													<h:outputText rendered="#{namevalues.iterator().hasNext()}"
-														style="font-size:2em" id="updateText"
-														value=" #{resourceBean.getLastMqttValue(device,namevalues.iterator().next()).split(',')[1]}"></h:outputText>
+											<p:selectOneListbox>
+												<f:selectItems value="#{device.mqttValues}"
+													itemValue="mqttName" />
 
-												</ui:repeat>
-												<p:poll update="dashboard" interval="5" autoStart="true" />
-											</h:form>
+											</p:selectOneListbox>
+											<ui:repeat var="namevalues" value="#{device.mqttValues}">
+												<h:outputText rendered="#{namevalues.iterator().hasNext()}"
+													style="font-size:2em"
+													value="#{namevalues.iterator().next().name} " />
+												<h:outputText rendered="#{namevalues.iterator().hasNext()}"
+													style="font-size:2em" id="updateText"
+													value=" #{resourceBean.getLastMqttValue(device,namevalues.iterator().next()).split(',')[1]}"></h:outputText>
+
+											</ui:repeat>
+											<p:poll update="dataform" interval="10" autoStart="true" />
+
 
 
 										</p:tab>
@@ -91,31 +86,31 @@
 										<p:tab title="Geo">
 											<div id="map" style="position: relative; top: 30px;">
 												<!--  WORMS: 49.63879365551553,8.36210818738935 -->
-												<h:form id="mapform">
 
-													<p:gmap id="w_gmap"
-														center="#{resourceBean.getGMapCoordinateParameters(device)}"
-														zoom="15" type="ROADMAP" style="width:100%;height:150px"
-														widgetVar="mygmap"
-														model="#{resourceBean.resourcesMapModel}">
-													</p:gmap>
-													<!-- <p:poll update="w_gmap" interval="5" oncomplete="handleComplete(xhr, status, args)" process="@this"/> -->
-												</h:form>
+
+												<p:gmap id="w_gmap"
+													center="#{resourceBean.getGMapCoordinateParameters(device)}"
+													zoom="15" type="ROADMAP" style="width:100%;height:150px"
+													widgetVar="mygmap"
+													model="#{resourceBean.resourcesMapModel}">
+												</p:gmap>
+												<!-- <p:poll update="w_gmap" interval="5" oncomplete="handleComplete(xhr, status, args)" process="@this"/> -->
+
 
 											</div>
 										</p:tab>
 									</p:tabView>
 
-								</p:panel>
-							</p:column>
-							<p:column>
 
-							</p:column>
+								</p:column>
+							</p:panel>
+
 						</ui:repeat>
+					</h:form>
 
-					</p:row>
-				</p:panelGrid>
-			</h:form>
+
+				</h:panelGrid>
+		
 		</ui:define>
 	</ui:composition>
 </h:body>

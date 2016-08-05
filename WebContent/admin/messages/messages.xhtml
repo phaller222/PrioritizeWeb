@@ -119,6 +119,11 @@
 									<p:commandButton id="sentAction" value="Send"
 										icon="ui-icon-mail-closed" action="#{messageBean.sendMessage}"
 										ajax="false" style="width:220px"></p:commandButton>
+										
+										<p:commandButton id="entry" value="Entry"
+                                        icon="ui-icon-mail-closed" action="#{userBean.raiseTestEvent()}"
+                                        ajax="false" style="width:220px"></p:commandButton>
+										
 								</f:facet>
 							</h:panelGrid>
 						</h:form>
