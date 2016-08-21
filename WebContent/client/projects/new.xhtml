@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:body>
+	<ui:composition template="../templates/main.xhtml">
+		<ui:define name="content">
+			<p:outputPanel id="sessionok" style="width:100%"
+				rendered="#{loginBean.getLoggedIn()}">
+
+
+				<div
+					style="font-size: 20pt; margin-left: 25px; margin-top: 10px; margin-bottom: 10px;"
+					align="left">
+					<img src="../../images/messagebig.png" title="New" /> New Project
+				</div>
+				<p:tabView>
+					<p:tab title="New Project" >
+
+						<h:form id="form">
+							<div align="center">
+							
+							<div align="left" style="margin-bottom:100px;font-size:16pt;max-width:800px;" >
+							     Create a new project by selecting one of the following approaches.
+							     We suggest using the "New project wizard". It automatically tries to select
+							     the right people and resources for your project based on skills and availability.  
+							</div>
+							
+								<h:panelGrid columns="2" cellpadding="10" cellspacing="10">
+									<h:column>
+									    <p:graphicImage value="../../images/dashboard/wizard.png" id="newprojectwizard"></p:graphicImage>
+									</h:column>
+							
+									<h:column>
+
+										<p:graphicImage value="../../images/dashboard/manualplan.png" id="classicapproach"></p:graphicImage>
+
+									</h:column>
+									<h:column>
+										<h:outputLabel value="New Project Wizard"
+											style="font-size:20pt;margin-right:250px;margin-left:-70px;margin-top:10px;margin-bottom:10px;" />
+									</h:column>
+									<h:column>
+										<h:outputLabel value="Use classic approach" style="font-size:20pt;margin-left:-70px;margin-top:10px;margin-bottom:10px;"/>
+									</h:column>
+
+
+								</h:panelGrid>
+								    <p:tooltip for="newprojectwizard"   trackMouse="true">
+								    <h:outputText value="Create a new project by just providing the basic information"/><br/>
+								    <h:outputText value="and the project goals. The Wizard will try to find the"  /><br/>
+								    <h:outputText value="necessary resources and people. This is the recommended approach." />
+								    </p:tooltip>
+								     <p:tooltip for="classicapproach"   trackMouse="true">
+                                    <h:outputText value="You can also use the classic approach,"/><br/>
+                                    <h:outputText value="but keep in mind that with this approach you have to select / provide"  /><br/>
+                                    <h:outputText value="all project information, resources and people by yourself." />
+                                    </p:tooltip>
+								    
+							</div>
+
+
+						</h:form>
+					</p:tab>
+				</p:tabView>
+
+			</p:outputPanel>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>
