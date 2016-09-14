@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:body>
+	<ui:composition template="../templates/main.xhtml">
+		<ui:define name="content">
+			<p:outputPanel id="sessionok" style="width:100%"
+				rendered="#{loginBean.getLoggedIn()}">
+
+
+				<div
+					style="font-size: 20pt; margin-left: 25px; margin-top: 10px; margin-bottom: 10px;"
+					align="left">
+					<p:graphicImage value="../../images/dashboard/manualplan.png"
+						id="classicapproach"></p:graphicImage>
+					New Project (classical approach)
+				</div>
+				
+						<h:form id="form">
+							<div align="left">
+
+								<p:wizard flowListener="#{classicApproach.onFlowProcess}" showNavBar="true" showStepStatus="true" >
+									<p:tab id="general" title="General">
+										
+											
+											<h:panelGrid styleClass="projectwizardborder" columns="2" 
+                            
+                            rules="groups" cellpadding="5"
+                            style="margin-left:50px;margin-top:20px;margin-bottom:0px;width:60%">
+												<h:outputText value="Project name:" style="text-align : right;"/>
+												<p:inputText value="#{classicApproach.project.name}"
+													required="true" label="Project name" style="min-width:400px;text-align: left;" />
+
+												<h:outputText value="Project description:" />
+                                                <p:inputTextarea rows="6" cols="33" value="#{classicApproach.project.description}"
+                                                    required="true" label="Project description" style="min-width:400px;" autoResize="false"/>
+											</h:panelGrid>
+										
+									</p:tab>
+
+									<p:tab id="lead" title="Project lead">
+										
+											
+											<h:panelGrid styleClass="projectwizardborder" columns="2" layout="grid"
+                            footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
+                            frame="box" rules="groups" cellpadding="10"
+                            style="margin-left:50px;margin-top:20px;width:60%">
+												<h:outputText value="Project lead: " />
+												<p:autoComplete value="#{classicApproach.project.manager}" completeMethod="#{classicApproach.completeUserList}"/>
+												
+
+												<h:outputText value="Due date: " />
+												 <p:calendar id="duedate" value="#{classicApproach.project.dueDate}" mode="inline" />
+    										</h:panelGrid>
+										
+									</p:tab>
+
+									<p:tab id="Users" title="Project members">
+									<h:panelGrid styleClass="projectwizardborder" columns="2" layout="grid"
+                            footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
+                            frame="box" rules="groups" cellpadding="10"
+                            style="margin-left:50px;margin-top:20px;width:60%">
+										<p:panel header="Project members">
+										
+											
+										</p:panel>
+										</h:panelGrid>
+									</p:tab>
+									<p:tab id="Documents" title="Project documents">
+                                    <h:panelGrid styleClass="projectwizardborder" columns="2" layout="grid"
+                            footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
+                            frame="box" rules="groups" cellpadding="10"
+                            style="margin-left:50px;margin-top:20px;width:60%">
+                                        <p:panel header="Project documents">
+                                        
+                                            
+                                        </p:panel>
+                                        </h:panelGrid>
+                                    </p:tab>
+                                            <p:tab id="Resources" title="Project resources">
+                                    <h:panelGrid styleClass="projectwizardborder" columns="2" layout="grid"
+                            footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
+                            frame="box" rules="groups" cellpadding="10"
+                            style="margin-left:50px;margin-top:20px;width:60%">
+                                        <p:panel header="Project devices and agents">
+                                        
+                                            
+                                        </p:panel>
+                                        </h:panelGrid>
+                                    </p:tab>
+									
+
+									<p:tab id="confirm" title="Confirmation">
+									<h:panelGrid styleClass="projectwizardborder" columns="2" layout="grid"
+                            footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
+                            frame="box" rules="groups" cellpadding="10"
+                            style="margin-left:50px;margin-top:20px;width:60%">
+										<p:panel header="Confirmation">
+										<p:commandButton value="Submit"
+												actionListener="#{classicApproach.save}"
+												process="@this" />
+										</p:panel>
+										</h:panelGrid>
+									</p:tab>
+								</p:wizard>
+
+							</div>
+
+
+						</h:form>
+					
+			</p:outputPanel>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

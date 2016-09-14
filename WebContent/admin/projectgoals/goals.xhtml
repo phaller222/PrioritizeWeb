@@ -1,0 +1,297 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+	<meta charset="ISO-8859-1" />
+	<title>Skills</title>
+	<h:outputStylesheet name="../../styles/companies.css" />
+
+	<f:metadata>
+		<f:event type="preRenderView" listener="#{projectGoalBean.buildProjectGoalTree()}" />
+	</f:metadata>
+
+</h:head>
+
+<h:body>
+
+	<ui:include src="/admin/mainmenu.xhtml" />
+	<p:panel id="sessionok" rendered="#{loginBean.getLoggedIn()}">
+		<div data-role="content"></div>
+		<div align="center">
+			<h:form id="form">
+				<p:tabView>
+					<p:tab title="Project goals">
+					   <p:dialog widgetVar="newCategoryDialog"
+							header="New project goal category" showEffect="clip" hideEffect="clip">
+							<h:panelGrid id="categoryDetails" columns="2"
+								style="min-width:300px;min-height:300px;">
+								<p:outputLabel for="title" value="Title:" />
+								<p:inputText id="title"
+									value="#{projectGoalBean.newProjectGoalCategory.name}" />
+
+								<p:outputLabel for="from" value="Description:" />
+								<p:inputText id="from"
+									value="#{projectGoalBean.newProjectGoalCategory.description}" />
+
+								<p:commandButton
+									action="#{projectGoalBean.addSubcategoryToSelectedItem}"
+									update="form" value="OK" />
+							</h:panelGrid>
+						</p:dialog>
+
+						<div align="left" style="height: 300px;">
+
+
+							<p:tree id="projectgoaltree"
+								orientation="#{projectGoalBean.currentTreeOrientation}"
+								selectionMode="single"
+								selection="#{projectGoalBean.selectedProjectGoalItem}"
+								value="#{projectGoalBean.root}" var="projectGoalItem" scrollable="true"
+								scrollHeight="250" style="width:100%;text-align:left">
+
+                                 <p:ajax event="expand" listener="#{projectGoalBean.nodeExpand}" />
+                                 <p:ajax event="collapse" listener="#{projectGoalBean.nodeCollapse}" />
+
+								<p:treeNode type="rootnode">
+									<h:outputText value="Project Goals" />
+								</p:treeNode>
+								<p:treeNode type="category"
+									expandedIcon="ui-icon-folder-open"
+									collapsedIcon="ui-icon-folder-collapsed">
+
+									<div id="nodevalueCategory" align="center"
+										class="treenodes_category">
+										<h:outputText id="nodevalueCategory"
+											class="treenode_skillcategory_name" value="#{projectGoalItem}" />
+										<p:tooltip trackMouse="true" for="nodevalueCategory"
+											value="#{projectGoalItem.description}" showEffect="fade"
+											hideEffect="fade" />
+										<br />
+									</div>
+								</p:treeNode>
+
+								<p:treeNode type="goal" icon="ui-icon-lightbulb">
+									<div align="center" class="treenodes_skill">
+
+										<h:outputText id="nodevalueProjectGoals" value="#{projectGoalItem}"
+											class="treenode_skill_name" />
+										<p:tooltip trackMouse="true" for="nodevalueProjectGoals"
+											value="#{projectGoalItem.description}" />
+										<br />
+									</div>
+								</p:treeNode>
+								<p:treeNode id="idProperties" type="goalproperty" icon="ui-icon-bullet">
+									<h:outputText id="nodevalueProperty" value="#{projectGoalItem}" />
+									<p:tooltip trackMouse="true" for="nodevalueProperty"
+										value="#{projectGoalItem.description}" />
+								</p:treeNode>
+							</p:tree>
+
+							<p:growl id="messages" showDetail="true" />
+							<p:contextMenu for="projectgoaltree" nodeType="goal">
+								<p:menuitem value="Delete" update="form"
+									actionListener="#{projectGoalBean.deleteSelectedProjectGoalItem}"
+									icon="ui-icon-close" />
+							</p:contextMenu>
+							<p:contextMenu for="projectgoaltree" nodeType="category">
+								<p:menuitem value="Add Subcategory"
+									oncomplete="PF('newCategoryDialog').show();"
+									icon="ui-icon-plus" />
+								<p:menuitem value="Delete" update="form"
+									actionListener="#{projectGoalBean.deleteSelectedProjectGoalItem}"
+									icon="ui-icon-trash" />
+
+							</p:contextMenu>
+
+
+						</div>
+
+
+					</p:tab>
+					<!-- <p:tab title="Create new project goal">
+
+						<div align="left" style="font-size: 12pt;">
+
+							<p:dialog widgetVar="newPropertyNumericDialog"
+								header="New numeric property" showEffect="clip"
+								hideEffect="clip">
+								<h:panelGrid id="propertyDetails" columns="2">
+									<p:outputLabel for="name" value="Name:" />
+									<p:inputText id="name"
+										value="#{newProjectGoalBean.propertyNumericName}" />
+									<p:outputLabel for="description" value="Description:" />
+									<p:inputTextarea rows="6" id="description"
+										value="#{newSkillBean.propertyNumericDescription}"/>
+
+									<p:outputLabel for="min" value="Minimum value:" />
+									<p:inputText id="min"
+										value="#{newSkillBean.propertyNumericMinValue}" />
+									<p:outputLabel for="max" value="Maximum value:" />
+									<p:inputText id="max"
+										value="#{newSkillBean.propertyNumericMaxValue}" />
+
+									<p:commandButton action="#{newSkillBean.addNumericProperty}"
+										update="form" value="OK" />
+								</h:panelGrid>
+							</p:dialog>
+
+							<p:dialog widgetVar="newPropertyTextDialog"
+								header="New text property" showEffect="clip" hideEffect="clip">
+								<h:panelGrid id="propertyDetailsText" columns="2"
+									style="min-width:300px;min-height:300px;">
+									<p:outputLabel for="nameText" value="Name:" />
+									<p:inputText id="nameText"
+										value="#{newSkillBean.propertyTextName}" />
+									<p:outputLabel for="descriptionText" value="Description:" />
+									<p:inputTextarea rows="6" id="descriptionText"
+										value="#{newSkillBean.propertyTextDescription}"
+										style="min-width:300px;width:100%" />
+									<p:commandButton action="#{newSkillBean.addTextProperty}"
+										update="form" value="OK" />
+								</h:panelGrid>
+							</p:dialog>
+
+							<p:panelGrid columns="2" cellpadding="10"
+								footerClass=".ui-widget-footer" headerClass=".ui-widget-header">
+
+								<f:facet name="header">
+									<h:outputText value="Create a new skill entry" />
+								</f:facet>
+								<p:column>
+									<h:outputText value="Select Skill category:" class="fontsize" />
+								</p:column>
+								<p:column>
+									<p:selectOneMenu  id="selectedCategoriesId"
+										rendered="true"
+										value="#{newSkillBean.selectedSkillCategoryId}">
+										<f:selectItem itemLabel="___" itemValue="#{null}"
+											noSelectionOption="true" />
+										<f:selectItems value="#{newSkillBean.skillCategories}"
+											var="category" itemValue="#{category.id}"
+											itemLabel="#{category.qualifiedName}"
+											itemDescription="#{category.description}" />
+
+									</p:selectOneMenu>
+								</p:column>
+								<p:column >
+									<h:outputText value="Enter Skill Name:" class="fontsize" />
+								</p:column>
+								<p:column>
+									<p:inputText value="#{newSkillBean.newSkillName}"
+										 style="font-size:12pt;min-width:300px;width:100%" />
+								</p:column>
+								<p:column >
+									<h:outputText value="Enter Skill Description:" class="fontsize" />
+								</p:column>
+								<p:column>
+									<p:inputTextarea rows="6"
+										value="#{newSkillBean.newSkillDescription}"
+										style="min-width:300px;width:100%" />
+								</p:column>
+								<p:column >
+									<h:outputText value="Skill Properties:" class="fontsize" />
+								</p:column>
+								<p:column>
+									<p:panelGrid columns="2">
+										<p:column>
+											<p:commandButton
+												oncomplete="PF('newPropertyNumericDialog').show();"
+												value="New numeric property..." />
+										</p:column>
+										<p:column>
+											<p:commandButton
+												oncomplete="PF('newPropertyTextDialog').show();"
+												 value="New text property..." />
+										</p:column>
+
+
+									</p:panelGrid>
+								</p:column>
+
+							</p:panelGrid>
+							<p:dataTable var="property"
+								value="#{newSkillBean.skillProperties}" style="max-width:750px;">
+								<p:column headerText="Name" style="height:40px;">
+									<h:outputText value="#{property.name}" />
+								</p:column>
+								<p:column headerText="Description" style="height:40px;">
+									<h:outputText value="#{property.description}" />
+								</p:column>
+							</p:dataTable>
+
+
+							<p:commandButton style="margin:10px;max-width:750px"
+								value="Create Skill" action="#{newSkillBean.createSkill}"
+								ajax="false" />
+
+						</div>
+					</p:tab> -->
+				</p:tabView>
+			</h:form>
+		</div>
+	</p:panel>
+
+	<ui:include src="/notloggedin.xhtml" />
+
+	<style type="text/css">
+.treenodes_category {
+	min-width: 100px;
+	border-style: dashed;
+	border-width: 1px;
+	border-color: rgba(0, 0, 0, 0.4);
+	padding: 8px;
+	margin-left: 5px;
+	background-color: rgba(255, 255, 192, 0.5);
+}
+
+.treenodes_skill {
+	min-width: 100px;
+	border-style: dashed;
+	border-width: 1px;
+	border-color: rgba(0, 0, 0, 0.4);
+	padding: 8px;
+	margin-left: 5px;
+	background-color: rgba(255, 192, 192, 0.8);
+}
+
+.treenode_skillcategory {
+	background-color: rgba(238, 238, 238, 0.9);
+	font-size: 6pt;
+}
+
+.treenode_skillcategory_name {
+	background-color: rgba(238, 238, 238, 0.9);
+	font-size: 10pt;
+}
+
+.treenode_skill_name {
+	background-color: rgba(255, 255, 128, 0.9);
+	font-size: 10pt;
+	padding: 2px;
+	padding-left: 2px;
+	border-style: solid;
+	border-width: 1px;
+}
+
+.form_alignment {
+	vertical-alignment: top;
+}
+
+.fontsize {
+	font-size: 10pt;
+}
+
+</style>
+
+</h:body>
+</html>
