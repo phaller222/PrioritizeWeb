@@ -20,100 +20,235 @@
 						id="classicapproach"></p:graphicImage>
 					New Project (classical approach)
 				</div>
-				
-						<h:form id="form">
-							<div align="left">
 
-								<p:wizard flowListener="#{classicApproach.onFlowProcess}" showNavBar="true" showStepStatus="true" >
-									<p:tab id="general" title="General">
-										
-											
-											<h:panelGrid styleClass="projectwizardborder" columns="2" 
-                            
-                            rules="groups" cellpadding="5"
-                            style="margin-left:50px;margin-top:20px;margin-bottom:0px;width:60%">
-												<h:outputText value="Project name:" style="text-align : right;"/>
-												<p:inputText value="#{classicApproach.project.name}"
-													required="true" label="Project name" style="min-width:400px;text-align: left;" />
+				<h:form id="form">
+					<div align="left">
 
-												<h:outputText value="Project description:" />
-                                                <p:inputTextarea rows="6" cols="33" value="#{classicApproach.project.description}"
-                                                    required="true" label="Project description" style="min-width:400px;" autoResize="false"/>
-											</h:panelGrid>
-										
-									</p:tab>
+						<p:wizard flowListener="#{classicApproach.onFlowProcess}"
+							style="width:60%">
+							<p:tab id="general" title="General">
 
-									<p:tab id="lead" title="Project lead">
-										
-											
-											<h:panelGrid styleClass="projectwizardborder" columns="2" layout="grid"
-                            footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
-                            frame="box" rules="groups" cellpadding="10"
-                            style="margin-left:50px;margin-top:20px;width:60%">
-												<h:outputText value="Project lead: " />
-												<p:autoComplete value="#{classicApproach.project.manager}" completeMethod="#{classicApproach.completeUserList}"/>
-												
 
-												<h:outputText value="Due date: " />
-												 <p:calendar id="duedate" value="#{classicApproach.project.dueDate}" mode="inline" />
-    										</h:panelGrid>
-										
-									</p:tab>
+								<h:panelGrid styleClass="projectwizardborder" columns="2"
+									rules="groups" cellpadding="5"
+									style="margin-left:50px;margin-top:20px;margin-bottom:20px;width:90%">
+									<h:outputText value="Project name:" style="text-align : right;" />
+									<p:inputText value="#{classicApproach.projectName}"
+										required="true" label="Project name"
+										style="min-width:300px;text-align: left;" />
 
-									<p:tab id="Users" title="Project members">
-									<h:panelGrid styleClass="projectwizardborder" columns="2" layout="grid"
-                            footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
-                            frame="box" rules="groups" cellpadding="10"
-                            style="margin-left:50px;margin-top:20px;width:60%">
-										<p:panel header="Project members">
-										
-											
-										</p:panel>
-										</h:panelGrid>
-									</p:tab>
-									<p:tab id="Documents" title="Project documents">
-                                    <h:panelGrid styleClass="projectwizardborder" columns="2" layout="grid"
-                            footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
-                            frame="box" rules="groups" cellpadding="10"
-                            style="margin-left:50px;margin-top:20px;width:60%">
-                                        <p:panel header="Project documents">
-                                        
-                                            
-                                        </p:panel>
-                                        </h:panelGrid>
-                                    </p:tab>
-                                            <p:tab id="Resources" title="Project resources">
-                                    <h:panelGrid styleClass="projectwizardborder" columns="2" layout="grid"
-                            footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
-                            frame="box" rules="groups" cellpadding="10"
-                            style="margin-left:50px;margin-top:20px;width:60%">
-                                        <p:panel header="Project devices and agents">
-                                        
-                                            
-                                        </p:panel>
-                                        </h:panelGrid>
-                                    </p:tab>
-									
+									<h:outputText value="Project description:" />
+									<p:inputTextarea rows="6" cols="33"
+										value="#{classicApproach.projectDescription}" required="true"
+										label="Project description"
+										style="min-width:300px;text-align: left" autoResize="false" />
 
-									<p:tab id="confirm" title="Confirmation">
-									<h:panelGrid styleClass="projectwizardborder" columns="2" layout="grid"
-                            footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
-                            frame="box" rules="groups" cellpadding="10"
-                            style="margin-left:50px;margin-top:20px;width:60%">
-										<p:panel header="Confirmation">
+									<h:outputText value="Project lead: " />
+									<p:autoComplete value="#{classicApproach.managerRoleName}"
+										completeMethod="#{classicApproach.completeUserList}"
+										style="min-width:300px;text-align: left" />
+
+
+									<h:outputText value="Due date: " />
+									<p:calendar id="duedate"
+										value="#{classicApproach.projectDueDate}" effect="fold" />
+
+								</h:panelGrid>
+
+							</p:tab>
+
+							<p:tab id="Users" title="Members">
+								<h:panelGrid styleClass="projectwizardborder" columns="2"
+									layout="grid" footerClass=".ui-widget-footer"
+									headerClass=".ui-widget-header" frame="box" rules="groups"
+									cellpadding="10"
+									style="margin-left:50px;margin-right:100px;margin-top:20px;margin-bottom:20px;width:90%">
+									<p:panel header="Project members" style="width:90%;height:90%">
+										<div style="width: 700px;">
+											<h:outputText value="Add a User to the project: " />
+											<p:autoComplete value="#{classicApproach.userToAdd}"
+												completeMethod="#{classicApproach.completeUserList}"
+												style="margin-right:20px" />
+											<p:commandButton value="Add User"
+												actionListener="#{classicApproach.addUser}" process="@this"
+												ajax="false" update="usertable" />
+										</div>
+										<div>
+											<p:dataTable id="usertable" var="user"
+												value="#{classicApproach.members}">
+												<p:column headerText="Name">
+													<h:outputText value="#{user.name}" />
+												</p:column>
+
+												<p:column headerText="Occupation">
+													<h:outputText value="#{user.occupation}" />
+												</p:column>
+												<p:column headerText="Department">
+													<h:outputText value="#{user.department.name}" />
+												</p:column>
+												<p:column headerText="Remove">
+													<p:commandButton value="Remove"
+														actionListener="#{classicApproach.removeUser(user)}"
+														process="@this" update="usertable" />
+												</p:column>
+
+											</p:dataTable>
+										</div>
+
+
+									</p:panel>
+								</h:panelGrid>
+							</p:tab>
+							<p:tab id="Documents" title="Documents">
+								<h:panelGrid styleClass="projectwizardborder" columns="2"
+									layout="grid" footerClass=".ui-widget-footer"
+									headerClass=".ui-widget-header" frame="box" rules="groups"
+									cellpadding="10"
+									style="margin-left:50px;margin-right:100px;margin-top:20px;margin-bottom:20px;width:90%">
+									<p:panel header="Project documents"
+										style="width:90%;height:90%">
+										<div style="width: 700px;">
+											<h:outputText value="Add a Document to the project: " />
+											<p:autoComplete value="#{classicApproach.documentToAdd}"
+												completeMethod="#{classicApproach.completeDocumentList}"
+												style="margin-right:20px" />
+											<p:commandButton value="Add document"
+												actionListener="#{classicApproach.addDocument}"
+												process="@this" ajax="false" update="documenttable" />
+										</div>
+										<div>
+											<p:dataTable id="documenttable" var="document"
+												value="#{classicApproach.documents}">
+												<p:column headerText="Name">
+													<h:outputText value="#{document.currentDocument.name}" />
+												</p:column>
+
+												<p:column headerText="MimeType">
+													<h:outputText value="#{document.currentDocument.mimeType}" />
+												</p:column>
+												<p:column headerText="Version">
+													<h:outputText value="#{document.currentDocument.version}" />
+												</p:column>
+												<p:column headerText="Remove">
+													<p:commandButton value="Remove"
+														actionListener="#{classicApproach.removeDocument(document)}"
+														process="@this" ajax="false" update="documenttable" />
+												</p:column>
+
+											</p:dataTable>
+										</div>
+
+
+									</p:panel>
+								</h:panelGrid>
+							</p:tab>
+							<p:tab id="Resources" title="Resources">
+								<h:panelGrid styleClass="projectwizardborder" columns="2"
+									layout="grid" footerClass=".ui-widget-footer"
+									headerClass=".ui-widget-header" frame="box" rules="groups"
+									cellpadding="10"
+									style="margin-left:50px;margin-right:100px;margin-top:20px;margin-bottom:20px;width:90%">
+									<p:panel header="Project resources/devices"
+										style="width:90%;height:90%">
+										<div style="width: 700px;">
+											<h:outputText
+												value="Add a Resource / Device to the project: " />
+											<p:autoComplete value="#{classicApproach.resourceToAdd}"
+												completeMethod="#{classicApproach.completeResourcesList}"
+												style="margin-right:20px" />
+											<p:commandButton value="Add resource"
+												actionListener="#{classicApproach.addResource}"
+												process="@this" ajax="false" update="resourcetable" />
+										</div>
+										<div>
+											<p:dataTable id="resourcetable" var="resource"
+												value="#{classicApproach.resources}">
+												<p:column headerText="Name">
+													<h:outputText value="#{resource.name}" />
+												</p:column>
+
+												<p:column headerText="Description">
+													<h:outputText value="#{resource.description}" />
+												</p:column>
+												<p:column headerText="Department">
+													<h:outputText value="#{resource.department.name}" />
+												</p:column>
+												<p:column headerText="Remove">
+													<p:commandButton value="Remove"
+														actionListener="#{classicApproach.removeResource(resource)}"
+														process="@this" ajax="false" update="resourcetable" />
+												</p:column>
+
+											</p:dataTable>
+										</div>
+
+
+									</p:panel>
+								</h:panelGrid>
+							</p:tab>
+							<p:tab id="Tasks" title="Tasks">
+								<h:panelGrid styleClass="projectwizardborder" columns="2"
+                                    layout="grid" footerClass=".ui-widget-footer"
+                                    headerClass=".ui-widget-header" frame="box" rules="groups"
+                                    cellpadding="10"
+                                    style="margin-left:50px;margin-right:100px;margin-top:20px;margin-bottom:20px;width:90%">
+                                    <p:panel header="Project tasks"
+                                        style="width:90%;height:90%">
+                                        <div style="width: 700px;">
+                                            <h:outputText value="Task name: " />
+                                            <p:inputText value="#{classicApproach.taskNameToAdd}"
+                                                style="margin-right:20px" />
+                                                 <h:outputText value="Task description: " />
+                                            <p:inputText value="#{classicApproach.taskDescriptionToAdd}"
+                                                style="margin-right:20px" />
+                                            <p:commandButton value="Add task"
+                                                actionListener="#{classicApproach.addTask}"
+                                                process="@this" ajax="false" update="tasktable" />
+                                        </div>
+                                        <div>
+                                            <p:dataTable id="tasktable" var="task"
+                                                value="#{classicApproach.tasks}">
+                                                <p:column headerText="Name">
+                                                    <h:outputText value="#{task.name}" />
+                                                </p:column>
+
+                                                <p:column headerText="Description">
+                                                    <h:outputText value="#{task.description}" />
+                                                </p:column>
+                                                <p:column headerText="Remove">
+                                                    <p:commandButton value="Remove"
+                                                        actionListener="#{classicApproach.removeTask(task)}"
+                                                        process="@this" ajax="false" update="tasktable" />
+                                                </p:column>
+
+                                            </p:dataTable>
+                                        </div>
+
+
+                                    </p:panel>
+                                </h:panelGrid>
+							</p:tab>
+
+							<p:tab id="confirm" title="Confirmation">
+							<p:messages></p:messages>
+								<h:panelGrid styleClass="projectwizardborder" columns="2"
+									layout="grid" footerClass=".ui-widget-footer"
+									headerClass=".ui-widget-header" frame="box" rules="groups"
+									cellpadding="10"
+									style="margin-left:50px;margin-top:20px;margin-bottom:20px;width:90%">
+									<p:panel header="Confirmation">
 										<p:commandButton value="Submit"
-												actionListener="#{classicApproach.save}"
-												process="@this" />
-										</p:panel>
-										</h:panelGrid>
-									</p:tab>
-								</p:wizard>
+											actionListener="#{classicApproach.save}" process="@this" />
+									</p:panel>
+								</h:panelGrid>
+							</p:tab>
+						</p:wizard>
 
-							</div>
+					</div>
 
 
-						</h:form>
-					
+				</h:form>
+
 			</p:outputPanel>
 
 		</ui:define>
