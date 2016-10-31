@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:body>
+	<ui:composition template="../templates/main.xhtml">
+		<ui:define name="content">
+			<p:outputPanel id="sessionok" style="width:100%"
+				rendered="#{loginBean.getLoggedIn()}">
+				<div
+					style="font-size: 20pt; margin-left: 25px; margin-top: 10px; margin-bottom: 10px;"
+					align="left">
+					<img src="../../images/projectsbig.png" title="Tasks" />
+					<h:outputText
+						value=" #{listProjectsBean.currentProject.name} - Tasks" />
+				</div>
+				<p:tabView>
+					<p:tab title="Tasks">
+
+
+						<h:form id="form">
+							<p:dataTable id="tasktable" var="task"
+								value="#{listProjectsBean.currentProject.blackboard.tasks}"
+								style="width:80%" resizableColumns="true"
+								draggableColumns="true" draggableRows="true" liveResize="true"
+								sortOrder="ascending" sortBy="#{task.name}">
+
+								<p:column headerText="Name" styleClass="tablecolumsmall">
+									<h:outputText id="taskname" value="#{task.name}" />
+									<p:tooltip for="taskname" value="#{task.description}"
+										trackMouse="true"></p:tooltip>
+								</p:column>
+
+								<p:column headerText="Progress" styleClass="tablecolumsmall">
+									<p:progressBar id="progress"
+										value="#{task.projectGoalRecord.percentage}"
+										labelTemplate="#{task.taskStatus} {value}%" displayOnly="true" />
+									<p:tooltip for="progress"
+										value="#{task.projectGoalRecord.percentage} percent of the task have been completed."
+										trackMouse="true"></p:tooltip>
+								</p:column>
+
+
+								<p:column headerText="Prioritiy" styleClass="tablecolumsmall">
+									<h:outputText id="taskpriority" value="#{task.priority}" />
+									<p:tooltip for="taskpriority"
+										value="Priority of task #{task.name}" trackMouse="true"></p:tooltip>
+								</p:column>
+								<p:column headerText="State" styleClass="tablecolumsmall">
+									<h:outputText id="taskstate" value="#{task.taskStatus}">
+
+									</h:outputText>
+									<p:tooltip for="taskstate" value="State of task #{task.name}"
+										trackMouse="true"></p:tooltip>
+								</p:column>
+								<!-- <p:column headerText="Due date" styleClass="tablecolumsmall">
+									<h:outputText id="duedate" value="#{project.dueDate}">
+										<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+									</h:outputText>
+									<p:tooltip for="duedate"
+										value="This project is due at #{project.dueDate}"
+										trackMouse="true"></p:tooltip>
+								</p:column>
+								<p:column headerText="Actions" styleClass="tablecolumsmall"
+									style="height:30px;">
+									<p:commandButton id="cmdblackboard"
+										action="#{listProjectsBean.showBlackboard()}"
+										style="border:none;background:rgba(220,160,140,0.0);"
+										icon="fa fa-slideshare fa-2x fa-fw" ajax="false">
+									</p:commandButton>
+									<p:tooltip for="cmdblackboard"
+										value="Go to the blackboard for project #{project.name}"
+										trackMouse="true"></p:tooltip>
+									<p:commandButton id="cmdtasks"
+										action="#{listProjectsBean.showTasks()}"
+										style="border:none;background:rgba(220,160,140,0.0);"
+										icon="fa fa-sitemap fa-2x fa-fw" title="Show tasklist"
+										ajax="false">
+									</p:commandButton>
+									<p:tooltip for="cmdtasks"
+										value="List all tasks of project #{project.name}"
+										trackMouse="true"></p:tooltip>
+								</p:column> -->
+							</p:dataTable>
+							<p:poll update="form" interval="120"></p:poll>
+						</h:form>
+					</p:tab>
+				</p:tabView>
+			</p:outputPanel>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>
+

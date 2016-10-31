@@ -15,7 +15,7 @@
 					listener="#{basicTimelineController.updateTimeline()}" />
 			</f:metadata>
 
-			<h:panelGrid columns="2">
+			<h:panelGrid columns="2" cellspacing="30">
 
 				<!-- 		<p:column>
 							<p:panel header="Devices and Resources" toggleable="true"
@@ -47,17 +47,17 @@
 							</p:panel>
 						</p:column> -->
 
-				<p:panel id="clock">
+				<p:panel id="clock" style="width:170px" toggleable="true" styleClass="ui-dashboard-column" header="Time" >
 					<pe:analogClock width="150"></pe:analogClock>
 				</p:panel>
-				<p:resizable for="clock" />
+				
 
 				<h:form id="dataform">
 					<ui:repeat var="device" value="#{loginBean.watchedResources}">
 
 						<p:panel id="devicepanel" header="#{device.name}"
 							toggleable="true" closable="true" footer="#{device.description}"
-							style="height:250px;width:350px;">
+							style="height:250px;width:350px;" styleClass="ui-dashboard-column">
 
 							<p:tabView activeIndex="#{loginBean.dashboardTabsActiveIndex}">
 								<p:ajax event="tabChange"

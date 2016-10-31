@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:body>
+	<ui:composition template="../templates/main.xhtml">
+		<ui:define name="content">
+			<p:outputPanel id="sessionok" style="width:100%"
+				rendered="#{loginBean.getLoggedIn()}">
+				<div
+					style="font-size: 20pt; margin-left: 25px; margin-top: 10px; margin-bottom: 10px;"
+					align="left">
+					<img src="../../images/projectsbig.png" title="Devices" /> My
+					Projects
+				</div>
+				<p:tabView>
+					<p:tab title="Projects">
+
+
+						<h:form id="form">
+							<p:dataTable id="projectstable" var="project"
+								value="#{listProjectsBean.projects}" style="width:80%"
+								resizableColumns="true" draggableColumns="true"
+								draggableRows="true" liveResize="true" sortOrder="ascending" sortBy="#{project.name}">
+
+								<p:column headerText="Name" styleClass="tablecolumsmall">
+									<h:outputText id="projectname" value="#{project.name}" />
+									<p:tooltip for="projectname" value="#{project.description}"
+										trackMouse="true"></p:tooltip>
+								</p:column>
+
+								<p:column headerText="Progress" styleClass="tablecolumsmall">
+									<p:progressBar id="progress"
+										value="#{project.progress.progress}" labelTemplate="{value}%"
+										displayOnly="true" />
+									<p:tooltip for="progress"
+										value="#{project.progress.progress} percent of the project have been completed."
+										trackMouse="true"></p:tooltip>
+								</p:column>
+
+
+								<p:column headerText="Project lead" styleClass="tablecolumsmall">
+									<h:outputText id="projectlead" value="#{project.manager.name}" />
+									<p:tooltip for="projectlead"
+										value="All members of the role #{project.manager.name} can manage this project"
+										trackMouse="true"></p:tooltip>
+								</p:column>
+								<p:column headerText="Begin date" styleClass="tablecolumsmall">
+									<h:outputText id="begindate" value="#{project.beginDate}">
+										<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+									</h:outputText>
+									<p:tooltip for="begindate"
+										value="This project was started at #{project.beginDate}"
+										trackMouse="true"></p:tooltip>
+								</p:column>
+								<p:column headerText="Due date" styleClass="tablecolumsmall">
+									<h:outputText id="duedate" value="#{project.dueDate}">
+										<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+									</h:outputText>
+									<p:tooltip for="duedate"
+										value="This project is due at #{project.dueDate}"
+										trackMouse="true"></p:tooltip>
+								</p:column>
+								<p:column headerText="Actions" styleClass="tablecolumsmall"
+									style="height:30px;">
+									<p:commandButton id="cmdblackboard"
+										action="#{listProjectsBean.showBlackboard(project)}"
+										style="border:none;background:rgba(220,160,140,0.0);"
+										icon="fa fa-slideshare fa-2x fa-fw" ajax="false">
+									</p:commandButton>
+									<p:tooltip for="cmdblackboard"
+										value="Go to the blackboard for project #{project.name}"
+										trackMouse="true"></p:tooltip>
+									<p:commandButton id="cmdtasks"
+										action="#{listProjectsBean.showTasks(project)}"
+										style="border:none;background:rgba(220,160,140,0.0);"
+										icon="fa fa-sitemap fa-2x fa-fw" title="Show tasklist"
+										ajax="false">
+									</p:commandButton>
+									<p:tooltip for="cmdtasks"
+										value="List all tasks of project #{project.name}"
+										trackMouse="true"></p:tooltip>
+								</p:column>
+							</p:dataTable>
+							<p:poll update="form" interval="120"></p:poll>
+						</h:form>
+					</p:tab>
+				</p:tabView>
+
+
+
+				<div>
+					<!--  <p:graphicImage value="#{listProjectsBean.getProjectProgressIcon(23)}" cache="false" /> -->
+				</div>
+
+
+			</p:outputPanel>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>
+

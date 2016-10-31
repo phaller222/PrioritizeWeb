@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:body>
+	<ui:composition template="../templates/main.xhtml">
+		<ui:define name="content">
+			<p:outputPanel id="sessionok" style="width:100%"
+				rendered="#{loginBean.getLoggedIn()}">
+				<div
+					style="font-size: 20pt; margin-left: 25px; margin-top: 10px; margin-bottom: 10px;"
+					align="left">
+					<img src="../../images/projectsbig.png" title="Tasks" />
+					<h:outputText value="My Tasks" />
+				</div>
+				<p:tabView>
+					<p:tab title="Tasks">
+
+
+						<h:form id="form">
+							<p:dataTable id="tasktable" var="task" emptyMessage="No Tasks assigned to you yet!"
+								value="#{listProjectsBean.myTasks}" style="width:80%"
+								resizableColumns="true" draggableColumns="true"
+								draggableRows="true" liveResize="true" selectionMode="single"
+								selection="#{listProjectsBean.selectedTask}" rowKey="#{task.id}"
+								sortOrder="ascending" sortBy="#{task.name}">
+
+								<p:column headerText="Project" styleClass="tablecolumsmall">
+									<h:outputText id="projectname"
+										value="#{task.projectGoalRecord.project.name}" />
+									<p:tooltip for="projectname"
+										value="#{task.projectGoalRecord.project.description}"
+										trackMouse="true"></p:tooltip>
+								</p:column>
+
+								<p:column headerText="Name" styleClass="tablecolumsmall">
+									<h:outputText id="taskname" value="#{task.name}" />
+									<p:tooltip for="taskname" value="#{task.description}"
+										trackMouse="true"></p:tooltip>
+								</p:column>
+
+								<p:column headerText="Progress" styleClass="tablecolumsmall">
+									<p:progressBar id="progress"
+										value="#{task.projectGoalRecord.percentage}"
+										labelTemplate="#{task.taskStatus} {value}%" displayOnly="true" />
+									<p:tooltip for="progress"
+										value="#{task.projectGoalRecord.percentage} percent of the task have been completed."
+										trackMouse="true"></p:tooltip>
+								</p:column>
+
+
+								<p:column headerText="Prioritiy" styleClass="tablecolumsmall">
+									<h:outputText id="taskpriority" value="#{task.priority}" />
+									<p:tooltip for="taskpriority"
+										value="Priority of task #{task.name}" trackMouse="true"></p:tooltip>
+								</p:column>
+								<p:column headerText="Goal of this task"
+									styleClass="tablecolumsmall">
+									<h:outputText id="taskgoal"
+										value="#{task.projectGoalRecord.propertyRecord.property.description}">
+
+									</h:outputText>
+									<p:tooltip for="taskgoal" value="Goal of task #{task.name}"
+										trackMouse="true"></p:tooltip>
+								</p:column>
+							
+							</p:dataTable>
+							<p:contextMenu for="tasktable">
+                            <p:menuitem ajax="false" value="Drop Task" disabled="false"
+                                action="#{listProjectsBean.unassignTask(listProjectsBean.selectedTask)}"
+                                update="dataform"></p:menuitem>
+                            <p:menuitem value="Resolve Task" ajax="false" disabled="false"
+                                update="dataform"
+                                action="#{listProjectsBean.resolveTask(listProjectsBean.selectedTask)}"></p:menuitem>
+                            <p:menuitem value="Details..."></p:menuitem>
+                            <p:menuitem></p:menuitem>
+                        </p:contextMenu>
+							<p:poll update="form" interval="120"></p:poll>
+						</h:form>
+					</p:tab>
+				</p:tabView>
+			</p:outputPanel>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>
+

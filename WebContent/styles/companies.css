@@ -4,6 +4,7 @@
 	font-size: 95% !important;
 }
 
+
 .errormessage {
 	color:red; 
 	background-color:#FFFFC0;
@@ -24,6 +25,9 @@
     font-size: 90%;
  }
 .ui-widget .ui-widget {
+    font-size: 100%;
+ }
+ .ui-widget .ui-widget {
     font-size: 100%;
  }
 
