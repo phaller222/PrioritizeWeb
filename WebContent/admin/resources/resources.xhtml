@@ -211,7 +211,6 @@
 															<p:commandButton
 																action="#{resourceBean.sendCommand(val,value,data)}"
 																style="height:25px" value=" #{value}"
-																disabled="#{not resourceBean.isResourceActiveForCurrentUser(val)}"
 																title="#{value}"></p:commandButton>
 														</h:column>
 

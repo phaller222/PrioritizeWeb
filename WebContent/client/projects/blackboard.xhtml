@@ -29,16 +29,18 @@
 					<p:layoutUnit position="center" size="700" maxSize="900"
 						resizable="true">
 						<div align="center">
-							<p:progressBar id="progressProject"
+						<h:form id="progressform">
+							<p:progressBar id="progressProject" widgetVar="progressProject"
 								value="#{listProjectsBean.currentProject.progress.progress}"
 								labelTemplate="{value}% complete" displayOnly="true"
-								style="margin-top:10px;height:20px;width:50%" />
+								style="margin-top:10px;height:20px;width:50%" ajax="true"/>
+								</h:form>
 						</div>
 						<h:panelGrid layout="tabular" columns="7"
 							styleClass="ui-panelgrid" cellspacing="30" cellpadding="40"
 							style="height:480px;">
 
-							<ui:repeat var="task" value="#{listProjectsBean.foreignTasks2}">
+							<ui:repeat var="task" value="#{listProjectsBean.foreignTasks}">
 
 								<p:column rendered="#{task.taskStatus.name() == 'ASSIGNED'}">
 									<p:panel id="taskpanelAssigned" header="#{task.name}"
@@ -241,8 +243,44 @@
 								action="#{listProjectsBean.unassignTask(listProjectsBean.selectedTask)}"
 								update="dataform"></p:menuitem>
 							<p:menuitem value="Resolve Task" ajax="false" disabled="false"
-								update="dataform"
+								update="dataform,progressProject"
 								action="#{listProjectsBean.resolveTask(listProjectsBean.selectedTask)}"></p:menuitem>
+								<p:submenu label="Set progress">
+								 <p:menuitem value=" 0% " ajax="false" disabled="false"
+                                update="dataform,progressProject"
+                                action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 0)}"></p:menuitem>
+								    <p:menuitem value=" 10% " ajax="false" disabled="false"
+                                update="dataform,progressProject"
+                                action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 10)}"></p:menuitem>
+                                 <p:menuitem value=" 20% " ajax="false" disabled="false"
+                                update="dataform,progressProject"
+                                action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 20)}"></p:menuitem>
+                                 <p:menuitem value=" 30% " ajax="false" disabled="false"
+                                update="dataform,progressProject"
+                                action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 30)}"></p:menuitem>
+                                 <p:menuitem value=" 40% " ajax="false" disabled="false"
+                                update="dataform,progressProject"
+                                action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 40)}"></p:menuitem>
+                                 <p:menuitem value=" 50% " ajax="false" disabled="false"
+                                update="dataform,progressProject"
+                                action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 50)}"></p:menuitem>
+                                 <p:menuitem value=" 60% " ajax="false" disabled="false"
+                                update="dataform,progressProject"
+                                action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 60)}"></p:menuitem>
+                                 <p:menuitem value=" 70% " ajax="false" disabled="false"
+                                update="dataform,progressProject"
+                                action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 70)}"></p:menuitem>
+                                 <p:menuitem value=" 80% " ajax="false" disabled="false"
+                                update="dataform,progressProject"
+                                action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 80)}"></p:menuitem>
+                                 <p:menuitem value=" 90% " ajax="false" disabled="false"
+                                update="dataform,progressProject"
+                                action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 90)}"></p:menuitem>
+                                 <p:menuitem value=" 100% " ajax="false" disabled="false"
+                                update="dataform,progressProject"
+                                action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 100)}"></p:menuitem>
+                                
+								</p:submenu>
 							<p:menuitem value="Details..."></p:menuitem>
 							<p:menuitem></p:menuitem>
 						</p:contextMenu>
@@ -252,6 +290,7 @@
 					</p:layoutUnit>
 					<p:layoutUnit position="south" size="0" maxsize=""></p:layoutUnit>
 				</p:layout>
+				<p:poll interval="10" update="dataform"></p:poll>
 			</h:form>
 
 		</ui:define>
