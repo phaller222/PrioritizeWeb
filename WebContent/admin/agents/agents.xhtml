@@ -188,10 +188,6 @@
 											<h:outputText id="mqttonline" value="N/A" />
 										</p:column>
 
-
-
-
-
 										<p:column headerText="Delete" resizable="true" width="60"
 											style="height:40px;"  rendered="#{val.agent}">
 											<p:commandButton id="cmddelete"
@@ -203,7 +199,8 @@
 										<p:column headerText="Item Collection"
                                         resizable="true" width="300">
                                         
-                                        <p:commandButton ajax="false" action="#{resourceBean.addResourceToItemCollection(val)}" value="Add to selected Collection">
+                                        <p:commandButton ajax="false" action="#{resourceBean.addResourceToItemCollection(val)}" value="Add to selected Collection" 
+                                        rendered="#{val.agent}">
                                         </p:commandButton>
 
                                     </p:column>

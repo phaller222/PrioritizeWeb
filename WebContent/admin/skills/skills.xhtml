@@ -29,9 +29,10 @@
 		<div data-role="content"></div>
 		<div align="center">
 			<h:form id="form">
+			<p:commandButton action="#{skillBean.createDummyData()}" value="create dummy data"/>
 				<p:tabView>
 					<p:tab title="Skills">
-					   <p:dialog widgetVar="newCategoryDialog"
+						<p:dialog widgetVar="newCategoryDialog"
 							header="New Skill Category" showEffect="clip" hideEffect="clip">
 							<h:panelGrid id="categoryDetails" columns="2"
 								style="min-width:300px;min-height:300px;">
@@ -50,8 +51,6 @@
 						</p:dialog>
 
 						<div align="left" style="height: 300px;">
-
-
 							<p:tree id="skilltree"
 								orientation="#{skillBean.currentTreeOrientation}"
 								selectionMode="single"
@@ -59,14 +58,13 @@
 								value="#{skillBean.root}" var="skillItem" scrollable="true"
 								scrollHeight="250" style="width:100%;text-align:left">
 
-                                 <p:ajax event="expand" listener="#{skillBean.nodeExpand}" />
-                                 <p:ajax event="collapse" listener="#{skillBean.nodeCollapse}" />
+								<p:ajax event="expand" listener="#{skillBean.nodeExpand}" />
+								<p:ajax event="collapse" listener="#{skillBean.nodeCollapse}" />
 
 								<p:treeNode type="rootnode">
 									<h:outputText value="Skills" />
 								</p:treeNode>
-								<p:treeNode type="category"
-									expandedIcon="ui-icon-folder-open"
+								<p:treeNode type="category" expandedIcon="ui-icon-folder-open"
 									collapsedIcon="ui-icon-folder-collapsed">
 
 									<div id="nodevalueCategory" align="center"
@@ -90,7 +88,8 @@
 										<br />
 									</div>
 								</p:treeNode>
-								<p:treeNode id="idProperties" type="skillproperty" icon="ui-icon-bullet">
+								<p:treeNode id="idProperties" type="skillproperty"
+									icon="ui-icon-bullet">
 									<h:outputText id="nodevalueProperty" value="#{skillItem}" />
 									<p:tooltip trackMouse="true" for="nodevalueProperty"
 										value="#{skillItem.description}" />
@@ -131,7 +130,7 @@
 										value="#{newSkillBean.propertyNumericName}" />
 									<p:outputLabel for="description" value="Description:" />
 									<p:inputTextarea rows="6" id="description"
-										value="#{newSkillBean.propertyNumericDescription}"/>
+										value="#{newSkillBean.propertyNumericDescription}" />
 
 									<p:outputLabel for="min" value="Minimum value:" />
 									<p:inputText id="min"
@@ -171,8 +170,7 @@
 									<h:outputText value="Select Skill category:" class="fontsize" />
 								</p:column>
 								<p:column>
-									<p:selectOneMenu  id="selectedCategoriesId"
-										rendered="true"
+									<p:selectOneMenu id="selectedCategoriesId" rendered="true"
 										value="#{newSkillBean.selectedSkillCategoryId}">
 										<f:selectItem itemLabel="---" itemValue="#{null}"
 											noSelectionOption="true" />
@@ -183,14 +181,14 @@
 
 									</p:selectOneMenu>
 								</p:column>
-								<p:column >
+								<p:column>
 									<h:outputText value="Enter Skill Name:" class="fontsize" />
 								</p:column>
 								<p:column>
 									<p:inputText value="#{newSkillBean.newSkillName}"
-										 style="font-size:12pt;min-width:300px;width:100%" />
+										style="font-size:12pt;min-width:300px;width:100%" />
 								</p:column>
-								<p:column >
+								<p:column>
 									<h:outputText value="Enter Skill Description:" class="fontsize" />
 								</p:column>
 								<p:column>
@@ -198,7 +196,7 @@
 										value="#{newSkillBean.newSkillDescription}"
 										style="min-width:300px;width:100%" />
 								</p:column>
-								<p:column >
+								<p:column>
 									<h:outputText value="Skill Properties:" class="fontsize" />
 								</p:column>
 								<p:column>
@@ -211,7 +209,7 @@
 										<p:column>
 											<p:commandButton
 												oncomplete="PF('newPropertyTextDialog').show();"
-												 value="New text property..." />
+												value="New text property..." />
 										</p:column>
 
 
@@ -290,7 +288,6 @@
 .fontsize {
 	font-size: 10pt;
 }
-
 </style>
 
 </h:body>

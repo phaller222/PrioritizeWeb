@@ -188,7 +188,7 @@
 
 										<p:column headerText="Resource interaction"
 											style="background-color:#dddddd;height:120px;width:220px;"
-											disabled="#{val.mqttResource}" rendered="#{val.mqttResource and not val.agent}">
+											 rendered="#{val.mqttResource and not val.agent}">
 											<p:panel>
 												<p:commandButton
 													action="#{resourceBean.aquireResource(val)}"
@@ -209,6 +209,7 @@
 													<h:dataTable value="#{val.mqttCommands}" var="value">
 														<h:column>
 															<p:commandButton
+															    disabled="#{not resourceBean.isResourceActiveForCurrentUser(val)}"
 																action="#{resourceBean.sendCommand(val,value,data)}"
 																style="height:25px" value=" #{value}"
 																title="#{value}"></p:commandButton>
@@ -217,7 +218,7 @@
 													</h:dataTable>
 												with value:<h:inputText value="#{data}" id="cmddata"
 														class="cmddata"
-														disabled="#{not resourceBean.isResourceActiveForCurrentUser(val)}"></h:inputText>
+														disabled="false"></h:inputText>
 												</p:panel>
 
 												<h:outputText
@@ -261,7 +262,8 @@
 										<p:column headerText="Item Collection"
                                         resizable="true" width="300">
                                         
-                                        <p:commandButton ajax="false" action="#{resourceBean.addResourceToItemCollection(val)}" value="Add to selected Collection">
+                                        <p:commandButton ajax="false" action="#{resourceBean.addResourceToItemCollection(val)}" value="Add to selected Collection"
+                                        rendered="#{not val.agent}">
                                         </p:commandButton>
                                     </p:column>
 								</p:dataTable>

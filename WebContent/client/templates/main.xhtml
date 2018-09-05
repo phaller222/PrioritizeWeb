@@ -3,8 +3,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:pe="http://primefaces.org/ui/extensions">
+	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -12,7 +11,7 @@
 	<meta charset="ISO-8859-1" />
 	<title><ui:insert name="title">Dashboard</ui:insert></title>
 	<link type="text/css" rel="stylesheet"
-		href="../../styles/companies.css" />
+		href="#{facesContext.externalContext.requestContextPath}/styles/companies.css" />
 	<style type="text/css">
 .no-border {
 	border-style: hidden !important; /* or none */
@@ -101,15 +100,15 @@ height: 20px;
 					columnClasses="no-border, no-border, no-border" style="width:100%;">
 					<h:column>
 						<img src="../../images/logo3.png" /><br/>
-						  <a href="http://www.priormart.com/de" title="Urheberrecht registrieren mit Hinterlegung bei Notar" target="_blank">
-                <img src="http://seal.priormart.com/siegel-CA854F8D96F66.png" border="0" height="39" width="160" alt="Urhebersiegel PriorMart" /></a>
+				<!-- 		  <a href="http://www.priormart.com/de" title="Urheberrecht registrieren mit Hinterlegung bei Notar" target="_blank">
+                <img src="http://seal.priormart.com/siegel-CA854F8D96F66.png" border="0" height="39" width="160" alt="Urhebersiegel PriorMart" /></a> -->
 					</h:column>
 					<h:column>
 						<div align="left" style="width: 90%">
 
 
 							<h:form id="timelineform">
-								<pe:timeline id="timeline"
+								<p:timeline id="timeline"
 									value="#{basicTimelineController.model}" height="180px"
 									width="100%" selectable="#{basicTimelineController.selectable}"
 									zoomable="#{basicTimelineController.zoomable}"
@@ -119,10 +118,10 @@ height: 20px;
 									eventStyle="#{basicTimelineController.eventStyle}"
 									showCurrentTime="#{basicTimelineController.showCurrentTime}"
 									showNavigation="false" min="#{basicTimelineController.min}"
-									max="#{basicTimelineController.max}" ajax="false">
+									max="#{basicTimelineController.max}" ajax="true">
 									<p:ajax event="select"
 										listener="#{basicTimelineController.onSelect}" />
-								</pe:timeline>
+								</p:timeline>
 								<!-- <p:poll interval="10"
 										listener="#{basicTimelineController.updateTimeline()}"
 										 autoStart="true" /> -->
@@ -161,15 +160,7 @@ height: 20px;
 						</div>
 
 					</h:column>
-					<!-- <h:column>
-						<div align="right"
-							style="min-height: 70px; padding-bottom: 5px; padding-right: 40%">
-							<div align="center">
-								<pe:analogClock mode="client" width="120" />
-								
-							</div>
-						</div>
-					</h:column> -->
+				
 				</p:panelGrid>
 
 			</ui:insert>
@@ -185,7 +176,7 @@ height: 20px;
 
 							<p:layoutUnit position="west" style="border:0" minSize="300">
 
-								<p:ajaxStatus style="whitespace:nowrap;">
+								<!-- <p:ajaxStatus style="whitespace:nowrap;"> -->
 
 									<f:facet name="default">
 										<h:form rendered="#{messageBean.unreadMessages.size() gt 0}">
@@ -204,7 +195,7 @@ height: 20px;
 
 											</p:outputPanel>
 										</h:form>
-										<p:poll interval="30" update="headerform" />
+										<!-- <p:poll interval="30" update="headerform" /> -->
 									</f:facet>
 
 									<f:facet name="start">
@@ -224,13 +215,12 @@ height: 20px;
 														value="#{messageBean.unreadMessages.size()}"
 														icon="ui-icon-mail-closed"
 														action="#{messageBean.gotoInbox}" /> new messages.
-                                    </h:form> <p:poll interval="30"
-													update="headerform" />
+                                    </h:form> 
 											</span>
 										</p:outputPanel>
 									</f:facet>
 
-								</p:ajaxStatus>
+						<!-- 		</p:ajaxStatus> -->
 							</p:layoutUnit>
 							<p:layoutUnit position="center" minSize="500" style="border:0">
 								<div align="center" style="width: 100%">
@@ -396,8 +386,8 @@ height: 20px;
 			collapsible="true" maxSize="400" minSize="100" size="200"
 			collapseSize="20" collapsed="true">
 
-			<ui:insert name="footercontent">
-				<!-- <h:form>
+			<!-- <ui:insert name="footercontent">
+				<h:form>
 					 <p:dock position="bottom" itemWidth="60" maxWidth="40">
 						<p:menuitem value="Dashboard" title="Display Dashboard"
 							icon="../images/dashboard/dash_home.png" url="#" ></p:menuitem>
@@ -416,11 +406,11 @@ height: 20px;
                             <p:menuitem value="Settings" title="Change Settings"
                             icon="../images/dashboard/dash_settings.png"></p:menuitem>
 					</p:dock>
-				</h:form> -->
+				</h:form>
 
 				<div id="actionboard"
 					style="background-image: url('../../images/background.jpg');">
-					<!--  <p:panel class="actionboardarticle"
+					 <p:panel class="actionboardarticle"
 						header="13.10.2016 - 12:40 - (Article) from josephine (User)">
 						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 							Aenean blandit tortor a ipsum vehicula, in semper sapien auctor.
@@ -429,7 +419,7 @@ height: 20px;
 							fringilla. Nam vitae massa ac mi elementum mattis vel vitae sem.
 							Ut eros ipsum, scelerisque a erat a, eleifend luctus nibh.
 							Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
-					</p:panel> -->
+					</p:panel>
 
 
 					<p:panel class="actionboardmessage">
@@ -452,7 +442,7 @@ height: 20px;
 							Subject: This is a test
 							</p:panel>
 
-					<!-- <p:panel class="actionboardarticle"
+					<p:panel class="actionboardarticle"
 						header="13.10.2016 - 12:22 - (Article) From Einkauf (Department)">
 						<p>Vivamus ac ullamcorper magna. Aenean felis ante, elementum
 							sit amet urna at, eleifend aliquet velit. Morbi a convallis
@@ -486,9 +476,9 @@ height: 20px;
 							malesuada. Praesent venenatis leo sit amet arcu commodo, sit amet
 							porta tellus suscipit. Quisque mi tortor, vestibulum in arcu non,
 							pretium auctor libero. In commodo luctus placerat.</p>
-					</p:panel> -->
+					</p:panel>
 				</div>
-			</ui:insert>
+			</ui:insert> -->
 		</p:layoutUnit>
 
 	</p:layout>

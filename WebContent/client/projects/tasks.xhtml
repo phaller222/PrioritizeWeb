@@ -3,6 +3,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:pe="http://primefaces.org/ui/extensions">
 
@@ -24,10 +25,10 @@
 
 						<h:form id="form">
 							<p:dataTable id="tasktable" var="task"
-								value="#{listProjectsBean.currentProject.blackboard.tasks}"
+								value="#{listProjectsBean.getProjectTasks(listProjectsBean.currentProject)}"
 								style="width:80%" resizableColumns="true"
 								draggableColumns="true" draggableRows="true" liveResize="true"
-								sortOrder="ascending" sortBy="#{task.name}">
+								>
 
 								<p:column headerText="Name" styleClass="tablecolumsmall">
 									<h:outputText id="taskname" value="#{task.name}" />
@@ -86,7 +87,14 @@
 										trackMouse="true"></p:tooltip>
 								</p:column> -->
 							</p:dataTable>
-							<p:poll update="form" interval="120"></p:poll>
+							
+							<p:commandButton id="cmdtasks"
+                                        style="border:none;background:rgba(220,160,140,0.0);"
+                                        value="Refresh" title="refresh"
+                                        update="form" ajax="false">
+                                    </p:commandButton>
+							
+							<!-- <p:poll update="form" interval="5"></p:poll> -->
 						</h:form>
 					</p:tab>
 				</p:tabView>

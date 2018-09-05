@@ -48,7 +48,7 @@
 							<p:column headerText="Resource Type" width="400">
 
 								<p:outputLabel id="resourcetype" rendered="true"
-									value="#{val.absoluteObjectType}"></p:outputLabel>
+									value="#{val.absoluteObjectType.substring(val.absoluteObjectType.lastIndexOf('.')+1,val.absoluteObjectType.length())}"></p:outputLabel>
 							</p:column>
 
 							<p:column headerText="Create" resizable="true" width="40">
@@ -130,8 +130,8 @@
 							<f:selectItem noSelectionOption="true" itemLabel="---All---"
 								itemValue="#{null}" />
 							<f:selectItems id="authorizedObjects"
-								value="#{roleBean.resourceTypes}" var="resourcetype"
-								itemValue="#{resourcetype}" itemLabel="#{resourcetype}" />
+								value="#{roleBean.observableObjectTypesResourceTypes}" var="resourcetype"
+								itemValue="#{resourcetype}" itemLabel="#{resourcetype.substring(resourcetype.lastIndexOf('.')+1,resourcetype.length())}" />
 						</p:selectOneMenu>
 
 						<f:facet name="footer">

@@ -11,10 +11,10 @@
 	<ui:composition template="../templates/main.xhtml">
 		<ui:define name="content">
 			<h:form id="dataform">
-				<f:metadata>
+				<!-- <f:metadata>
 					<f:event type="preRenderView"
 						listener="#{basicTimelineController.updateTimeline()}" />
-				</f:metadata>
+				</f:metadata> -->
 				<p:layout>
 					<p:layoutUnit position="north" size="80">
 						<div
@@ -29,47 +29,37 @@
 					<p:layoutUnit position="center" size="700" maxSize="900"
 						resizable="true">
 						<div align="center">
-						<h:form id="progressform">
-							<p:progressBar id="progressProject" widgetVar="progressProject"
-								value="#{listProjectsBean.currentProject.progress.progress}"
-								labelTemplate="{value}% complete" displayOnly="true"
-								style="margin-top:10px;height:20px;width:50%" ajax="true"/>
-								</h:form>
+							<h:form id="progressform">
+								<p:progressBar id="progressProject" widgetVar="progressProject"
+									value="#{listProjectsBean.currentProject.progress.progress}"
+									labelTemplate="{value}% complete" displayOnly="true"
+									style="margin-top:10px;height:20px;width:50%" ajax="false" />
+							</h:form>
 						</div>
 						<h:panelGrid layout="tabular" columns="7"
 							styleClass="ui-panelgrid" cellspacing="30" cellpadding="40"
 							style="height:480px;">
-
-							<ui:repeat var="task" value="#{listProjectsBean.foreignTasks}">
-
-								<p:column rendered="#{task.taskStatus.name() == 'ASSIGNED'}">
-									<p:panel id="taskpanelAssigned" header="#{task.name}"
-										toggleable="false"
-										footer="#{task.taskStatus.toString()} #{task.projectGoalRecord.percentage} %"
-										style="margin-left:25px;margin-bottom:10px;height:250px;width:280px;opacity:0.4;"
-										styleClass="ui-dashboard-column">
-										<p:tabView>
-											<p:tab title="Description"
-												>
-												<h:outputText value="#{task.description}"
-													disabled="#{task.taskStatus.name() == 'ASSIGNED'}" />
-											</p:tab>
-											 <p:tab title="Documents">
-											
-                                            </p:tab>
-                                            <p:tab title="Devices">
-                                            </p:tab>
-
-										</p:tabView>
-										<f:facet name="footer">
+                            
+                             
+							<ui:repeat var="task" value="#{listProjectsBean.getProjectTasks(listProjectsBean.currentProject).stream().toList()}">
+							
+                               
+								<p:panel rendered="#{task.taskStatus.name().equals('STARTED') || task.taskStatus.name().equals('ASSIGNED')}" id="taskpanelAssigned" header="#{task.name}"
+									toggleable="false" draggable="true"
+									style="margin-left:25px;margin-bottom:10px;height:250px;width:280px;opacity:0.4;"
+									styleClass="ui-dashboard-column">
+									<p:tabView>
+										<p:tab title="Description">
+											<h:outputText value="#{task.description}"
+												disabled="#{task.taskStatus.name().equals('ASSIGNED')}" />
 											<p:progressBar id="progressAssigned"
-												disabled="#{task.taskStatus.name() == 'ASSIGNED'}"
+												disabled="#{task.taskStatus.name().equals('ASSIGNED')}"
 												value="#{task.projectGoalRecord.percentage}"
 												labelTemplate="#{task.taskStatus} {value}%"
 												displayOnly="true" style="opacity:1;" />
 											<div align="left"
 												style="padding-right: 30px; max-width: 100px; text-align: left">
-												<p:outputLabel value="#{task.assignees.get(0)}"></p:outputLabel>
+												<!-- <p:outputLabel value="#{task.assignees.iterator().next()}"></p:outputLabel> -->
 											</div>
 											<div align="right"
 												style="background-color: rgb(243, 243, 243);">
@@ -79,121 +69,123 @@
 											<p:tooltip for="progressAssigned"
 												value="#{task.projectGoalRecord.percentage} percent of the task have been completed."
 												trackMouse="true"></p:tooltip>
-										</f:facet>
-									</p:panel>
-									<p:contextMenu for="taskpanelAssigned">
-										<p:menuitem value="Take Task" disabled="true"
-											action="#{listProjectsBean.assignTaskToUser(task)}"
-											update="dataform"></p:menuitem>
-										<p:menuitem value="Resolve Task" disabled="true"></p:menuitem>
-										<p:menuitem value="Details..."></p:menuitem>
-										<p:menuitem></p:menuitem>
-									</p:contextMenu>
-									<p:resizable for="taskpanelAssigned"></p:resizable>
-								</p:column>
+										</p:tab>
+										<p:tab title="Documents">
 
-								<p:column
-									rendered="#{task.taskStatus.name() == 'CREATED' || task.taskStatus.name() == 'OPEN'}">
-									<p:panel id="taskpanel" header="#{task.name}"
-										toggleable="false"
-										footer="#{task.taskStatus.toString()} #{task.projectGoalRecord.percentage} %"
-										style="margin-left:25px;margin-bottom:10px;height:250px;width:280px;opacity: 1;"
-										styleClass="ui-dashboard-column">
-										<p:tabView>
-											<p:tab title="Description"
-												>
-												<h:outputText value="#{task.description}"
-													disabled="#{task.taskStatus.name() == 'ASSIGNED'}" />
-											</p:tab>
-											 <p:tab title="Documents">
-											
-                                            </p:tab>
-                                            <p:tab title="Devices">
-                                            </p:tab>
+										</p:tab>
+										<p:tab title="Devices">
+										</p:tab>
 
-										</p:tabView>
-										<f:facet name="footer">
+									</p:tabView>
+									<!-- <f:facet name="footer"> -->
+
+									<!-- </f:facet> -->
+								</p:panel>
+								
+								<p:contextMenu for="taskpanelAssigned">
+									<p:menuitem value="Take Task" disabled="true"
+										action="#{listProjectsBean.assignTaskToUser(task)}"
+										update="dataform"></p:menuitem>
+									<p:menuitem value="Resolve Task" disabled="true"></p:menuitem>
+									<p:menuitem value="Details..."></p:menuitem>
+									<p:menuitem></p:menuitem>
+								</p:contextMenu>
+								<p:resizable for="taskpanelAssigned"></p:resizable>
+								
+
+                               
+
+                                
+								 <p:panel id="taskpanel" header="#{task.name}" rendered="#{task.taskStatus.name() == 'OPEN' || task.taskStatus.name() == 'CREATED'}" toggleable="true"
+									style="margin-left:25px;margin-bottom:10px;height:180px;width:240px;opacity: 1;"
+									styleClass="ui-dashboard-column" headerClass="ui-panel">
+									<p:tabView>
+										<p:tab title="Description">
+											<h:outputText value="#{task.description}"
+												disabled="#{task.taskStatus.name().equals('ASSIGNED')}"
+												style="font-size:85%" />
 											<p:progressBar id="progress"
-												disabled="#{task.taskStatus.name() == 'ASSIGNED'}"
+												disabled="#{task.taskStatus.name().equals('ASSIGNED')}"
 												value="#{task.projectGoalRecord.percentage}"
 												labelTemplate="#{task.taskStatus} {value}%"
 												displayOnly="true" style="opacity:1;" />
-												<div align="left"
-                                                style="padding-right: 30px; max-width: 100px; text-align: left">
-                                                <p:outputLabel value="Task unassigned!"></p:outputLabel>
-                                            </div>
-                                            <div align="right"
-                                                style="background-color: rgb(243, 243, 243);">
-                                                <img src="../../images/task_open.png"
-                                                    title="Task not assigned!" />
-                                            </div>
-											<p:tooltip for="progress"
-												value="#{task.projectGoalRecord.percentage} percent of the task have been completed."
-												trackMouse="true"></p:tooltip>
-										</f:facet>
-									</p:panel>
-									<p:resizable for="taskpanel">
-									</p:resizable>
-									<p:contextMenu for="taskpanel">
-										<p:menuitem ajax="false" value="Take Task" disabled="false"
-											action="#{listProjectsBean.assignTaskToUser(task)}"
-											update="dataform"></p:menuitem>
-										<p:menuitem value="Resolve Task" disabled="true"></p:menuitem>
-										<p:menuitem value="Details..."></p:menuitem>
-										<p:menuitem></p:menuitem>
-									</p:contextMenu>
-								</p:column>
-								<p:column
-									rendered="#{task.taskStatus.name() == 'FINISHED' || task.taskStatus.name() == 'CLOSED'}">
-									<p:panel id="taskpanelFinished" header="#{task.name}"
-										toggleable="false"
-										footer="#{task.taskStatus.toString()} #{task.projectGoalRecord.percentage} %"
-										style="margin-left:25px;margin-bottom:10px;height:250px;width:280px;opacity:0.4"
-										styleClass="ui-dashboard-column">
-										<p:tabView style="opacity: 0.4;">
-											<p:tab title="Description"
-												>
-												<h:outputText value="#{task.description}"
-													disabled="#{task.taskStatus.name() == 'ASSIGNED'}" />
-											</p:tab>
-											<p:tab title="Documents">
-											</p:tab>
-											<p:tab title="Devices">
-                                            </p:tab>
+											<div align="left"
+												style="padding-right: 30px; max-width: 100px; text-align: left">
+												<p:outputLabel value="Task unassigned!"></p:outputLabel>
 
-										</p:tabView>
-										<f:facet name="footer">
-											<p:progressBar id="progressFinished" style="opacity: 1;"
-												disabled="#{task.taskStatus.name() == 'ASSIGNED'}"
-												value="#{task.projectGoalRecord.percentage}"
-												labelTemplate="#{task.taskStatus} {value}%"
-												displayOnly="true" />
+											</div>
 											<div align="right"
 												style="background-color: rgb(243, 243, 243);">
-												<img src="../../images/check_ok.png" title="Task Finished" />
+												<img src="../../images/task_open.png"
+													title="Task not assigned!" />
 											</div>
-											<p:tooltip for="progress"
-												value="#{task.projectGoalRecord.percentage} percent of the task have been completed."
-												trackMouse="true"></p:tooltip>
-										</f:facet>
-									</p:panel>
-									<p:resizable for="taskpanelFinished">
-									</p:resizable>
-									<p:contextMenu for="taskpanelFinished">
-										<p:menuitem ajax="false" value="Take Task" disabled="false"
-											action="#{listProjectsBean.assignTaskToUser(task)}"
-											update="dataform"></p:menuitem>
-										<p:menuitem value="Resolve Task" disabled="true"
-											update="dataform" ajax="false"></p:menuitem>
-										<p:menuitem value="Details..."></p:menuitem>
-										<p:menuitem></p:menuitem>
-									</p:contextMenu>
-								</p:column>
 
+										</p:tab>
+										<p:tab title="Documents">
 
+										</p:tab>
+										<p:tab title="Devices">
+										</p:tab>
 
+									</p:tabView>
+								</p:panel>
+								<p:resizable for="taskpanel">
+								</p:resizable>
+								<p:contextMenu for="taskpanel">
+									<p:menuitem ajax="false" value="Take Task" disabled="false"
+										action="#{listProjectsBean.assignTaskToUser(task)}"
+										update="dataform"></p:menuitem>
+									<p:menuitem value="Resolve Task" disabled="true"></p:menuitem>
+									<p:menuitem value="Details..."></p:menuitem>
+									<p:menuitem></p:menuitem>
+								</p:contextMenu> 
+                              
 
+                                
+								<p:panel id="taskpanelFinished" header="#{task.name}" rendered="#{task.taskStatus.name() == 'FINISHED' || task.taskStatus.name() == 'CLOSED'}"
+									toggleable="false"
+									footer="#{task.taskStatus.toString()} #{task.projectGoalRecord.percentage} %"
+									style="margin-left:25px;margin-bottom:10px;height:180px;width:240px;opacity:0.4"
+									styleClass="ui-dashboard-column">
+									
+									<p:tabView style="opacity: 0.4;">
+										<p:tab title="Description">
+											<h:outputText value="#{task.description}"
+												disabled="#{task.taskStatus.name() == 'ASSIGNED'}" />
+										</p:tab>
+										<p:tab title="Documents">
+										</p:tab>
+										<p:tab title="Devices">
+										</p:tab>
+
+									</p:tabView>
+									<f:facet name="footer">
+										<p:progressBar id="progressFinished" style="opacity: 1;"
+											disabled="#{task.taskStatus.name() == 'ASSIGNED'}"
+											value="#{task.projectGoalRecord.percentage}"
+											labelTemplate="#{task.taskStatus} {value}%"
+											displayOnly="true" />
+										<div align="right"
+											style="background-color: rgb(243, 243, 243);">
+											<img src="../../images/check_ok.png" title="Task Finished" />
+										</div>
+
+									</f:facet>
+								</p:panel>
+								<p:resizable for="taskpanelFinished">
+								</p:resizable>
+								<p:contextMenu for="taskpanelFinished">
+									<p:menuitem ajax="false" value="Take Task" disabled="false"
+										action="#{listProjectsBean.assignTaskToUser(task)}"
+										update="dataform"></p:menuitem>
+									<p:menuitem value="Resolve Task" disabled="true"
+										update="dataform" ajax="false"></p:menuitem>
+									<p:menuitem value="Details..."></p:menuitem>
+									<p:menuitem></p:menuitem>
+								</p:contextMenu>
+                                
 							</ui:repeat>
+							
 
 						</h:panelGrid>
 					</p:layoutUnit>
@@ -245,42 +237,42 @@
 							<p:menuitem value="Resolve Task" ajax="false" disabled="false"
 								update="dataform,progressProject"
 								action="#{listProjectsBean.resolveTask(listProjectsBean.selectedTask)}"></p:menuitem>
-								<p:submenu label="Set progress">
-								 <p:menuitem value=" 0% " ajax="false" disabled="false"
-                                update="dataform,progressProject"
-                                action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 0)}"></p:menuitem>
-								    <p:menuitem value=" 10% " ajax="false" disabled="false"
-                                update="dataform,progressProject"
-                                action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 10)}"></p:menuitem>
-                                 <p:menuitem value=" 20% " ajax="false" disabled="false"
-                                update="dataform,progressProject"
-                                action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 20)}"></p:menuitem>
-                                 <p:menuitem value=" 30% " ajax="false" disabled="false"
-                                update="dataform,progressProject"
-                                action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 30)}"></p:menuitem>
-                                 <p:menuitem value=" 40% " ajax="false" disabled="false"
-                                update="dataform,progressProject"
-                                action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 40)}"></p:menuitem>
-                                 <p:menuitem value=" 50% " ajax="false" disabled="false"
-                                update="dataform,progressProject"
-                                action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 50)}"></p:menuitem>
-                                 <p:menuitem value=" 60% " ajax="false" disabled="false"
-                                update="dataform,progressProject"
-                                action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 60)}"></p:menuitem>
-                                 <p:menuitem value=" 70% " ajax="false" disabled="false"
-                                update="dataform,progressProject"
-                                action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 70)}"></p:menuitem>
-                                 <p:menuitem value=" 80% " ajax="false" disabled="false"
-                                update="dataform,progressProject"
-                                action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 80)}"></p:menuitem>
-                                 <p:menuitem value=" 90% " ajax="false" disabled="false"
-                                update="dataform,progressProject"
-                                action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 90)}"></p:menuitem>
-                                 <p:menuitem value=" 100% " ajax="false" disabled="false"
-                                update="dataform,progressProject"
-                                action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 100)}"></p:menuitem>
-                                
-								</p:submenu>
+							<p:submenu label="Set progress">
+								<p:menuitem value=" 0% " ajax="false" disabled="false"
+									update="dataform,progressProject"
+									action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 0)}"></p:menuitem>
+								<p:menuitem value=" 10% " ajax="false" disabled="false"
+									update="dataform,progressProject"
+									action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 10)}"></p:menuitem>
+								<p:menuitem value=" 20% " ajax="false" disabled="false"
+									update="dataform,progressProject"
+									action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 20)}"></p:menuitem>
+								<p:menuitem value=" 30% " ajax="false" disabled="false"
+									update="dataform,progressProject"
+									action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 30)}"></p:menuitem>
+								<p:menuitem value=" 40% " ajax="false" disabled="false"
+									update="dataform,progressProject"
+									action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 40)}"></p:menuitem>
+								<p:menuitem value=" 50% " ajax="false" disabled="false"
+									update="dataform,progressProject"
+									action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 50)}"></p:menuitem>
+								<p:menuitem value=" 60% " ajax="false" disabled="false"
+									update="dataform,progressProject"
+									action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 60)}"></p:menuitem>
+								<p:menuitem value=" 70% " ajax="false" disabled="false"
+									update="dataform,progressProject"
+									action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 70)}"></p:menuitem>
+								<p:menuitem value=" 80% " ajax="false" disabled="false"
+									update="dataform,progressProject"
+									action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 80)}"></p:menuitem>
+								<p:menuitem value=" 90% " ajax="false" disabled="false"
+									update="dataform,progressProject"
+									action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 90)}"></p:menuitem>
+								<p:menuitem value=" 100% " ajax="false" disabled="false"
+									update="dataform,progressProject"
+									action="#{listProjectsBean.setTaskProgress(listProjectsBean.selectedTask, 100)}"></p:menuitem>
+
+							</p:submenu>
 							<p:menuitem value="Details..."></p:menuitem>
 							<p:menuitem></p:menuitem>
 						</p:contextMenu>
@@ -290,7 +282,7 @@
 					</p:layoutUnit>
 					<p:layoutUnit position="south" size="0" maxsize=""></p:layoutUnit>
 				</p:layout>
-				<p:poll interval="10" update="dataform"></p:poll>
+				<!-- <p:poll interval="60" update="dataform"></p:poll> -->
 			</h:form>
 
 		</ui:define>

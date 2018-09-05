@@ -7,7 +7,8 @@
 	xmlns:pe="http://primefaces.org/ui/extensions">
 
 <h:body>
-	<ui:composition template="../templates/main.xhtml">
+
+<ui:composition template="../templates/main.xhtml">
 		<ui:define name="content">
 			<p:outputPanel id="sessionok" style="width:100%"
 				rendered="#{loginBean.getLoggedIn()}">
@@ -19,27 +20,25 @@
 				</div>
 				<p:tabView>
 					<p:tab title="Projects">
-
-
 						<h:form id="form">
-							<p:dataTable id="projectstable" var="project"
+							 <p:dataTable id="projectstable" var="project"
 								value="#{listProjectsBean.projects}" style="width:80%"
 								resizableColumns="true" draggableColumns="true"
 								draggableRows="true" liveResize="true" sortOrder="ascending" sortBy="#{project.name}">
 
 								<p:column headerText="Name" styleClass="tablecolumsmall">
 									<h:outputText id="projectname" value="#{project.name}" />
-									<p:tooltip for="projectname" value="#{project.description}"
-										trackMouse="true"></p:tooltip>
+									<!-- <p:tooltip for="projectname" value="#{project.description}"
+										trackMouse="true"></p:tooltip> -->
 								</p:column>
 
 								<p:column headerText="Progress" styleClass="tablecolumsmall">
 									<p:progressBar id="progress"
 										value="#{project.progress.progress}" labelTemplate="{value}%"
 										displayOnly="true" />
-									<p:tooltip for="progress"
+									<!-- <p:tooltip for="progress"
 										value="#{project.progress.progress} percent of the project have been completed."
-										trackMouse="true"></p:tooltip>
+										trackMouse="true"></p:tooltip> -->
 								</p:column>
 
 
@@ -53,17 +52,17 @@
 									<h:outputText id="begindate" value="#{project.beginDate}">
 										<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
 									</h:outputText>
-									<p:tooltip for="begindate"
+									<!-- <p:tooltip for="begindate"
 										value="This project was started at #{project.beginDate}"
-										trackMouse="true"></p:tooltip>
+										trackMouse="true"></p:tooltip> -->
 								</p:column>
 								<p:column headerText="Due date" styleClass="tablecolumsmall">
 									<h:outputText id="duedate" value="#{project.dueDate}">
 										<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
 									</h:outputText>
-									<p:tooltip for="duedate"
+									<!-- <p:tooltip for="duedate"
 										value="This project is due at #{project.dueDate}"
-										trackMouse="true"></p:tooltip>
+										trackMouse="true"></p:tooltip> -->
 								</p:column>
 								<p:column headerText="Actions" styleClass="tablecolumsmall"
 									style="height:30px;">
@@ -81,23 +80,15 @@
 										icon="fa fa-sitemap fa-2x fa-fw" title="Show tasklist"
 										ajax="false">
 									</p:commandButton>
-									<p:tooltip for="cmdtasks"
+								<!-- 	<p:tooltip for="cmdtasks"
 										value="List all tasks of project #{project.name}"
-										trackMouse="true"></p:tooltip>
+										trackMouse="true"></p:tooltip> -->
 								</p:column>
-							</p:dataTable>
-							<p:poll update="form" interval="120"></p:poll>
+							</p:dataTable> 
+							<!-- <p:poll update="form" interval="120"></p:poll> -->
 						</h:form>
 					</p:tab>
 				</p:tabView>
-
-
-
-				<div>
-					<!--  <p:graphicImage value="#{listProjectsBean.getProjectProgressIcon(23)}" cache="false" /> -->
-				</div>
-
-
 			</p:outputPanel>
 		</ui:define>
 	</ui:composition>

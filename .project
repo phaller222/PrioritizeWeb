@@ -51,4 +51,11 @@
 		<nature>org.jboss.tools.jsf.jsfnature</nature>
 		<nature>org.jboss.tools.cdi.core.cdinature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>WebContentFramework</name>
+			<type>2</type>
+			<location>C:/Entwicklung/projekteStudio/PrioritizeFrameworkWeb/WebContent</location>
+		</link>
+	</linkedResources>
 </projectDescription>

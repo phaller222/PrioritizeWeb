@@ -46,8 +46,8 @@ no-repeat
 				</div>
 			</h:column>
 			<h:column>
-				<div align="right" style="padding-bottom: 5px; padding-right: 15px;">
-					<pe:analogClock mode="client" width="100" />
+			 <div align="right" style="padding-bottom: 5px; padding-right: 15px;">
+					<!-- <pe:analogClock mode="client" width="100" /> -->
 				</div>
 			</h:column>
 		</p:panelGrid>
@@ -56,6 +56,8 @@ no-repeat
 
    
 	<h:form>
+	
+	
 		<p:menubar id="menubar" rendered="#{loginBean.getLoggedIn()}">
 			<p:menuitem value="Home" url="index.xhtml" icon="ui-icon-home"></p:menuitem>
 			<p:submenu label="Manage..." icon="ui-icon-document">
@@ -72,8 +74,8 @@ no-repeat
 					style="font-size:12pt;" icon="ui-icon-mail-closed" />
 				<p:menuitem value="Calendar" url="calendar/calendar.xhtml"
 					style="font-size:12pt;" icon="ui-icon-calendar" />
-				<p:menuitem value="Tasks" icon="ui-icon-calendar" url="#"
-					style="font-size:12pt;" />
+					<p:menuitem value="Tasks" icon="ui-icon-document" 
+					style="font-size:12pt;"/>
 				<p:separator />
             	<p:menuitem value="Projects" url="#" style="font-size:12pt;"
 					icon="ui-icon-pencil" />

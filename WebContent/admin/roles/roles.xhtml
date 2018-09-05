@@ -110,8 +110,8 @@
 							<f:selectItem noSelectionOption="true" itemLabel="---All---"
 								itemValue="#{null}" />
 							<f:selectItems id="authorizedObjects"
-								value="#{roleBean.resourceTypes}" var="resourcetype"
-								itemValue="#{resourcetype}" itemLabel="#{resourcetype}" />
+								value="#{roleBean.observableObjectTypesResourceTypes}" var="resourcetype"
+								itemValue="#{resourcetype}" itemLabel="#{resourcetype.substring(resourcetype.lastIndexOf('.')+1,resourcetype.length())}" />
 						</p:selectOneMenu>
 
 						<f:facet name="footer">

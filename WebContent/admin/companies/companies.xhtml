@@ -133,6 +133,9 @@
 									<p:commandButton id="createAction" value="Create"
 										icon="ui-icon-plus" action="#{companyBean.createCompany}"
 										ajax="false" style="width:220px" disabled="#{!cancreate}"></p:commandButton>
+										<p:commandButton id="createGuard" value="Create Guard"
+                                        icon="ui-icon-plus" action="#{securityGuardBean.createSecurityGuard}"
+                                        style="width:220px"></p:commandButton>
 								</f:facet>
 
 							</h:panelGrid>
