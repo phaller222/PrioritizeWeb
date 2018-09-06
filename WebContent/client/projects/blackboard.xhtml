@@ -38,18 +38,20 @@
 						</div>
 						<h:panelGrid layout="tabular" columns="7"
 							styleClass="ui-panelgrid" cellspacing="30" cellpadding="40"
-							style="height:480px;">
-                            
-                             
-							<ui:repeat var="task" value="#{listProjectsBean.getProjectTasks(listProjectsBean.currentProject).stream().toList()}">
-							
-                               
-								<p:panel rendered="#{task.taskStatus.name().equals('STARTED') || task.taskStatus.name().equals('ASSIGNED')}" id="taskpanelAssigned" header="#{task.name}"
-									toggleable="false" draggable="true"
-									style="margin-left:25px;margin-bottom:10px;height:250px;width:280px;opacity:0.4;"
+							>
+
+<p:scrollPanel style="width:850px;height:550px">
+							<ui:repeat var="task"
+								value="#{listProjectsBean.getProjectTasks(listProjectsBean.currentProject).stream().toList()}">
+
+
+								<p:panel
+									rendered="#{task.taskStatus.name().equals('STARTED') || task.taskStatus.name().equals('ASSIGNED')}"
+									id="taskpanelAssigned" header="#{task.name}" toggleable="true"
+									draggable="true"
+									style="margin-left:25px;margin-bottom:10px;height:100%;width:280px;opacity:0.4;"
 									styleClass="ui-dashboard-column">
-									<p:tabView>
-										<p:tab title="Description">
+								
 											<h:outputText value="#{task.description}"
 												disabled="#{task.taskStatus.name().equals('ASSIGNED')}" />
 											<p:progressBar id="progressAssigned"
@@ -63,25 +65,19 @@
 											</div>
 											<div align="right"
 												style="background-color: rgb(243, 243, 243);">
-												<img src="../../images/task_assigned.png"
+												<img src="../../images/task_assigned.png" width="20"
 													title="Task already assigned" />
 											</div>
 											<p:tooltip for="progressAssigned"
 												value="#{task.projectGoalRecord.percentage} percent of the task have been completed."
 												trackMouse="true"></p:tooltip>
-										</p:tab>
-										<p:tab title="Documents">
-
-										</p:tab>
-										<p:tab title="Devices">
-										</p:tab>
-
-									</p:tabView>
+								
 									<!-- <f:facet name="footer"> -->
 
 									<!-- </f:facet> -->
 								</p:panel>
-								
+								<p:draggable for="taskpanelAssigned"/>
+
 								<p:contextMenu for="taskpanelAssigned">
 									<p:menuitem value="Take Task" disabled="true"
 										action="#{listProjectsBean.assignTaskToUser(task)}"
@@ -90,17 +86,18 @@
 									<p:menuitem value="Details..."></p:menuitem>
 									<p:menuitem></p:menuitem>
 								</p:contextMenu>
-								<p:resizable for="taskpanelAssigned"></p:resizable>
 								
 
-                               
 
-                                
-								 <p:panel id="taskpanel" header="#{task.name}" rendered="#{task.taskStatus.name() == 'OPEN' || task.taskStatus.name() == 'CREATED'}" toggleable="true"
-									style="margin-left:25px;margin-bottom:10px;height:180px;width:240px;opacity: 1;"
+
+
+
+								<p:panel id="taskpanel" header="#{task.name}"
+									rendered="#{task.taskStatus.name() == 'OPEN' || task.taskStatus.name() == 'CREATED'}"
+									toggleable="true"
+									style="margin-left:25px;margin-bottom:10px;height:100%;width:240px;opacity: 1;"
 									styleClass="ui-dashboard-column" headerClass="ui-panel">
-									<p:tabView>
-										<p:tab title="Description">
+									
 											<h:outputText value="#{task.description}"
 												disabled="#{task.taskStatus.name().equals('ASSIGNED')}"
 												style="font-size:85%" />
@@ -116,21 +113,14 @@
 											</div>
 											<div align="right"
 												style="background-color: rgb(243, 243, 243);">
-												<img src="../../images/task_open.png"
+												<img src="../../images/task_open.png" width="20"
 													title="Task not assigned!" />
 											</div>
 
-										</p:tab>
-										<p:tab title="Documents">
-
-										</p:tab>
-										<p:tab title="Devices">
-										</p:tab>
-
-									</p:tabView>
+										
 								</p:panel>
-								<p:resizable for="taskpanel">
-								</p:resizable>
+								<p:draggable for="taskpanel"/>
+								
 								<p:contextMenu for="taskpanel">
 									<p:menuitem ajax="false" value="Take Task" disabled="false"
 										action="#{listProjectsBean.assignTaskToUser(task)}"
@@ -138,27 +128,21 @@
 									<p:menuitem value="Resolve Task" disabled="true"></p:menuitem>
 									<p:menuitem value="Details..."></p:menuitem>
 									<p:menuitem></p:menuitem>
-								</p:contextMenu> 
-                              
+								</p:contextMenu>
 
-                                
-								<p:panel id="taskpanelFinished" header="#{task.name}" rendered="#{task.taskStatus.name() == 'FINISHED' || task.taskStatus.name() == 'CLOSED'}"
-									toggleable="false"
+
+
+								<p:panel id="taskpanelFinished" header="#{task.name}"
+									rendered="#{task.taskStatus.name() == 'FINISHED' || task.taskStatus.name() == 'CLOSED'}"
+									toggleable="true"
 									footer="#{task.taskStatus.toString()} #{task.projectGoalRecord.percentage} %"
-									style="margin-left:25px;margin-bottom:10px;height:180px;width:240px;opacity:0.4"
+									style="margin-left:25px;margin-bottom:10px;height:100%;width:240px;opacity:1.0"
 									styleClass="ui-dashboard-column">
+
 									
-									<p:tabView style="opacity: 0.4;">
-										<p:tab title="Description">
 											<h:outputText value="#{task.description}"
 												disabled="#{task.taskStatus.name() == 'ASSIGNED'}" />
-										</p:tab>
-										<p:tab title="Documents">
-										</p:tab>
-										<p:tab title="Devices">
-										</p:tab>
-
-									</p:tabView>
+										
 									<f:facet name="footer">
 										<p:progressBar id="progressFinished" style="opacity: 1;"
 											disabled="#{task.taskStatus.name() == 'ASSIGNED'}"
@@ -167,13 +151,13 @@
 											displayOnly="true" />
 										<div align="right"
 											style="background-color: rgb(243, 243, 243);">
-											<img src="../../images/check_ok.png" title="Task Finished" />
+											<img src="../../images/check_ok.png" width="20" title="Task Finished" />
 										</div>
 
 									</f:facet>
 								</p:panel>
-								<p:resizable for="taskpanelFinished">
-								</p:resizable>
+								<p:draggable for="taskpanelFinished"/>
+							
 								<p:contextMenu for="taskpanelFinished">
 									<p:menuitem ajax="false" value="Take Task" disabled="false"
 										action="#{listProjectsBean.assignTaskToUser(task)}"
@@ -183,9 +167,9 @@
 									<p:menuitem value="Details..."></p:menuitem>
 									<p:menuitem></p:menuitem>
 								</p:contextMenu>
-                                
+
 							</ui:repeat>
-							
+                            </p:scrollPanel>
 
 						</h:panelGrid>
 					</p:layoutUnit>
