@@ -179,7 +179,7 @@
 
 						<p:dataTable id="tasktable" var="task" selectionMode="single"
 							rowKey="#{task.id}" selection="#{listProjectsBean.selectedTask}"
-							value="#{listProjectsBean.myTasks}" style="width:580px;"
+							value="#{listProjectsBean.myTasksForCurrentProject}" style="width:580px;"
 							resizableColumns="true" draggableColumns="true"
 							draggableRows="true" liveResize="true" sortOrder="ascending"
 							sortBy="#{task.name}"

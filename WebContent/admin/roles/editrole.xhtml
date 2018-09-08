@@ -27,123 +27,135 @@
 
 			<!--  List all permission records  -->
 			<div id="editpermissions" align="center">
-			<p:tabView>
-			<p:tab title="Permissions">
-				<p:panel style="padding-top:20px;max-width:1200px">
-					<h1>Permissions</h1>
-					<!--  List all permissions of role  -->
-					<h:form id="permissions">
-						<p:dataTable var="val" value="#{roleBean.role.permissions}"
-							dynamic="true" paginator="true" rows="10">
-							<p:column headerText="Company" width="150">
-								<p:outputLabel value="#{val.department.company.name}"></p:outputLabel>
+				<p:tabView>
+					<p:tab title="Name">
+						<h:form>
+							<h:outputText value="Name:" />
+							<p:inputText id="name" rendered="true"
+								value="#{roleBean.role.name}"></p:inputText>
+							<p:commandButton id="editNameAction" value="Change"
+								icon="ui-icon-plus" action="#{roleBean.editRoleName}"
+								ajax="false" style="width:220px"></p:commandButton>
+						</h:form>
+					</p:tab>
+					<p:tab title="Permissions">
+						<p:panel style="padding-top:20px;max-width:1200px">
+							<h1>Permissions</h1>
+							<!--  List all permissions of role  -->
+							<h:form id="permissions">
+								<p:dataTable var="val" value="#{roleBean.role.permissions}"
+									dynamic="true" paginator="true" rows="10">
+									<p:column headerText="Company" width="150">
+										<p:outputLabel value="#{val.department.company.name}"></p:outputLabel>
 
-							</p:column>
-							<p:column headerText="Department" width="200">
+									</p:column>
+									<p:column headerText="Department" width="200">
 
-								<p:outputLabel id="permdepartment" rendered="true"
-									value="#{val.department.name}"></p:outputLabel>
-							</p:column>
+										<p:outputLabel id="permdepartment" rendered="true"
+											value="#{val.department.name}"></p:outputLabel>
+									</p:column>
 
-							<p:column headerText="Resource Type" width="400">
+									<p:column headerText="Resource Type" width="400">
 
-								<p:outputLabel id="resourcetype" rendered="true"
-									value="#{val.absoluteObjectType.substring(val.absoluteObjectType.lastIndexOf('.')+1,val.absoluteObjectType.length())}"></p:outputLabel>
-							</p:column>
+										<p:outputLabel id="resourcetype" rendered="true"
+											value="#{val.absoluteObjectType.substring(val.absoluteObjectType.lastIndexOf('.')+1,val.absoluteObjectType.length())}"></p:outputLabel>
+									</p:column>
 
-							<p:column headerText="Create" resizable="true" width="40">
-								<p:selectBooleanCheckbox disabled="true"
-									value="#{val.createPermission}"></p:selectBooleanCheckbox>
+									<p:column headerText="Create" resizable="true" width="40">
+										<p:selectBooleanCheckbox disabled="true"
+											value="#{val.createPermission}"></p:selectBooleanCheckbox>
 
-							</p:column>
-							<p:column headerText="Read" resizable="true" width="40">
-								<p:selectBooleanCheckbox disabled="true"
-									value="#{val.readPermission}" />
-							</p:column>
-							<p:column headerText="Update" resizable="true" width="40">
-								<p:selectBooleanCheckbox disabled="true"
-									value="#{val.updatePermission}" />
-							</p:column>
-							<p:column headerText="Delete" resizable="true" width="40">
-								<p:selectBooleanCheckbox disabled="true"
-									value="#{val.deletePermission}" />
-							</p:column>
+									</p:column>
+									<p:column headerText="Read" resizable="true" width="40">
+										<p:selectBooleanCheckbox disabled="true"
+											value="#{val.readPermission}" />
+									</p:column>
+									<p:column headerText="Update" resizable="true" width="40">
+										<p:selectBooleanCheckbox disabled="true"
+											value="#{val.updatePermission}" />
+									</p:column>
+									<p:column headerText="Delete" resizable="true" width="40">
+										<p:selectBooleanCheckbox disabled="true"
+											value="#{val.deletePermission}" />
+									</p:column>
 
-							<p:column headerText="Action" width="40" resizable="true">
-								<p:commandButton action="#{roleBean.deletePermission(val)}"
-									style="height:25px;width:30px" icon="ui-icon-trash" value=""
-									ajax="false">
-								</p:commandButton>
-							</p:column>
-						</p:dataTable>
-					</h:form>
-				</p:panel>
-				</p:tab>
-			<p:tab title="Create new Permission">
-				<!--  Create permission -->
-				<h:form id="createPermission">
-					<h:panelGrid columns="4" layout="grid"
-						footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
-						frame="box" rules="groups" cellpadding="10"
-						style="max-width:850px;max-height:200px;">
+									<p:column headerText="Action" width="40" resizable="true">
+										<p:commandButton action="#{roleBean.deletePermission(val)}"
+											style="height:25px;width:30px" icon="ui-icon-trash" value=""
+											ajax="false">
+										</p:commandButton>
+									</p:column>
+								</p:dataTable>
+							</h:form>
+						</p:panel>
+					</p:tab>
+					<p:tab title="Create new Permission">
+						<!--  Create permission -->
+						<h:form id="createPermission">
+							<h:panelGrid columns="4" layout="grid"
+								footerClass=".ui-widget-footer" headerClass=".ui-widget-header"
+								frame="box" rules="groups" cellpadding="10"
+								style="max-width:850px;max-height:200px;">
 
-						<f:facet name="header">
-							<h:outputText value="Add new permission"></h:outputText>
-						</f:facet>
+								<f:facet name="header">
+									<h:outputText value="Add new permission"></h:outputText>
+								</f:facet>
 
-						<h:outputText value="">
-						</h:outputText>
-						<h:outputText></h:outputText>
-						<h:outputText value=""></h:outputText>
-						<h:outputText value=""></h:outputText>
+								<h:outputText value="">
+								</h:outputText>
+								<h:outputText></h:outputText>
+								<h:outputText value=""></h:outputText>
+								<h:outputText value=""></h:outputText>
 
-						<p:selectBooleanCheckbox id="createPermission"
-							value="#{roleBean.createPermission}" />
-						<h:outputText value="Create permission"></h:outputText>
-						<p:selectBooleanCheckbox id="readPermission"
-							value="#{roleBean.readPermission}" />
-						<h:outputText value="Read permission"></h:outputText>
-
-
-						<p:selectBooleanCheckbox id="updatePermission"
-							value="#{roleBean.updatePermission}" />
-						<h:outputText value="Update permission"></h:outputText>
-						<p:selectBooleanCheckbox id="deletePermission"
-							value="#{roleBean.deletePermission}" />
-						<h:outputText value="Delete permission"></h:outputText>
+								<p:selectBooleanCheckbox id="createPermission"
+									value="#{roleBean.createPermission}" />
+								<h:outputText value="Create permission"></h:outputText>
+								<p:selectBooleanCheckbox id="readPermission"
+									value="#{roleBean.readPermission}" />
+								<h:outputText value="Read permission"></h:outputText>
 
 
-						<h:outputText value="in department: "></h:outputText>
-						<p:selectOneMenu style="width:300px;" id="selectedDepartmentsIds"
-							rendered="true" value="#{roleBean.selectedDepartmentId}">
-							<f:selectItem noSelectionOption="true" itemLabel="---All---"
-								itemValue="#{null}" />
-							<f:selectItems value="#{roleBean.departments}" var="department"
-								itemValue="#{department.id}"
-								itemLabel="#{department.company.name} - #{department.name}"
-								itemDescription="#{department.company.name} - #{department.name}" />
-						</p:selectOneMenu>
+								<p:selectBooleanCheckbox id="updatePermission"
+									value="#{roleBean.updatePermission}" />
+								<h:outputText value="Update permission"></h:outputText>
+								<p:selectBooleanCheckbox id="deletePermission"
+									value="#{roleBean.deletePermission}" />
+								<h:outputText value="Delete permission"></h:outputText>
 
-						<h:outputText value="ResourceType: "></h:outputText>
-						<p:selectOneMenu style="width:300px;" id="selectedResourceType"
-							rendered="true" value="#{roleBean.targetResourceType}">
-							<f:selectItem noSelectionOption="true" itemLabel="---All---"
-								itemValue="#{null}" />
-							<f:selectItems id="authorizedObjects"
-								value="#{roleBean.observableObjectTypesResourceTypes}" var="resourcetype"
-								itemValue="#{resourcetype}" itemLabel="#{resourcetype.substring(resourcetype.lastIndexOf('.')+1,resourcetype.length())}" />
-						</p:selectOneMenu>
 
-						<f:facet name="footer">
-							<p:commandButton id="createAction" value="Add permission"
-								icon="ui-icon-plus"
-								action="#{roleBean.createNewPermissionForRole}" ajax="false"
-								style="width:220px"></p:commandButton>
-						</f:facet>
-					</h:panelGrid>
-				</h:form>
-				</p:tab>
-				
+								<h:outputText value="in department: "></h:outputText>
+								<p:selectOneMenu style="width:300px;"
+									id="selectedDepartmentsIds" rendered="true"
+									value="#{roleBean.selectedDepartmentId}">
+									<f:selectItem noSelectionOption="true" itemLabel="---All---"
+										itemValue="#{null}" />
+									<f:selectItems value="#{roleBean.departments}" var="department"
+										itemValue="#{department.id}"
+										itemLabel="#{department.company.name} - #{department.name}"
+										itemDescription="#{department.company.name} - #{department.name}" />
+								</p:selectOneMenu>
+
+								<h:outputText value="ResourceType: "></h:outputText>
+								<p:selectOneMenu style="width:300px;" id="selectedResourceType"
+									rendered="true" value="#{roleBean.targetResourceType}">
+									<f:selectItem noSelectionOption="true" itemLabel="---All---"
+										itemValue="#{null}" />
+									<f:selectItems id="authorizedObjects"
+										value="#{roleBean.observableObjectTypesResourceTypes}"
+										var="resourcetype" itemValue="#{resourcetype}"
+										itemLabel="#{resourcetype.substring(resourcetype.lastIndexOf('.')+1,resourcetype.length())}" />
+								</p:selectOneMenu>
+
+								<f:facet name="footer">
+									<p:commandButton id="createAction" value="Add permission"
+										icon="ui-icon-plus"
+										action="#{roleBean.createNewPermissionForRole}" ajax="false"
+										style="width:220px"></p:commandButton>
+								</f:facet>
+							</h:panelGrid>
+						</h:form>
+					</p:tab>
+
 				</p:tabView>
 			</div>
 		</div>
