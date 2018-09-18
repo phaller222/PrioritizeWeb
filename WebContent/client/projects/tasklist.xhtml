@@ -70,12 +70,12 @@
 							
 							</p:dataTable>
 							<p:contextMenu for="tasktable">
-                            <p:menuitem ajax="false" value="Drop Task" disabled="false"
-                                action="#{listProjectsBean.unassignTask(listProjectsBean.selectedTask)}"
-                                update="dataform"></p:menuitem>
-                            <p:menuitem value="Resolve Task" ajax="false" disabled="false"
-                                update="dataform"
-                                action="#{listProjectsBean.resolveTask(listProjectsBean.selectedTask)}"></p:menuitem>
+                            <p:menuitem ajax="true" value="Drop Task" disabled="false"
+                                action="#{listProjectsBean.unassignTaskFromTasklist(listProjectsBean.selectedTask)}"
+                                update="form"></p:menuitem>
+                            <p:menuitem value="Resolve Task" ajax="true" disabled="false"
+                                update="form"
+                                action="#{listProjectsBean.resolveTaskFromTasklist(listProjectsBean.selectedTask)}"></p:menuitem>
                             <p:menuitem value="Details..."></p:menuitem>
                             <p:menuitem></p:menuitem>
                         </p:contextMenu>

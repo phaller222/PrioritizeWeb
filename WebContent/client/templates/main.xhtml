@@ -25,16 +25,15 @@
 }
 
 .projectwizardborder {
-    height : 300px; ! important;
-    margin-left: 50px; ! important;
-    border-style: solid !important; /* or none */
-    background-image: url('../../images/background.jpg');
-}
-    
-.tablecolumsmall {
-height: 20px;
+	height: 300px; ! important;
+	margin-left: 50px; ! important;
+	border-style: solid !important; /* or none */
+	background-image: url('../../images/background.jpg');
 }
 
+.tablecolumsmall {
+	height: 20px;
+}
 
 .ui-panel, div.ui-state-hover {
 	margin-top: 10px;
@@ -99,8 +98,9 @@ height: 20px;
 				<p:panelGrid columns="2"
 					columnClasses="no-border, no-border, no-border" style="width:100%;">
 					<h:column>
-						<img src="../../images/logo3.png" /><br/>
-				<!-- 		  <a href="http://www.priormart.com/de" title="Urheberrecht registrieren mit Hinterlegung bei Notar" target="_blank">
+						<img src="../../images/logo3.png" />
+						<br />
+						<!-- 		  <a href="http://www.priormart.com/de" title="Urheberrecht registrieren mit Hinterlegung bei Notar" target="_blank">
                 <img src="http://seal.priormart.com/siegel-CA854F8D96F66.png" border="0" height="39" width="160" alt="Urhebersiegel PriorMart" /></a> -->
 					</h:column>
 					<h:column>
@@ -160,7 +160,7 @@ height: 20px;
 						</div>
 
 					</h:column>
-				
+
 				</p:panelGrid>
 
 			</ui:insert>
@@ -170,57 +170,28 @@ height: 20px;
 			<p:layout rendered="#{loginBean.getLoggedIn()}">
 				<p:layoutUnit position="north" style="border:0">
 					<h:form id="headerform">
-						<p:layout style="height:40px;margin-left:0%;border:none"
+						<p:layout style="height:60px;margin-left:0%;border:none"
 							styleClass="noborder" scrollable="null">
 
 
 							<p:layoutUnit position="west" style="border:0" minSize="300">
 
-								<!-- <p:ajaxStatus style="whitespace:nowrap;"> -->
+								<h:form rendered="#{messageBean.unreadMessages.size() gt 0}">
+                                        <p:outputPanel style="padding-left:0%">
 
-									<f:facet name="default">
-										<h:form rendered="#{messageBean.unreadMessages.size() gt 0}">
-											<p:outputPanel style="padding-left:0%">
+                                            <p:column>
+                                                <p:commandButton
+                                                    value="#{messageBean.unreadMessages.size()}"
+                                                    icon="ui-icon-mail-closed"
+                                                    action="#{messageBean.gotoInbox}" />
+                                            </p:column>
 
-												<p:column>
-													<p:commandButton
-														value="#{messageBean.unreadMessages.size()}"
-														icon="ui-icon-mail-closed"
-														action="#{messageBean.gotoInbox}" />
-												</p:column>
+                                            <p:column>
+                                                    new messages.
+                                                    </p:column>
 
-												<p:column>
-													new messages.
-													</p:column>
-
-											</p:outputPanel>
-										</h:form>
-										<!-- <p:poll interval="30" update="headerform" /> -->
-									</f:facet>
-
-									<f:facet name="start">
-
-										<img style="margin-top: 7px;"
-											src="../../images/ajax-loader.gif" />
-
-									</f:facet>
-
-									<f:facet name="complete">
-										<p:outputPanel>
-
-											<span
-												style="whitespace: nowrap; margin-top: 15px; margin-left: 0%">
-												<h:form rendered="#{messageBean.unreadMessages.size() gt 0}">
-													<p:commandButton
-														value="#{messageBean.unreadMessages.size()}"
-														icon="ui-icon-mail-closed"
-														action="#{messageBean.gotoInbox}" /> new messages.
-                                    </h:form> 
-											</span>
-										</p:outputPanel>
-									</f:facet>
-
-						<!-- 		</p:ajaxStatus> -->
+                                        </p:outputPanel>
+                                    </h:form>
 							</p:layoutUnit>
 							<p:layoutUnit position="center" minSize="500" style="border:0">
 								<div align="center" style="width: 100%">
@@ -243,9 +214,9 @@ height: 20px;
 												oncomplete="PF('searchResults').show();"
 												update="searchResults" />
 										</p:column>
-										
+
 									</h:panelGrid>
-									
+
 								</div>
 
 							</p:layoutUnit>
@@ -353,8 +324,7 @@ height: 20px;
 										<p:submenu label="Projects" title="Projects"
 											icon="fa fa-pie-chart">
 											<p:menuitem value="New..." title="New..."
-											url="../projects/new.xhtml"
-                                                icon="fa fa-flash"></p:menuitem>
+												url="../projects/new.xhtml" icon="fa fa-flash"></p:menuitem>
 											<p:menuitem value="My Projects" title="Display Projects"
 												icon="fa fa-group" url="../projects/projects.xhtml"></p:menuitem>
 											<p:menuitem value="My Tasks" title="Display my Tasks"
