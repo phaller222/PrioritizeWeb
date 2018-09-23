@@ -1,0 +1,36 @@
+table .formColumn {
+	padding: 0 5px 0 5px;
+	text-align: right;
+	white-space: nowrap;
+}
+
+div.timeline-event-content {
+	color: black;
+	font-size: .75em;
+	height: 35px;
+	background-color: rgba(255, 255, 255, .2);
+}
+
+div.vacation {
+	background: rgba(0, 255, 0, 0.3) !important; /* green */
+	border-color: #136e13 !important;
+	color: white;
+}
+
+div.illness {
+	background: rgba(255, 0, 0, 0.3) !important; /* red */
+	border-color: #136e13 !important;
+	color: white;
+}
+
+div.resourcereservationonline {
+	background: rgba(85, 295, 96, 0.3) !important; /* green */
+	border-color: #136e13 !important;
+	color: white;
+}
+
+div.resourcereservationoffline {
+	background: rgba(180, 180, 180, 0.3) !important; /* gray */
+	border-color: #136e13 !important;
+	color: white;
+}

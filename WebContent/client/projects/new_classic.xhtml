@@ -195,15 +195,18 @@
                                     <p:panel header="Project tasks"
                                         style="width:90%;height:90%">
                                         <div style="width: 700px;">
-                                            <h:outputText value="Task name: " />
-                                            <p:inputText value="#{classicApproach.taskNameToAdd}"
-                                                style="margin-right:20px" />
-                                                 <h:outputText value="Task description: " />
-                                            <p:inputText value="#{classicApproach.taskDescriptionToAdd}"
-                                                style="margin-right:20px" />
-                                            <p:commandButton value="Add task"
+                                        <h:panelGrid cols="4">
+                                           <p:outputPanel> <h:outputText value="Task name: " /></p:outputPanel>
+                                            <p:outputPanel><p:inputText value="#{classicApproach.taskNameToAdd}"
+                                                style="margin-right:20px;vertical-alignment:top;" /></p:outputPanel>
+                                               <p:outputPanel>  <h:outputText value="Task description: " /> </p:outputPanel>
+                                            <p:outputPanel><p:inputTextarea value="#{classicApproach.taskDescriptionToAdd}"
+                                                style="margin-right:20px;padding-top:50px;vertical-alignment:top;" 
+                                                rows="3" cols="20"/></p:outputPanel>
+                                           <p:outputPanel> <p:commandButton value="Add task"
                                                 actionListener="#{classicApproach.addTask}"
-                                                process="@this" ajax="false" update="tasktable" />
+                                                process="@this" ajax="false" update="tasktable" /></p:outputPanel>
+                                                </h:panelGrid>
                                         </div>
                                         <div>
                                             <p:dataTable id="tasktable" var="task"
