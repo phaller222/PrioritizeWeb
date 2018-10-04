@@ -95,7 +95,7 @@
 			collapseSize="20" collapsible="true" maxSize="200"
 			style="min-height:180px;max-height:200px;border:0" scrollable="null">
 			<ui:insert name="head">
-				<p:panelGrid columns="2"
+				<p:panelGrid columns="3"
 					columnClasses="no-border, no-border, no-border" style="width:100%;">
 					<h:column>
 						<img src="../../images/logo3.png" />
@@ -109,19 +109,24 @@
 
 							<h:form id="timelineform">
 								<p:timeline id="timeline"
-									value="#{basicTimelineController.model}" height="180px"
+								    value="#{basicTimelineController.model}" height="180px"
 									width="100%" selectable="#{basicTimelineController.selectable}"
 									zoomable="#{basicTimelineController.zoomable}"
+									zoomMin="60000"
+									zoomMax="63000000000"
 									moveable="#{basicTimelineController.moveable}"
+									editable="true"
 									stackEvents="#{basicTimelineController.stackEvents}"
 									axisOnTop="false"
 									eventStyle="#{basicTimelineController.eventStyle}"
 									showCurrentTime="#{basicTimelineController.showCurrentTime}"
 									showNavigation="false" min="#{basicTimelineController.min}"
-									max="#{basicTimelineController.max}" ajax="true">
-									<p:ajax event="select"
-										listener="#{basicTimelineController.onSelect}" />
-								</p:timeline>
+									max="#{basicTimelineController.max}" ajax="true"
+									widgetVar="tline">
+									<!-- <p:ajax event="rangechanged" listener="#{basicTimelineController.onRangeChanged}"/> -->
+									<p:ajax event="changed"
+										listener="#{basicTimelineController.onChanged}" update="timeline"/>
+									</p:timeline>
 								<!-- <p:poll interval="10"
 										listener="#{basicTimelineController.updateTimeline()}"
 										 autoStart="true" /> -->
@@ -161,6 +166,12 @@
 
 					</h:column>
 
+					<h:column>
+						<div style="width: 130px; height: 130px;">
+							<p:clock displayMode="analog" mode="server" />
+						</div>
+					</h:column>
+
 				</p:panelGrid>
 
 			</ui:insert>
@@ -177,21 +188,19 @@
 							<p:layoutUnit position="west" style="border:0" minSize="300">
 
 								<h:form rendered="#{messageBean.unreadMessages.size() gt 0}">
-                                        <p:outputPanel style="padding-left:0%">
+									<p:outputPanel style="padding-left:0%">
 
-                                            <p:column>
-                                                <p:commandButton
-                                                    value="#{messageBean.unreadMessages.size()}"
-                                                    icon="ui-icon-mail-closed"
-                                                    action="#{messageBean.gotoInbox}" />
-                                            </p:column>
+										<p:column>
+											<p:commandButton value="#{messageBean.unreadMessages.size()}"
+												icon="ui-icon-mail-closed" action="#{messageBean.gotoInbox}" />
+										</p:column>
 
-                                            <p:column>
+										<p:column>
                                                     new messages.
                                                     </p:column>
 
-                                        </p:outputPanel>
-                                    </h:form>
+									</p:outputPanel>
+								</h:form>
 							</p:layoutUnit>
 							<p:layoutUnit position="center" minSize="500" style="border:0">
 								<div align="center" style="width: 100%">
@@ -456,11 +465,16 @@
 	<p:panel id="nosession" rendered="#{not loginBean.loggedIn}"
 		style="margin:auto;margin-top:10%;">
 		<div align="center">
-			<h1>You are not logged in.</h1>
-			<h2>Please log in:</h2>
-			<form>
-				<a href="../login.xhtml">Login</a>
-			</form>
+			<!-- <h1>You are not logged in.</h1>
+			<h2>Please log in:</h2> -->
+			<img src="../../images/logo3.png" /><br />
+			<h:form id="myForm">
+				<p:inputText value="#{loginBean.username}" />
+				<p:commandButton action="#{loginBean.clientLogin}" value="Enter"
+					style="width:180px;" title="login"></p:commandButton>
+				<!-- 	<a href="../login.xhtml">Login</a> -->
+			</h:form>
+
 		</div>
 	</p:panel>
 

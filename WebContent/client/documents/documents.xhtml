@@ -12,7 +12,7 @@
 			<f:metadata>
 				<f:event type="preRenderView"
 					listener="#{basicTimelineController.displayDocumentsTimeline()}" />
-				
+
 			</f:metadata>
 			<p:outputPanel id="sessionok" rendered="#{loginBean.getLoggedIn()}">
 
@@ -25,19 +25,22 @@
 					<p:tab title="Documents">
 
 						<h:form id="documentTree">
-							<p:tree id="documenttree" styleClass="border"
+							<p:tree id="documentTree" styleClass="border"
 								value="#{documentBean.documentTree}" var="document"
-								style="width:90%;min-height:400px;">
-								<f:facet name="header">
+								style="width:90%;min-height:400px;" dynamic="true">
+							<f:facet name="header">
             Document Viewer
                     </f:facet>
 
-								<p:treeNode styleClass="no-border">
+								<p:treeNode styleClass="no-border" expandedIcon="ui-icon-folder-open" 
+								collapsedIcon="ui-icon ui-icon-folder-collapsed">
 									<p:dataTable styleClass="hide-column-names"
 										value="document.documentInfo" var="info"
 										rendered="#{document.leaf}" style="width:1000px;padding:0">
 										<p:column styleClass="yellowtouch">
-										 <img src="../../images/#{basicTimelineController.lookupMimeIcon(document.documentInfo.currentDocument.mimeType)}.png" height="25"/>
+											<img
+												src="../../images/#{basicTimelineController.lookupMimeIcon(document.documentInfo.currentDocument.mimeType)}.png"
+												height="25" />
 										</p:column>
 										<p:column styleClass="yellowtouch">
 											<h:outputText value="#{document.name}"
@@ -145,8 +148,8 @@
 									</p:outputPanel>
 
 								</p:treeNode>
-								<p:ajax event="expand" listener="#{documentBean.nodeExpand}" />
-								<p:ajax event="collapse" listener="#{documentBean.nodeCollapse}" />
+							<!-- 	<p:ajax event="expand" listener="#{documentBean.nodeExpand}" />
+								<p:ajax event="collapse" listener="#{documentBean.nodeCollapse}" /> -->
 
 							</p:tree>
 
@@ -168,9 +171,10 @@
 
 									</h:panelGroup>
 
-									<p:commandButton update="documentTree" id="createAction" value="Create"
-										icon="ui-icon-plus" action="#{documentBean.createDocument}"
-										ajax="false" style="width:220px"></p:commandButton>
+									<p:commandButton update="documentTree" id="createAction"
+										value="Create" icon="ui-icon-plus"
+										action="#{documentBean.createDocument}" ajax="false"
+										style="width:220px"></p:commandButton>
 								</h:panelGrid>
 							</p:dialog>
 
@@ -187,19 +191,21 @@
 							</p:dialog>
 
 
-							<p:contextMenu for="documenttree">
-								<p:menuitem value="Info" update="documenttree"
+							<p:contextMenu for="documentTree">
+								<p:menuitem value="Info" update="documentTree"
 									oncomplete="PF('InfoDialog').show();" icon="ui-icon-plus" />
 
 							</p:contextMenu>
 
 							<!--  <p:poll interval="20" listener="#{documentBean.updateDocumentTree()}"   autoStart="true"/> -->
+						
 						</h:form>
+
 					</p:tab>
 				</p:tabView>
 			</p:outputPanel>
-			<p:messages id="messages" showDetail="true" autoUpdate="true"
-				closable="true" showIcon="true" severity="error" />
+			<p:messages id="messages" showDetail="true" closable="true"
+				showIcon="true" severity="error" />
 		</ui:define>
 	</ui:composition>
 </h:body>
