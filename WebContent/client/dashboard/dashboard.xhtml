@@ -47,13 +47,59 @@
 						</p:column> -->
 
 				<h:form id="dataform">
-					<!-- <ui:repeat var="device" value="#{loginBean.watchedResources}">
 
-						<p:panel id="devicepanel" header="#{device.name}"
-							toggleable="true" closable="true" footer="#{device.description}"
-							style="height:250px;width:350px;" styleClass="ui-dashboard-column">
 
-							<p:tabView activeIndex="#{loginBean.dashboardTabsActiveIndex}">
+					<h:panelGrid id="dashboardcontainer" layout="tabular" columns="7"
+						styleClass="ui-panelgrid" cellspacing="30" cellpadding="40">
+
+						<ui:repeat var="device" value="#{loginBean.watchedResources}">
+
+							<p:panel id="devicepanel" header="#{device.name}"
+								toggleable="true" closable="true" footer="#{device.description}"
+								style="z-index:1000;margin-left:25px;margin-bottom:10px;height:100%;width:280px;"
+								styleClass="ui-dashboard-column">
+								<p:outputPanel
+									rendered="#{device.mqttOnline and not device.agent}">
+									<img src="../../images/greendot.png" title="Devie is online"/><br/>
+							     </p:outputPanel>
+								<p:outputPanel
+									rendered="#{not device.mqttOnline and not device.agent}">
+									<img src="../../images/graydot.png" title="Device is offline"/>
+							     </p:outputPanel>
+
+								<p:outputPanel
+									rendered="#{device.mqttResource and device.mqttOnline}">
+									<h:outputText value="Slots: #{device.maxSlots}"/><br/>
+									<h:outputText value="Slots in use: #{resourceBean.getSlotsInUse(device)}"/><br/>
+									<h:outputText value="Slots available: #{device.maxSlots - resourceBean.getSlotsInUse(device)}"/><br/>
+									<h:outputText value="Last heartbeat: "/> 
+									<p:inputText disabled="true" value="#{device.mqttLastPing}">
+									  <f:convertDateTime pattern="MM.dd.yyyy HH:mm:ss" />
+									</p:inputText>
+									
+									<ui:repeat var="namevalues" value="#{device.mqttValues}">
+										<h:outputText rendered="#{namevalues.iterator().hasNext()}"
+											style="font-size:2em"
+											value="#{namevalues.iterator().next().name} " />
+										<h:outputText rendered="#{namevalues.iterator().hasNext()}"
+											style="font-size:2em" id="updateText"
+											value=" #{resourceBean.getLastMqttValue(device,namevalues.iterator().next()).split(',')[1]}"></h:outputText>
+									</ui:repeat>
+								</p:outputPanel>
+								<p:outputPanel rendered="#{not device.mqttResource}">
+							        No Data
+							     </p:outputPanel>
+
+
+							</p:panel>
+							<p:draggable for="devicepanel" containment="parent"
+								handle=".ui-panel-titlebar" />
+						</ui:repeat>
+						<p:poll update="dataform" interval="5" autoStart="true" />
+
+
+
+						<!-- <p:tabView activeIndex="#{loginBean.dashboardTabsActiveIndex}">
 								<p:ajax event="tabChange"
 									listener="#{loginBean.onDashboardTabChange(index)}" />
 								<p:tab title="Data">
@@ -72,10 +118,7 @@
 											value=" #{resourceBean.getLastMqttValue(device,namevalues.iterator().next()).split(',')[1]}"></h:outputText>
 
 									</ui:repeat>
-									<p:poll update="dataform" interval="30" autoStart="true" />
-
-
-
+    								<p:poll update="dataform" interval="30" autoStart="true" />
 								</p:tab>
 
 								<p:tab title="Graph">
@@ -83,32 +126,20 @@
 								<p:tab title="Geo">
 									<div id="map" style="position: relative; top: 30px;">
 										 WORMS: 49.63879365551553,8.36210818738935
-
-
 										<p:gmap id="w_gmap"
 											center="#{resourceBean.getGMapCoordinateParameters(device)}"
 											zoom="15" type="ROADMAP" style="width:100%;height:150px"
 											widgetVar="mygmap" model="#{resourceBean.resourcesMapModel}">
 										</p:gmap>
 										<p:poll update="w_gmap" interval="5" oncomplete="handleComplete(xhr, status, args)" process="@this"/>
-
-
 									</div>
 								</p:tab>
 							</p:tabView>
+ -->
 
-
-
-						</p:panel>
-
-
-
-					</ui:repeat> -->
+					</h:panelGrid>
 				</h:form>
-
-
 			</h:panelGrid>
-
 		</ui:define>
 	</ui:composition>
 </h:body>

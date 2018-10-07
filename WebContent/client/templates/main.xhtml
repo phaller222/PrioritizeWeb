@@ -6,6 +6,9 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
+    <f:metadata>  
+        <f:event type="preRenderView" listener="#{loginBean.initializeNoParamKeycloakSession()}"/>  
+    </f:metadata>  
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta charset="ISO-8859-1" />

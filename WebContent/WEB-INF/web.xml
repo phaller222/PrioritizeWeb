@@ -73,7 +73,7 @@
 		<servlet-name>javax.ws.rs.core.Application</servlet-name>
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
- 	<!-- <security-constraint>
+ 	 <!-- <security-constraint>
 		<display-name>SecurityConstraint</display-name>
 		<web-resource-collection>
 			<web-resource-name>WRCollection</web-resource-name>
@@ -116,7 +116,7 @@
 	<login-config>
 		<auth-method>KEYCLOAK</auth-method>
 		<realm-name>ApplicationRealm</realm-name>
-	</login-config>  -->
+	</login-config> -->
 	<mime-mapping>
 		<extension>eot</extension>
 		<mime-type>application/vnd.ms-fontobject</mime-type>
