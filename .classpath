@@ -9,7 +9,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/PrioritizeEJB"/>
 	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/commons-lang3-3.4.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/all-themes-1.0.8.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/redmond-1.0.10.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/resources-ckeditor-3.2.0.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/resources-codemirror-3.2.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.jboss.ide.eclipse.as.core.server.runtime.runtimeTarget/WildFly 13.0"/>
