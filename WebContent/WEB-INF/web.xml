@@ -118,7 +118,7 @@
 		<web-resource-collection>
 			<web-resource-name>REST API</web-resource-name>
 			<description>API</description>
-			<url-pattern>/api/*</url-pattern>
+			<url-pattern>/*</url-pattern>
 			<http-method>HEAD</http-method>
 			<http-method>GET</http-method>
 			<http-method>POST</http-method>
