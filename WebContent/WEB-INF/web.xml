@@ -44,8 +44,7 @@
 			<param-value>C:\Temp</param-value>
 		</init-param>
 	</filter>
-	<!-- <filter> <filter-name>EncodingFilter</filter-name> <filter-class>de.hallerweb.prioritize.servlet.EncodingFilter</filter-class> 
-		</filter> -->
+
 	<filter-mapping>
 		<filter-name>PrimeFaces FileUpload Filter</filter-name>
 		<servlet-name>Faces Servlet</servlet-name>
@@ -65,11 +64,42 @@
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
- 	<servlet-mapping>
-		<servlet-name>javax.ws.rs.core.Application</servlet-name>
-		<url-pattern>/rest/*</url-pattern>
-	</servlet-mapping> 
- 	 <!-- <security-constraint>
+	<servlet>
+		<servlet-name>Resteasy</servlet-name>
+		<servlet-class>
+			org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher
+		</servlet-class>
+		<init-param>
+			<param-name>javax.ws.rs.Application</param-name>
+			<param-value>de.hallerweb.enterprise.prioritize.view.boundary.ApiApplication</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Resteasy</servlet-name>
+		<url-pattern>/api/*</url-pattern>
+	</servlet-mapping>
+
+	<context-param>
+		<param-name>resteasy.servlet.mapping.prefix</param-name>
+		<param-value>/api</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>resteasy.scan</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<param-name>resteasy.scan.providers</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<param-name>resteasy.scan.resources</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+
+	<security-constraint>
 		<display-name>SecurityConstraint</display-name>
 		<web-resource-collection>
 			<web-resource-name>WRCollection</web-resource-name>
@@ -82,13 +112,6 @@
 			<http-method>PUT</http-method>
 			<http-method>DELETE</http-method>
 		</web-resource-collection>
-		<auth-constraint>
-			<role-name>admin</role-name>
-		    <role-name>prioritizeadmin</role-name>
-        </auth-constraint>
-		<user-data-constraint>
-			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
-		</user-data-constraint>
 	</security-constraint>
 	<security-constraint>
 		<display-name>SecurityConstraint</display-name>
@@ -103,7 +126,7 @@
 			<http-method>DELETE</http-method>
 		</web-resource-collection>
 	</security-constraint>
-	<security-role>
+	<!-- <security-role>
 		<role-name>prioritizeadmin</role-name>
 	</security-role>
 	<security-role>
