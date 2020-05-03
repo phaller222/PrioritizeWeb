@@ -112,13 +112,8 @@
 								</f:facet>
 
 								<h:outputText value="Recipiant: "></h:outputText>
-								<p:selectOneMenu style="width:300px;" id="users" rendered="true"
-									value="#{messageBean.to}">
-									<f:selectItems value="#{messageBean.recipiantList}" var="user"
-										itemValue="#{user.id}" itemLabel="#{user.name}"
-										itemDescription="#{user.name}" />
+								<p:autoComplete value="#{messageBean.to}" completeMethod="#{messageBean.completeRecipiantList}"/>
 
-								</p:selectOneMenu>
 
 								<h:outputText value="Subject:">
 								</h:outputText>
