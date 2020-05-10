@@ -9,6 +9,9 @@
 
 [PrioritizeWeb](https://github.com/phaller222/PrioritizeWeb.git) - This project, mainly xhtml GUI files
 
+
+**Binaries can be found here: http://www.prioritize-iot.de/download**
+
 If you want to install and run Prioritize or contribute please make sure you have checked out all projects above from git. 
 <br/>Also take a look at http://prioritize-iot.de for a short overview of the capabilites.
 <p></p>
