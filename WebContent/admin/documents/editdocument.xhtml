@@ -63,7 +63,7 @@
 							<p:fileUpload
 								fileUploadListener="#{documentBean.handleFileUpload}"
 								mode="advanced" update="messages" sizeLimit="100000000"
-								allowTypes="/(\.|\/)(gif|txt|doc|odt|xls|xml|pdf|html|js|java|ppt|jpe?g|png)$/" />
+								accept=".pdf,.doc,.docx,.gif,.png,.jpg,.jpeg,.xls,.xlsx,.txt,.csv" />
 
 							<p:growl id="messages" showDetail="true" />
 						</h:panelGroup>
