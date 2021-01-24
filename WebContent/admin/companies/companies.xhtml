@@ -143,7 +143,27 @@
 										disabled="#{!cancreate}"></p:inputText>
 									<p:message for="fax"></p:message>
 								</h:panelGroup>
-
+								<h:outputText value="Mobile:" />
+								<h:panelGroup>
+									<p:inputText id="mobile" rendered="true"
+												 value="#{companyBean.company.mainAddress.mobile}"
+												 disabled="#{!cancreate}"></p:inputText>
+									<p:message for="fax"></p:message>
+								</h:panelGroup>
+								<h:outputText value="VAT-Number:" />
+								<h:panelGroup>
+									<p:inputText id="vatnumber" rendered="true"
+												 value="#{companyBean.company.vatNumber}"
+												 disabled="#{!cancreate}"></p:inputText>
+									<p:message for="vatnumber"></p:message>
+								</h:panelGroup>
+								<h:outputText value="Tax-ID:" />
+								<h:panelGroup>
+									<p:inputText id="taxid" rendered="true"
+												 value="#{companyBean.company.taxId}"
+												 disabled="#{!cancreate}"></p:inputText>
+									<p:message for="fax"></p:message>
+								</h:panelGroup>
 
 								<f:facet name="footer">
 									<p:commandButton id="createAction" value="Create"

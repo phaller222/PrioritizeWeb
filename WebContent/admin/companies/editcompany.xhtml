@@ -92,7 +92,29 @@
 											value="#{companyBean.company.mainAddress.fax}"></p:inputText>
 										<p:message for="fax"></p:message>
 									</h:panelGroup>
-
+									<h:panelGroup>
+										<p:inputText id="fax" rendered="true"
+													 value="#{companyBean.company.mainAddress.fax}"></p:inputText>
+										<p:message for="fax"></p:message>
+									</h:panelGroup>
+									<h:outputText value="Mobile:" />
+									<h:panelGroup>
+										<p:inputText id="mobile" rendered="true"
+													 value="#{companyBean.company.mainAddress.mobile}"></p:inputText>
+										<p:message for="mobile"></p:message>
+									</h:panelGroup>
+									<h:outputText value="Vat-Number:" />
+									<h:panelGroup>
+										<p:inputText id="vat" rendered="true"
+													 value="#{companyBean.company.vatNumber}"></p:inputText>
+										<p:message for="vat"></p:message>
+									</h:panelGroup>
+									<h:outputText value="Tax-ID:" />
+									<h:panelGroup>
+										<p:inputText id="taxid" rendered="true"
+													 value="#{companyBean.company.taxId}"></p:inputText>
+										<p:message for="vat"></p:message>
+									</h:panelGroup>
 									<f:facet name="footer">
 										<p:commandButton value="Save" action="#{companyBean.save}"
 											icon="ui-icon-disk" ajax="false"></p:commandButton>
