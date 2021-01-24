@@ -115,6 +115,12 @@
 													 value="#{companyBean.company.taxId}"></p:inputText>
 										<p:message for="vat"></p:message>
 									</h:panelGroup>
+									<h:outputText value="Website-URL:" />
+									<h:panelGroup>
+										<p:inputText id="url" rendered="true"
+													 value="#{companyBean.company.url}"></p:inputText>
+										<p:message for="url"></p:message>
+									</h:panelGroup>
 									<f:facet name="footer">
 										<p:commandButton value="Save" action="#{companyBean.save}"
 											icon="ui-icon-disk" ajax="false"></p:commandButton>

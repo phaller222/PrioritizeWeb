@@ -150,6 +150,13 @@
 												 disabled="#{!cancreate}"></p:inputText>
 									<p:message for="fax"></p:message>
 								</h:panelGroup>
+								<h:outputText value="Website URL:" />
+								<h:panelGroup>
+									<p:inputText id="website" rendered="true"
+												 value="#{companyBean.company.url}"
+												 disabled="#{!cancreate}"></p:inputText>
+									<p:message for="website"></p:message>
+								</h:panelGroup>
 								<h:outputText value="VAT-Number:" />
 								<h:panelGroup>
 									<p:inputText id="vatnumber" rendered="true"
@@ -163,6 +170,13 @@
 												 value="#{companyBean.company.taxId}"
 												 disabled="#{!cancreate}"></p:inputText>
 									<p:message for="fax"></p:message>
+								</h:panelGroup>
+								<h:outputText value="Description:" />
+								<h:panelGroup>
+									<p:inputTextarea id="desc" rendered="true"
+													 value="#{companyBean.company.description}"
+													 disabled="#{!cancreate}"></p:inputTextarea>
+									<p:message for="desc"></p:message>
 								</h:panelGroup>
 
 								<f:facet name="footer">
