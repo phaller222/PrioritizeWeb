@@ -105,6 +105,12 @@
 										value="#{companyBean.company.name}" disabled="#{!cancreate}"></p:inputText>
 									<p:message for="name"></p:message>
 								</h:panelGroup>
+								<h:outputText value="Country:" />
+								<h:panelGroup>
+									<p:inputText id="country" rendered="true"
+												 value="#{companyBean.company.mainAddress.country}" disabled="#{!cancreate}"></p:inputText>
+									<p:message for="country"></p:message>
+								</h:panelGroup>
 								<h:outputText value="Street:" />
 								<h:panelGroup>
 									<p:inputText id="street" rendered="true"

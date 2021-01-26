@@ -54,6 +54,12 @@
 											value="#{companyBean.company.name}"></p:inputText>
 										<p:message for="name"></p:message>
 									</h:panelGroup>
+									<h:outputText value="Country:" />
+									<h:panelGroup>
+										<p:inputText id="country" rendered="true"
+													 value="#{companyBean.company.mainAddress.country}"></p:inputText>
+										<p:message for="country"></p:message>
+									</h:panelGroup>
 									<h:outputText value="Description:" />
 									<h:panelGroup>
 										<p:inputTextarea rows="5" cols="40" id="description"
