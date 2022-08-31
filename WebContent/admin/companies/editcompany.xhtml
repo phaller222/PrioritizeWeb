@@ -54,6 +54,12 @@
 											value="#{companyBean.company.name}"></p:inputText>
 										<p:message for="name"></p:message>
 									</h:panelGroup>
+									<h:outputText value="Country:" />
+									<h:panelGroup>
+										<p:inputText id="country" rendered="true"
+													 value="#{companyBean.company.mainAddress.country}"></p:inputText>
+										<p:message for="country"></p:message>
+									</h:panelGroup>
 									<h:outputText value="Description:" />
 									<h:panelGroup>
 										<p:inputTextarea rows="5" cols="40" id="description"
@@ -92,7 +98,35 @@
 											value="#{companyBean.company.mainAddress.fax}"></p:inputText>
 										<p:message for="fax"></p:message>
 									</h:panelGroup>
-
+									<h:panelGroup>
+										<p:inputText id="fax" rendered="true"
+													 value="#{companyBean.company.mainAddress.fax}"></p:inputText>
+										<p:message for="fax"></p:message>
+									</h:panelGroup>
+									<h:outputText value="Mobile:" />
+									<h:panelGroup>
+										<p:inputText id="mobile" rendered="true"
+													 value="#{companyBean.company.mainAddress.mobile}"></p:inputText>
+										<p:message for="mobile"></p:message>
+									</h:panelGroup>
+									<h:outputText value="Vat-Number:" />
+									<h:panelGroup>
+										<p:inputText id="vat" rendered="true"
+													 value="#{companyBean.company.vatNumber}"></p:inputText>
+										<p:message for="vat"></p:message>
+									</h:panelGroup>
+									<h:outputText value="Tax-ID:" />
+									<h:panelGroup>
+										<p:inputText id="taxid" rendered="true"
+													 value="#{companyBean.company.taxId}"></p:inputText>
+										<p:message for="vat"></p:message>
+									</h:panelGroup>
+									<h:outputText value="Website-URL:" />
+									<h:panelGroup>
+										<p:inputText id="url" rendered="true"
+													 value="#{companyBean.company.url}"></p:inputText>
+										<p:message for="url"></p:message>
+									</h:panelGroup>
 									<f:facet name="footer">
 										<p:commandButton value="Save" action="#{companyBean.save}"
 											icon="ui-icon-disk" ajax="false"></p:commandButton>

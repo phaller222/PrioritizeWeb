@@ -105,6 +105,12 @@
 										value="#{companyBean.company.name}" disabled="#{!cancreate}"></p:inputText>
 									<p:message for="name"></p:message>
 								</h:panelGroup>
+								<h:outputText value="Country:" />
+								<h:panelGroup>
+									<p:inputText id="country" rendered="true"
+												 value="#{companyBean.company.mainAddress.country}" disabled="#{!cancreate}"></p:inputText>
+									<p:message for="country"></p:message>
+								</h:panelGroup>
 								<h:outputText value="Street:" />
 								<h:panelGroup>
 									<p:inputText id="street" rendered="true"
@@ -143,7 +149,41 @@
 										disabled="#{!cancreate}"></p:inputText>
 									<p:message for="fax"></p:message>
 								</h:panelGroup>
-
+								<h:outputText value="Mobile:" />
+								<h:panelGroup>
+									<p:inputText id="mobile" rendered="true"
+												 value="#{companyBean.company.mainAddress.mobile}"
+												 disabled="#{!cancreate}"></p:inputText>
+									<p:message for="fax"></p:message>
+								</h:panelGroup>
+								<h:outputText value="Website URL:" />
+								<h:panelGroup>
+									<p:inputText id="website" rendered="true"
+												 value="#{companyBean.company.url}"
+												 disabled="#{!cancreate}"></p:inputText>
+									<p:message for="website"></p:message>
+								</h:panelGroup>
+								<h:outputText value="VAT-Number:" />
+								<h:panelGroup>
+									<p:inputText id="vatnumber" rendered="true"
+												 value="#{companyBean.company.vatNumber}"
+												 disabled="#{!cancreate}"></p:inputText>
+									<p:message for="vatnumber"></p:message>
+								</h:panelGroup>
+								<h:outputText value="Tax-ID:" />
+								<h:panelGroup>
+									<p:inputText id="taxid" rendered="true"
+												 value="#{companyBean.company.taxId}"
+												 disabled="#{!cancreate}"></p:inputText>
+									<p:message for="fax"></p:message>
+								</h:panelGroup>
+								<h:outputText value="Description:" />
+								<h:panelGroup>
+									<p:inputTextarea id="desc" rendered="true"
+													 value="#{companyBean.company.description}"
+													 disabled="#{!cancreate}"></p:inputTextarea>
+									<p:message for="desc"></p:message>
+								</h:panelGroup>
 
 								<f:facet name="footer">
 									<p:commandButton id="createAction" value="Create"

@@ -181,7 +181,7 @@
 								<h:column>
 									<p:schedule id="scheduleVacation"
 										value="#{calendarView.lazyEventModelVacations}"
-										widgetVar="myschedule" ignoreTimezone="false" timeZone="local"
+										widgetVar="myschedule" ignoreTimezone="false" timeZone="GMT+1"
 										locale="de" timeFormat="HH:mm" axisFormat="HH:mm"
 										slotDuration="01:00:00" scrollTime="07:00:00"
 										style="width:350px">
@@ -262,7 +262,7 @@
 									<p:schedule id="scheduleIllness"
 										value="#{calendarView.lazyEventModelIllness}"
 										widgetVar="myscheduleillness" ignoreTimezone="false"
-										timeZone="local" locale="de" timeFormat="HH:mm"
+										timeZone="GMT+1" locale="de" timeFormat="HH:mm"
 										axisFormat="HH:mm" slotDuration="01:00:00"
 										scrollTime="07:00:00" style="width:350px">
 										<p:ajax event="eventMove"
